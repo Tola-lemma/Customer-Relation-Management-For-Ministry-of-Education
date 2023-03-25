@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.nav-link{
+    color:black;
+    font-family: 'Roboto', sans-serif;
+}
+.Logo_Side_text{
+    font-size: 14px;
+    text-align:center;
+    font-family:"cursive";
+    color:blue;
+    display:inline;
+}
+.navBackground {
+    background-image:url('../../.././assets/images/nav_bg.png');
+    background-repeat:no-repeat;
+    background-size:cover;
+}
