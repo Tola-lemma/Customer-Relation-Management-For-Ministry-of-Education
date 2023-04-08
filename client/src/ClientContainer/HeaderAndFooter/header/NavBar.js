@@ -49,7 +49,7 @@ export const NavBar = () => {
                   onClick={() => setActiveLink("/")}
                 >
                   <Link className="nav-link ml-3 " aria-current="page" to="/">
-                    <i class="fa-solid fa-house"></i> Support Center Home
+                    <i className="fa-solid fa-house"></i> Support Center Home
                   </Link>
                 </li>
                 <li
@@ -59,7 +59,7 @@ export const NavBar = () => {
                   onClick={() => setActiveLink("/knowledgebase")}
                 >
                   <Link className="nav-link ml-3 " to="/knowledgebase">
-                    <i class="fa-solid fa-book"></i> Knowledgebase
+                    <i className="fa-solid fa-book"></i> Knowledgebase
                   </Link>
                 </li>
                 <li
@@ -69,7 +69,7 @@ export const NavBar = () => {
                   onClick={() => setActiveLink("/opennewticket")}
                 >
                   <Link className="nav-link" to="/opennewticket">
-                    <i class="fa-sharp fa-solid fa-file-circle-plus"></i> Open
+                    <i className="fa-sharp fa-solid fa-file-circle-plus"></i> Open
                     New Ticket
                   </Link>
                 </li>
@@ -80,7 +80,7 @@ export const NavBar = () => {
                   onClick={() => setActiveLink("/checkticketstatus")}
                 >
                   <Link className="nav-link" to="/checkticketstatus">
-                    <i class="fa-sharp fa-solid fa-file-arrow-up"></i> Check
+                    <i className="fa-sharp fa-solid fa-file-arrow-up"></i> Check
                     Ticket Status
                   </Link>
                 </li>
