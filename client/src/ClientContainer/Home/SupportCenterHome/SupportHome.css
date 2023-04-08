@@ -1,0 +1,37 @@
+.SupportHomeContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 0 20px;
+    font-family: "Helvetica Neue", sans-serif;
+}
+.landing-page{
+    display: flex;
+}
+.main-content{
+    width: 750px;
+    margin-left: 16rem;
+}
+.main-content .search-box{
+    display: flex;
+}
+.main-content .search-box >input{
+    width: 50%;
+    margin-right: 1rem;
+    border-radius: 1rem;
+}
+.sidebar-container { 
+    text-align: center;
+    margin-left: 14rem;
+}
+ .sidebar-container .front-button >p .open,
+ .sidebar-container .front-button >p .check {
+    box-shadow: 0 1px 1px rgba(0,0,0.25);
+    width: 280px;
+}
+.featured-questions{
+    word-wrap: break-word;
+    background-color: #F7FBFE;
+    box-shadow: 1px 1px  rgba(0,0,0.25);
+}
