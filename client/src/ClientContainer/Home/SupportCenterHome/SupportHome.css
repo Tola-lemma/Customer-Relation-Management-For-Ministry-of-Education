@@ -1,17 +1,16 @@
 .SupportHomeContainer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 30px 0 0 20px;
+    margin-top: 30px;
     font-family: "Helvetica Neue", sans-serif;
 }
 .landing-page{
     display: flex;
+    justify-content: space-between;
 }
 .main-content{
-    width: 750px;
-    margin-left: 11rem;
+    margin: 0px;
+    padding:0px;
 }
 .main-content .search-box{
     margin-left: 3rem;
@@ -23,7 +22,7 @@
     border-radius: 1rem;
 }
 .sidebar-container { 
-    margin-left: 10rem;
+    margin-left: 5rem;
 }
  .sidebar-container .front-button >p .open,
  .sidebar-container .front-button >p .check {
