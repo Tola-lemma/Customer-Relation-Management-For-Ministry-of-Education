@@ -49,7 +49,7 @@ export const NavBar = () => {
                   onClick={() => setActiveLink("/")}
                 >
                   <Link className="nav-link ml-3 " aria-current="page" to="/">
-                    <i className="fa-solid fa-house"></i> Support Center Home
+                  🏠 Support Center Home
                   </Link>
                 </li>
                 <li
@@ -59,7 +59,7 @@ export const NavBar = () => {
                   onClick={() => setActiveLink("/knowledgebase")}
                 >
                   <Link className="nav-link ml-3 " to="/knowledgebase">
-                    <i className="fa-solid fa-book"></i> Knowledgebase
+                    <i className="fa-solid fa-book " style={{color:"#00a4ef"}}></i> Knowledgebase
                   </Link>
                 </li>
                 <li
