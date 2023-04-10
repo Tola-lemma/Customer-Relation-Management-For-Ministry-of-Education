@@ -1,7 +1,7 @@
 import React from "react";
 import "./Knowledgebase.css";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
-import { Link } from "react-router-dom";
+import { HashLink as Link } from 'react-router-hash-link';
 export const Knowledgebase = () => {
   return (
     <div>
@@ -16,7 +16,7 @@ export const Knowledgebase = () => {
                   className="fa-sharp fa-regular fa-folder-open"
                   style={{ color: "#e0c600" }}
                 ></i>
-                <Link to="" className="kb">
+                <Link to="#eligiblity" className="kb" id="eligiblity">
                   {" "}
                   ELIGIBILITY LETTER
                 </Link>
@@ -78,7 +78,7 @@ export const Knowledgebase = () => {
                   className="fa-sharp fa-regular fa-folder-open"
                   style={{ color: "#e0c600" }}
                 ></i>
-                <Link to="" className="kb">
+                <Link to="#foreignstudents" className="kb" id="foreignstudents">
                   {" "}
                   For foreign students who are studying in different countries,
                   they must agree to get a letter of support when they come to
@@ -107,7 +107,7 @@ export const Knowledgebase = () => {
                   className="fa-sharp fa-regular fa-folder-open"
                   style={{ color: "#e0c600" }}
                 ></i>
-                <Link to="" className="kb">
+                <Link to="#returntowork" className="kb" id="returntowork">
                   {" "}
                   A request to return to work after completing their studies
                   abroad
@@ -206,12 +206,12 @@ export const Knowledgebase = () => {
                   className="fa-sharp fa-regular fa-folder-open"
                   style={{ color: "#e0c600" }}
                 ></i>
-                <Link to="" className="kb">
+                <Link to="#transfer" className="kb" smooth >
                   {" "}
                   Transfer of teachers and students
                 </Link>
               </h4>
-              <div className="kb_paragraph">
+              <div className="kb_paragraph" id="transfer">
                 <p>
                   <li>
                     <Link
@@ -322,7 +322,7 @@ export const Knowledgebase = () => {
                   className="fa-sharp fa-regular fa-folder-open"
                   style={{ color: "#e0c600" }}
                 ></i>
-                <Link to="" className="kb">
+                <Link to="#scholarship" className="kb" id="scholarship">
                   {" "}
                   Scholarship Question{" "}
                 </Link>
@@ -354,22 +354,22 @@ export const Knowledgebase = () => {
             </button>
             <ul className="dropdown-menu">
               <li>
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="#transfer">
                   Student transfer request
                 </Link>
               </li>
               <li>
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="#transfer">
                   Teacher transfer request
                 </Link>
               </li>
               <li>
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="#foreignstudents">
                   Request to return to work after studying abroad
                 </Link>
               </li>
               <li>
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="#scholarship">
                   Scholarship question
                 </Link>
               </li>
