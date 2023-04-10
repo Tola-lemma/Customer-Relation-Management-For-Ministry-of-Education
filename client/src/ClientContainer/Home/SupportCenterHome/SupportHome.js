@@ -1,8 +1,10 @@
 import React from "react";
 import "./SupportHome.css";
 import { NavBar } from "./../.././HeaderAndFooter/header/NavBar";
-import { Link } from "react-router-dom";
+import { HashLink as Link } from 'react-router-hash-link';
 import "./SupportHome.css";
+import { SearchTopic } from "../../SearchComponent/SearchTopic";
+import Topics from "../../.././Data.json";
 export const SupportHome = () => {
   return (
     <div>
@@ -11,12 +13,10 @@ export const SupportHome = () => {
         <div className="landing-page">
           <div className="main-content">
             <div className="search-box">
-              <input
-                type="text"
-                className="form-control   "
-                placeholder="search our knowledgebase"
+              <SearchTopic
+                placeholder={`Search our knowledgebase`}
+                data={Topics}
               />
-              <button className="btn btn-primary rounded-pill"> Search </button>
             </div>
             <div className="welcome_message">
               <h1>Welcome to the MoE Support Center</h1>
@@ -51,21 +51,29 @@ export const SupportHome = () => {
               <section>
                 <div className="first-text">Featured Questions</div>
                 <div>
-                  <Link to="/" className="questions">Student transfer request</Link>
-                </div>
-                <div>
-                  <Link to="/" className="questions">Teacher transfer request</Link>
-                </div>
-                <div>
-                  <Link to="/" className="questions">
-                  Request to return to work after studying abroad 
+                  <Link to="knowledgebase#transfer" className="questions">
+                    Student transfer request
                   </Link>
                 </div>
                 <div>
-                  <Link to="/"className="questions">Scholarship question</Link>
+                  <Link to="knowledgebase#transfer" className="questions">
+                    Teacher transfer request
+                  </Link>
                 </div>
                 <div>
-                  <Link to="/" className="questions" >Various academic and administrative complaints</Link>
+                  <Link to="/" className="questions">
+                    Request to return to work after studying abroad
+                  </Link>
+                </div>
+                <div>
+                  <Link to="knowledgebase#scholarship" className="questions">
+                    Scholarship question
+                  </Link>
+                </div>
+                <div>
+                  <Link to="/" className="questions">
+                    Various academic and administrative complaints
+                  </Link>
                 </div>
               </section>
             </div>
