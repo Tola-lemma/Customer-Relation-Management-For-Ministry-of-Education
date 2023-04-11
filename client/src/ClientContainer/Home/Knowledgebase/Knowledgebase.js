@@ -1,7 +1,7 @@
 import React from "react";
 import "./Knowledgebase.css";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
-import { HashLink as Link } from 'react-router-hash-link';
+import { HashLink as Link } from "react-router-hash-link";
 export const Knowledgebase = () => {
   return (
     <div>
@@ -9,7 +9,9 @@ export const Knowledgebase = () => {
       <div className="container knowledgebase">
         <div className="knowledgebase-parent">
           <div>
-            <div className="allFAQ mb-3">Click on the category to browse FAQs.</div>
+            <div className="allFAQ mb-3">
+              Click on the category to browse FAQs.
+            </div>
             <ul>
               <h4>
                 <i
@@ -206,7 +208,7 @@ export const Knowledgebase = () => {
                   className="fa-sharp fa-regular fa-folder-open"
                   style={{ color: "#e0c600" }}
                 ></i>
-                <Link to="#transfer" className="kb" smooth >
+                <Link to="#transfer" className="kb" smooth>
                   {" "}
                   Transfer of teachers and students
                 </Link>
@@ -341,6 +343,80 @@ export const Knowledgebase = () => {
                   </li>
                 </p>
               </div>
+              <hr className="shadow-lg" />
+              <h4>
+                <i
+                  className="fa-sharp fa-regular fa-folder-open"
+                  style={{ color: "#e0c600" }}
+                ></i>
+                <Link to="#foreignstudents" className="kb" id="foreignstudents">
+                  {" "}
+                  For foreign students who are studying in different countries,
+                  they must agree to get a letter of support when they come to
+                  Ethiopia and return abroad
+                </Link>
+              </h4>
+              <div className="kb_paragraph">
+                <p>
+                  <li>
+                    A letter of support from the embassy of the country where
+                    you are studying
+                  </li>
+                </p>
+
+                <p>
+                  <li>Letter of support from the institution where you work</li>
+                </p>
+
+                <p>
+                  <li>Passport copy</li>
+                </p>
+              </div>
+              <hr className="shadow-lg" />
+              <h4>
+                <i
+                  className="fa-sharp fa-regular fa-folder-open"
+                  style={{ color: "#e0c600" }}
+                ></i>
+                <Link to="#complaints" className="kb">
+                  {" "}
+                  Various academic and administrative complaints{" "}
+                </Link>
+              </h4>
+              <div className="kb_paragraph" id="complaints">
+                <span className="kb_strong_paragraph">
+                  <strong>
+                    Regarding unresolved problems and complaints regarding good
+                    governance;{" "}
+                  </strong>
+                </span>
+
+                <p>
+                  <li>
+                    The issue was presented to the management/complaint hearing
+                    committee at all levels and the senior management of the
+                    institution.{" "}
+                  </li>
+                </p>
+
+                <p>
+                  <li>
+                    A decision presented to the management of the institution's
+                    board
+                  </li>
+                </p>
+                <p>
+                  <li>
+                    A document explaining the issue that the person claims
+                  </li>
+                </p>
+                <p>
+                  <li>
+                    Documentary evidence to provide suggestions for good
+                    management deficiencies in any service provision
+                  </li>
+                </p>
+              </div>
             </ul>
           </div>
           <div className="selectByTopic dropdown">
@@ -374,7 +450,7 @@ export const Knowledgebase = () => {
                 </Link>
               </li>
               <li>
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="#complaints">
                   Various academic and administrative complaints
                 </Link>
               </li>

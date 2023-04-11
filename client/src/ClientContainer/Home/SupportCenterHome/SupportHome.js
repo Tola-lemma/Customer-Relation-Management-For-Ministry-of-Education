@@ -61,7 +61,7 @@ export const SupportHome = () => {
                   </Link>
                 </div>
                 <div>
-                  <Link to="/" className="questions">
+                  <Link to="knowledgebase#returntowork" className="questions">
                     Request to return to work after studying abroad
                   </Link>
                 </div>
@@ -71,7 +71,7 @@ export const SupportHome = () => {
                   </Link>
                 </div>
                 <div>
-                  <Link to="/" className="questions">
+                  <Link to="knowledgebase#complaints" className="questions">
                     Various academic and administrative complaints
                   </Link>
                 </div>
