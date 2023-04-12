@@ -15,8 +15,8 @@ export const CheckTicket = () => {
           </p>
         </div>
         <div className="ticketstatusForm">
-          <div class="mb-3 CheckStatusform">
-            <label for="checkticketInput" className="form-label">
+          <div className="mb-3 CheckStatusform">
+            <label htmlFor="checkticketInput" className="form-label">
               Email address:{" "}
             </label>
             <input
@@ -25,7 +25,7 @@ export const CheckTicket = () => {
               id="checkticketInput"
               placeholder="someone.example@example.com"
             />
-            <label for="checkticketInput" class="form-label mt-3">
+            <label htmlFor="checkticketInput" className="form-label mt-3">
               Ticket Number:{" "}
             </label>
             <input
