@@ -1,0 +1,52 @@
+.SupportHomeContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    font-family: "Helvetica Neue", sans-serif;
+}
+.landing-page{
+    display: flex;
+    justify-content: space-between;
+}
+.main-content{
+    margin: 0px;
+    padding:0px;
+}
+.search-box{
+    margin-left: 3rem;
+    display: flex;
+}
+
+.sidebar-container { 
+    margin-left: 5rem;
+}
+ .sidebar-container .front-button >p .open,
+ .sidebar-container .front-button >p .check {
+    box-shadow: 0 1px 1px rgba(0,0,0.25);
+    width: 370px;
+}
+.featured-questions{
+    word-wrap: break-word;
+    background-color: #F7FBFE;
+    box-shadow: 1px 1px  rgba(0,0,0.25);
+}
+.welcome_message{
+    margin-top: 3rem;
+}
+.welcome_message >p{
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: "cursive";
+}
+.featured-questions .first-text{
+    font-weight: bold;
+    margin-left: .95rem;
+    margin-top: 2rem;
+}
+.featured-questions .questions{
+    color: #0072bc;
+    text-decoration: none;
+    margin: 0.65rem 0 0.85rem 0.65rem;
+    text-align: left;
+    display: flex;
+}
