@@ -18,7 +18,11 @@ justify-content: space-between;
     display: inline;
     margin-bottom: 1px;
 }
-
+.dropdown-item:hover{
+   background-color: #0d6efd;
+   color: white;
+   border-radius: 50px;
+}
 .kb_paragraph >p{
     margin-left: 5rem;
     margin-top: 10px;
