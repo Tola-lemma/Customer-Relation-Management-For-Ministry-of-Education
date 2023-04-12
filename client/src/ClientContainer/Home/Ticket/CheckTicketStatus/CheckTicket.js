@@ -21,7 +21,7 @@ export const CheckTicket = () => {
             </label>
             <input
               type="email"
-              className="form-control"
+              className="form-control rounded-pill"
               id="checkticketInput"
               placeholder="someone.example@example.com"
             />
@@ -30,7 +30,7 @@ export const CheckTicket = () => {
             </label>
             <input
               type="number"
-              className="form-control"
+              className="form-control rounded-pill"
               id="checkticketInput"
               placeholder="eg. 19231920"
             />
