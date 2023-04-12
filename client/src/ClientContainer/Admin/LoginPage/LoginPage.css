@@ -1,0 +1,129 @@
+.loginpage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Times New Roman", Times, serif;
+  min-height: 100vh;
+  background-image: url("../../../assets/images/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: animateBg 5s linear infinite;
+}
+@keyframes animateBg {
+  100%{
+    filter: hue-rotate(360deg);
+  }
+}
+.login-box {
+  position: relative;
+  width: 400px;
+  height: 450px;
+  border-radius: 20px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .5);
+  backdrop-filter: blur(15px);
+}
+.login-parent {
+  margin-top: 4rem;
+  margin-left: 8px;
+  margin-right: 9px;
+}
+.login-parent h2 {
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+.input-box {
+  position: relative;
+  width: 310px;
+  margin: 30px 50px;
+  border-bottom: 2px solid #fff;
+}
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #fff;
+  pointer-events: none;
+  transition: 0.5s;
+}
+.input-box input {
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #fff;
+  padding: 0 30px 0 5px;
+}
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -4px;
+}
+.input-box .icon {
+  position: absolute;
+  right: 8px;
+  color: #fff;
+  font-size: 1.2em;
+  line-height: 57px;
+}
+.forgotPassword {
+  margin-left: 18em;
+  margin-bottom: 2em;
+  font-size: 0.9em;
+  color: #fff;
+}
+.forgotPassword .forgotpasswordLink {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 300;
+}
+.forgotPassword .forgotpasswordLink:hover {
+  text-decoration: underline;
+}
+.loginbtn {
+  width: 100%;
+  height: 40px;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #000;
+  font-weight: 500;
+}
+@media only screen and (max-width: 1110px){
+    .login-box{
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+    .input-box{
+      width: 290px;
+    }
+}
+@media only screen and (max-width: 910px){
+    .login-box{
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+    .input-box{
+      width: 290px;
+    }
+}
+@media only screen and (max-width: 810px){
+    .login-box{
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+    .input-box{
+      width: 290px;
+    }
+}
