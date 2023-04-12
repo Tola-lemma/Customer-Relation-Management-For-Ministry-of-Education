@@ -15,6 +15,7 @@ export const CheckTicket = () => {
           </p>
         </div>
         <div className="ticketstatusForm">
+          <form>
           <div className="mb-3 CheckStatusform">
             <label htmlFor="checkticketInput" className="form-label">
               Email address:{" "}
@@ -24,6 +25,7 @@ export const CheckTicket = () => {
               className="form-control rounded-pill"
               id="checkticketInput"
               placeholder="someone.example@example.com"
+              required
             />
             <label htmlFor="checkticketInput" className="form-label mt-3">
               Ticket Number:{" "}
@@ -33,9 +35,11 @@ export const CheckTicket = () => {
               className="form-control rounded-pill"
               id="checkticketInput"
               placeholder="eg. 19231920"
+              required
             />
           </div>
-          <button className="btn btn-primary rounded-pill emailAccesbtn">Email Access Link</button>
+          <button type="submit" className="btn btn-primary rounded-pill emailAccesbtn">Email Access Link</button>
+          </form>
         </div>
         <p className="mt-4">
           If this is your first time contacting us or you've lost the ticket
