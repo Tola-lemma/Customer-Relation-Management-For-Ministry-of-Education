@@ -4,7 +4,7 @@ import { Knowledgebase } from "./ClientContainer/Home/Knowledgebase/Knowledgebas
 import { OpenTicket } from "./ClientContainer/Home/Ticket/OpenNewTicket/OpenTicket";
 import { CheckTicket } from "./ClientContainer/Home/Ticket/CheckTicketStatus/CheckTicket";
 import { LoginPage } from "./ClientContainer/Admin/LoginPage/LoginPage";
-import { AdminPage } from "./ClientContainer/Admin/Dashboard/AdminPage";
+import { AdminPage } from "./ClientContainer/Admin/Routes/AdminPage";
 export const App =()=> {
   const router = createBrowserRouter([
     {
