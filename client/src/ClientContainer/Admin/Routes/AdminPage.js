@@ -7,7 +7,7 @@ import { Contacts } from "../Pages/contacts/Contacts";
 import { Form } from "../Pages/form/Form";
 import { FAQ } from "../Pages/faq/FAQ";
 import { Calendar } from "../Pages/calendar/Calendar";
-import { StaffSummary } from "../Pages/staff_members/StaffSummary";
+import { StaffSummary } from "../Pages/staffMembers/StaffSummary";
 import { StaffMembers } from "../Pages/team/StaffMembers";
 import { PageNotFound } from "../Pages/PageNotFound/PageNotFound";
 export const AdminPage = () => {
