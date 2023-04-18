@@ -10,6 +10,7 @@ import { Calendar } from "../Pages/calendar/Calendar";
 import { StaffSummary } from "../Pages/staffMembers/StaffSummary";
 import { StaffMembers } from "../Pages/team/StaffMembers";
 import { PageNotFound } from "../Pages/PageNotFound/PageNotFound";
+import { Sidebar } from "../Pages/global/Sidebar";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode();
   return (
@@ -17,6 +18,7 @@ export const AdminPage = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
+          <Sidebar />
           <main className="content">
             <Topbar />
             <Routes>
