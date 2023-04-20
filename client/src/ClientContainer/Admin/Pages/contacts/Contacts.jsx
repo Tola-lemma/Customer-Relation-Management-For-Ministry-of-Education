@@ -3,6 +3,7 @@ import { DataGrid,GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataContacts } from "../.././data/mockData";
 import { Header } from "../../components/Header";
+import './contact.css'
 export const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -51,7 +52,7 @@ export const Contacts = () => {
 
   return (
     <Box m="20px">
-      <Header title="CONTACTS" subtitle="List of Staff Members contacts" />
+      <Header title="CONTACTS" subtitle="List of Staff Members contacts for future reference" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -81,9 +82,6 @@ export const Contacts = () => {
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
             color: `${colors.grey[100]} !important`,
-          },
-          "& .css-13qp4b7-MuiButtonBase-root-MuiButton-root": {
-            color: '#fff',
           }
         }}
       >
