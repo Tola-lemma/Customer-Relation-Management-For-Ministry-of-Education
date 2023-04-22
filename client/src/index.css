@@ -33,3 +33,15 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* conditionally render color for mui button */
+@media (prefers-color-scheme: dark) {
+  :root {
+  --primary-color-dark: #fff; /* white */
+}
+}
+@media (prefers-color-scheme: light) {
+  :root {
+  --primary-color-light: black; /* black */
+}
+}

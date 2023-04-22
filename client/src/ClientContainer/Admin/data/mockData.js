@@ -204,7 +204,7 @@ export const mockDataTeam = [
         email: "tolalemma@gmail.com",
         IssuesHandled: "21",
         phone: "(251)245973674",
-        date: "03/12/2023",
+        date: "03/12/2023-10/12/2023",
       },
       {
         id: 2,
@@ -212,7 +212,7 @@ export const mockDataTeam = [
         email: "cerseilannister@gmail.com",
         IssuesHandled: "1",
         phone: "(421)314-2288",
-        date: "06/15/2021",
+        date: "06/15/2021-03/11/2023",
       },
       {
         id: 3,
@@ -220,7 +220,7 @@ export const mockDataTeam = [
         email: "jaimelannister@gmail.com",
         IssuesHandled: "11",
         phone: "(422)982-6739",
-        date: "05/02/2022",
+        date: "05/02/2022-03/09/2023",
       },
       {
         id: 4,
@@ -228,7 +228,7 @@ export const mockDataTeam = [
         email: "anyastark@gmail.com",
         IssuesHandled: "80",
         phone: "(921)425-6742",
-        date: "03/21/2022",
+        date: "01/02/2023-03/12/2023",
       },
       {
         id: 5,
@@ -236,7 +236,7 @@ export const mockDataTeam = [
         email: "daenerystargaryen@gmail.com",
         IssuesHandled: "1",
         phone: "(421)445-1189",
-        date: "01/12/2021",
+        date: "01/12/2021-03/12/2023",
       },
       {
         id: 6,
@@ -244,7 +244,7 @@ export const mockDataTeam = [
         email: "evermelisandre@gmail.com",
         IssuesHandled: "63",
         phone: "(232)545-6483",
-        date: "11/02/2022",
+        date: "11/02/2022-03/01/2023",
       },
       {
         id: 7,
@@ -252,7 +252,7 @@ export const mockDataTeam = [
         email: "ferraraclifford@gmail.com",
         IssuesHandled: "52",
         phone: "(543)124-0123",
-        date: "02/11/2022",
+        date: "02/11/2022-03/03/2023",
       },
       {
         id: 8,
@@ -260,7 +260,7 @@ export const mockDataTeam = [
         email: "rossinifrances@gmail.com",
         IssuesHandled: "21",
         phone: "(222)444-5555",
-        date: "05/02/2021",
+        date: "05/02/2021-03/02/2023",
       },
     ];
     
