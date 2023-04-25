@@ -38,6 +38,7 @@ export const Sidebar = () => {
   const [selected, setSelected] = useState("Dashboard");
   return (
     <Box
+    height="660px"
       sx={{
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,
