@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -25,5 +27,19 @@ const userSchema = new mongoose.Schema({
     minLength: [6, "should contain more than 6 characters"],
   },
 });
+
+userSchema.pre("save", async function () {
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+userSchema.methods.jwtSign = function () {
+  return jwt.sign({ userId: this._id, role: this.role }, process.env.SECRET, {
+    expiresIn: process.env.LIFETIME,
+  });
+};
+
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 const User = mongoose.model("User", userSchema);
