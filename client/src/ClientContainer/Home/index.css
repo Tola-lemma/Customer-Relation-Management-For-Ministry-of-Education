@@ -1,0 +1,69 @@
+*{
+    box-sizing: border-box
+}
+body {
+    font-family: Arial;
+    background-color: #fff;
+  }
+  
+  input[type=text],input[type=number],input[type=email],input[type=tel],input[type=password], select {
+    width: 100%;
+    padding: 10px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    
+  }
+  label{
+    width: 100%;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+  
+  div.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+  }
+  hr {
+    border: 1px solid black;
+    margin-bottom: 25px;
+  }
+  button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+  
+  .cancelbtn {
+    padding: 14px 20px;
+    margin-right: 10px;
+
+  }
+  .resetbtn {
+    padding: 14px 20px;
+    margin-right: 10px;
+  }
+
+  .signupbtn {
+    padding: 14px 20px;
+    margin-right: 10px;
+  }
+  
+  /* Float cancel and signup buttons and add an equal width */
+  .cancelbtn, .signupbtn,.resetbtn {
+    float: left;
+    width: 25%;
+  }
+  p{
+    color: red;
+  }
