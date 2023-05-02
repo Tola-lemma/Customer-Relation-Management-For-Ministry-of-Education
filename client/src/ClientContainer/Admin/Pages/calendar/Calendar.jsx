@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Header }from "../../components/Header";
 import { tokens } from "../../theme";
+import './calendar.css'
 export const Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -117,7 +118,7 @@ export const Calendar = () => {
               },
               {
                 id: "2825",
-                title: "Timed event",
+                title: "Meeting with staff member",
                 date: "2023-05-30",
               },
             ]}
