@@ -1,9 +1,10 @@
 import express from "express";
-import { register, login } from "../controllers/auth.js";
+import { login, changePassword } from "../controllers/auth.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/register", register);
 router.post("/login", login);
+router.post("/change-password", authMiddleware, changePassword);
 
-export { router as authRouter };
+export { router as authRoute };
