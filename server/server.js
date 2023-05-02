@@ -1,15 +1,26 @@
+import {} from "dotenv/config";
+import "express-async-errors";
 import express from "express";
 import { routeNotFoundMiddleware } from "./middleware/notfound.js";
 import { errorHandlerMiddleware } from "./middleware/errorHandler.js";
 import { connectDatabase } from "./db/connection.js";
-import {authRouter} from "./routes/auth.js"
+import { authRoute } from "./routes/auth.js";
+import { adminRoute } from "./routes/admin.js";
+import { authMiddleware, isAuthorized } from "./middleware/auth.js";
+import { Roles } from "./models/roles.js";
 
 const server = express();
 const port = 3000 || process.env.PORT;
 
 server.use(express.json());
 
-server.use('/api/v1/auth', authRouter)
+server.use("/api/v1/auth", authRoute);
+server.use(
+  "/api/v1/admin",
+  authMiddleware,
+  isAuthorized(Roles.Admin),
+  adminRoute
+);
 
 // Add the error handling middlewares
 server.use(errorHandlerMiddleware);
@@ -21,7 +32,9 @@ const start = async () => {
     server.listen(port, () =>
       console.log(`server is listening on port ${port} ...`)
     );
-  } catch (error) {}
+  } catch (error) {
+    // console.log(error);
+  }
 };
 
 start();
