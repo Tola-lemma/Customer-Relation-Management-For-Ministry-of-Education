@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "staffmember"],
+    enum: ["admin", "staffmember", "guest"],
     require: [true, "role is required"],
     default: "staffmember",
   },
@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
     require: [true, "password is required."],
     minLength: [6, "should contain more than 6 characters"],
   },
-});
-
-userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 10);
 });
 
 userSchema.methods.jwtSign = function () {
@@ -42,4 +38,4 @@ userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
