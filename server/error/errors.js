@@ -23,8 +23,15 @@ class NotfoundError extends CustomApiError {
 class UnauthorizedError extends CustomApiError {
   constructor(message) {
     super(message);
+    this.statusCode = StatusCodes.FORBIDDEN;
+  }
+}
+
+class UnauthenticatedError extends CustomApiError {
+  constructor(message) {
+    super(message);
     this.statusCode = StatusCodes.UNAUTHORIZED;
   }
 }
 
-export {CustomApiError, BadRequestError, NotfoundError, UnauthorizedError}
+export {CustomApiError, BadRequestError, NotfoundError, UnauthorizedError, UnauthenticatedError}
