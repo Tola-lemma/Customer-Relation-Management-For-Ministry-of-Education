@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@fullcalendar/interaction": "^6.1.6",
+    "@fullcalendar/react": "^6.1.6"
+  }
+}
