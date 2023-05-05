@@ -18,13 +18,6 @@ export const StaffMembers = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
       field: "phone",
       headerName: "Phone Number",
       flex: 1,
@@ -35,10 +28,10 @@ export const StaffMembers = () => {
       flex: 1,
     },
     {
-      field: "accessLevel",
-      headerName: "Access Level",
+      field: "role",
+      headerName: "Role",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+      renderCell: ({ row: { role } }) => {
         return (
           <Box
             width="60%"
@@ -47,19 +40,21 @@ export const StaffMembers = () => {
             display="flex"
             justifyContent="center"
             backgroundColor={
-              access === "admin"
+              role === "Teacher Transfer"
                 ? colors.greenAccent[600]
-                : access === "manager"
+                : role === "Sholarship"
                 ? colors.greenAccent[700]
                 : colors.greenAccent[700]
             }
             borderRadius="4px"
           >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
+            {role === "Teacher Transfer" && <AdminPanelSettingsOutlinedIcon />}
+            {role === "Sholarship" && <SecurityOutlinedIcon />}
+            {role === "Student Transfer" && <SecurityOutlinedIcon />}
+            {role === "Complaint" && <LockOpenOutlinedIcon />}
+            {role === "studied Abroad" && <LockOpenOutlinedIcon />}
             <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
+              {role}
             </Typography>
           </Box>
         );
