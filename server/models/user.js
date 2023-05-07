@@ -13,7 +13,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: [true, "username is required"],
     minLength: 5,
-    unique: true,
+    unique: true
+  },
+  email : {
+    type : String,
+    require : [true, "email is required"],
+    match : [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    , 'invalid email address']
   },
   role: {
     type: String,
@@ -26,7 +32,15 @@ const userSchema = new mongoose.Schema({
     require: [true, "password is required."],
     minLength: [6, "should contain more than 6 characters"],
   },
-});
+  resetPasswordToken:{
+    type : String,
+    default : null
+  },
+  resetPasswordExpires:{
+    type : Date,
+    default : null
+  }
+}, {timestamps : true});
 
 userSchema.methods.jwtSign = function () {
   return jwt.sign({ userId: this._id, role: this.role }, process.env.SECRET, {
