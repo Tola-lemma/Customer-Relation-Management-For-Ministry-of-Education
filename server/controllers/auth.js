@@ -86,3 +86,47 @@ export const forgetPassword = async (req, res) => {
     .json({ successs: true, msg: "Password reset link sent to your email" });
 };
 
+export const getResetPassword = async (req, res) => {
+  const {token } = req.params
+  const user = await User.findOne({
+    _id : req.params.userId,
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+  if (!user) throw new BadRequestError("Invalid or expired reset token");
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, token, msg: "Please enter your password" });
+};
+
+export const resetPassword = async (req, res) => {
+  const { password, confirmPassword } = req.body;
+  const { token } = req.params;
+
+  const decoded = jwt.verify(token, process.env.RESET_SECRET);
+
+  if (!password || !confirmPassword || password.length < 6)
+    throw new BadRequestError("password should contain more than 6 characters");
+
+  if (password !== confirmPassword)
+    throw new BadRequestError("Password does not match.");
+
+  const user = await User.findOne({
+    _id: decoded.userId,
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+  
+  if (!user) throw new BadRequestError("Invalid or expired reset token.");
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  user.password = hashedPassword;
+  user.resetPasswordToken = null;
+  user.resetPasswordExpires = null;
+  await user.save();
+
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, msg: "Password reset successful" });
+};
