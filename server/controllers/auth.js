@@ -1,11 +1,14 @@
 import { StatusCodes } from "http-status-codes";
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import {
   BadRequestError,
   NotfoundError,
   UnauthenticatedError,
 } from "../error/errors.js";
+import { resetPasswordMailOptions } from "../utils/mailOptions.js";
+import { sendMail } from "../utils/sendmail.js";
 
 export const login = async (req, res) => {
   const { password, username } = req.body;
@@ -52,3 +55,34 @@ export const changePassword = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ success: true, msg: "Password Successfully Updated" });
 };
+
+export const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) throw new BadRequestError("Please provide an email address");
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) throw new NotfoundError("oops!, User not found.");
+
+  // Generate a jwt token
+  const token = jwt.sign({ userId: user._id }, process.env.RESET_SECRET, {
+    expiresIn: process.env.TOKEN_LIFETIME,
+  });
+
+  // Update the user's resetPasswordToken and resetPasswordExpires fields in the database
+  await user.updateOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: Date.now() + 60 * 60 * 1000, // 60 minutes
+  });
+
+  // Send an email to the user with a link to the reset password page
+  const requestLink = `${req.protocol}://${req.headers.host}/api/v1/auth/reset-password/${token}/${user._id}`;
+
+  const result = await sendMail(
+    resetPasswordMailOptions(user.name, "covekyry@brand-app.biz", requestLink)
+  );
+  if (!result) throw new Error("Failed to send email");
+
+  res
+    .status(StatusCodes.OK)
+    .json({ successs: true, msg: "Password reset link sent to your email" });
+};
+
