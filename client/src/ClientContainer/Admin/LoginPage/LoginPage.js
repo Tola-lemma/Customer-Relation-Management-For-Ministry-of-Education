@@ -1,7 +1,13 @@
-import React from "react";
+import React , { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./LoginPage.css";
+import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
+import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 export const LoginPage = () => {
+  const { showError } = useContext(ErrorContext);
+  const handleSubmit = () => {
+    showError('Please Fill Correctly!');
+  };
   return (
     <div className="loginpage">
       <div className="login-box">
@@ -25,10 +31,11 @@ export const LoginPage = () => {
             <div className="forgotPassword">
               <Link to="#" className="forgotpasswordLink">Forgot Password?</Link>
             </div>
-            <button type="submit" className="loginbtn btn btn-primary">
+            <button type="submit" className="loginbtn btn btn-primary" onClick={handleSubmit}>
               Login
             </button>
           </form>
+      <ErrorMessage/>
         </div>
       </div>
     </div>
