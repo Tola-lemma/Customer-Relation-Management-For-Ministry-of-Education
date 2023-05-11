@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+//replace user with email
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -9,27 +10,29 @@ const userSchema = new mongoose.Schema({
     minLength: 3,
     maxLength: 50,
   },
-  username: {
+  phoneNumber: {
     type: String,
-    require: [true, "username is required"],
-    minLength: 5,
-    unique: true
+    require: [true, "phone number  is required"],
+    minLength: 10,
+    maxLength: 10,
   },
   email : {
     type : String,
     require : [true, "email is required"],
     match : [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    , 'invalid email address']
+    , 'invalid email address'],
+    unique: true
   },
   role: {
     type: String,
-    enum: ["admin", "staffmember", "guest"],
+    enum: ["admin", "transferCoordinator", "studyAbroadCoordinator", "scholarshipCoordinator", "complaintsCoordinator"],
     require: [true, "role is required"],
     default: "staffmember",
   },
   password: {
     type: String,
     require: [true, "password is required."],
+    match : [/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/],
     minLength: [6, "should contain more than 6 characters"],
   },
   resetPasswordToken:{
