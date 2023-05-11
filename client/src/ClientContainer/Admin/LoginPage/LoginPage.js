@@ -25,7 +25,7 @@ export const LoginPage = () => {
             <div className="forgotPassword">
               <Link to="#" className="forgotpasswordLink">Forgot Password?</Link>
             </div>
-            <button type="submit" className="loginbtn">
+            <button type="submit" className="loginbtn btn btn-primary">
               Login
             </button>
           </form>
