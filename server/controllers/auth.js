@@ -11,11 +11,11 @@ import { resetPasswordMailOptions } from "../utils/mailOptions.js";
 import { sendMail } from "../utils/sendmail.js";
 
 export const login = async (req, res) => {
-  const { password, username } = req.body;
-  if (!password || !username) {
-    throw new BadRequestError("please provide username and password");
+  const { password, email } = req.body;
+  if (!password || !email) {
+    throw new BadRequestError("please provide email and password");
   }
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
   if (!user) throw new NotfoundError("Invalid Credential.");
 
   const isMatch = await user.comparePassword(password);
