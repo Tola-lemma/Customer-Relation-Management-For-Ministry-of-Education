@@ -1,5 +1,8 @@
 export const Roles = {
   Admin: "admin",
-  StaffMember: "staffMember",
-  Guest: "guest",
+  TransferCoordinator: "transferCoordinator",
+  StudyAbroadCoordinator: "studyAbroadCoordinator",
+  ScholarshipCoordinator: "scholarshipCoordinator",
+  ComplaintsCoordinator: "complaintsCoordinator",
+  
 };
