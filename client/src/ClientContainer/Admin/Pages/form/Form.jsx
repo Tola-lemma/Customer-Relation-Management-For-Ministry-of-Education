@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Select, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -78,20 +78,32 @@ export const Form = () => {
                 helperText={touched.contact && errors.contact}
                 sx={{ gridColumn: "span 4" }}
               />
-          
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Role"
-                onBlur={handleBlur}
-                onChange={handleChange}
+              <Select
                 value={values.role}
                 name="role"
-                error={!!touched.role && !!errors.role}
+                variant="filled"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={touched.role && !!errors.role}
                 helperText={touched.role && errors.role}
+                renderValue={(selected) => selected || "Role"}
+                displayEmpty
                 sx={{ gridColumn: "span 4" }}
-              />
+              >
+                <MenuItem value=""><em>Select a Role</em></MenuItem>
+                <MenuItem value="TransferCoordinator">
+                  Transfer Coordinator
+                </MenuItem>
+                <MenuItem value="StudyAbroadCoordinator">
+                  Study Abroad Coordinator
+                </MenuItem>
+                <MenuItem value="ScholarshipCoordinator">
+                  Scholarship Coordinator
+                </MenuItem>
+                <MenuItem value="ComplaintsCoordinator">
+                  Complaints Coordinator
+                </MenuItem>
+              </Select>
               <TextField
                 fullWidth
                 variant="filled"
@@ -146,22 +158,25 @@ const checkoutSchema = yup.object().shape({
   role: yup.string().required("required"),
 
   password: yup
-  .string()
-  .required('required')
-  .min(6, 'Password must be at least 6 characters long')
-  .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
-  .matches(/[0-9]/, 'Password must contain at least one number')
-  .matches(/[^a-zA-Z0-9]/, 'Password must contain at least one special character'),
-confirmPassword: yup
-  .string()
-  .oneOf([yup.ref('password'), null], 'Passwords must match')
-  .required('required'),
+    .string()
+    .required("required")
+    .min(6, "Password must be at least 6 characters long")
+    .matches(/[a-zA-Z]/, "Password must contain at least one letter")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(
+      /[^a-zA-Z0-9]/,
+      "Password must contain at least one special character"
+    ),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("required"),
 });
 const initialValues = {
   fullName: "",
   email: "",
   contact: "",
   role: "",
-  password:"",
-  confirmPassword:""
+  password: "",
+  confirmPassword: "",
 };
