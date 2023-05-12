@@ -12,7 +12,7 @@ import { StaffMembers } from "../Pages/team/StaffMembers";
 import { PageNotFound } from "../Pages/PageNotFound/PageNotFound";
 import { Sidebar } from "../Pages/global/Sidebar";
 export const AdminPage = () => {
-  const [theme, colorMode] = useMode();
+  const [theme, colorMode] = useMode("dark");
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
