@@ -11,18 +11,19 @@ export const ErrorMessage = () => {
       toast.error(errorMessage, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 5000,
-        hideProgressBar: true,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         draggablePercent: 60,
         onClose: clearError,
+        theme: "colored",
       });
     }if (successMessage) {
       toast.success(successMessage, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 5000,
-        hideProgressBar: true,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
