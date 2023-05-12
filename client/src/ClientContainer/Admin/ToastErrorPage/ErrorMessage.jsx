@@ -29,6 +29,7 @@ export const ErrorMessage = () => {
         draggable: true,
         draggablePercent: 60,
         onClose: clearError,
+        theme: "colored",
       });
     }
   }, [errorMessage, successMessage, clearError]);
