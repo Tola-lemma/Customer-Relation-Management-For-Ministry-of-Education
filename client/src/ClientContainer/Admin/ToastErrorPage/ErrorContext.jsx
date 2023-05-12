@@ -5,6 +5,7 @@ export const ErrorContext = createContext();
 export const ErrorProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [warningMessage, setwarningMessage] = useState("");
 
   const showError = (message) => {
     setErrorMessage(message);
@@ -12,6 +13,9 @@ export const ErrorProvider = ({ children }) => {
 
   const showSuccess = (message) => {
     setSuccessMessage(message);
+  };
+  const showWarning = (message) => {
+    setwarningMessage(message);
   };
 
   const clearError = () => {
@@ -23,8 +27,10 @@ export const ErrorProvider = ({ children }) => {
       value={{
         errorMessage,
         successMessage,
+        warningMessage,
         showError,
         showSuccess,
+        showWarning,
         clearError,
       }}
     >

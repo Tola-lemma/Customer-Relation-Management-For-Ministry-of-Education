@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ErrorContext } from "./ErrorContext";
 
 export const ErrorMessage = () => {
-  const { errorMessage,successMessage, clearError } = useContext(ErrorContext);
+  const { errorMessage,successMessage,warningMessage, clearError } = useContext(ErrorContext);
 
   useEffect(() => {
     if (errorMessage) {
@@ -19,7 +19,8 @@ export const ErrorMessage = () => {
         onClose: clearError,
         theme: "colored",
       });
-    }if (successMessage) {
+    }
+    if (successMessage) {
       toast.success(successMessage, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 5000,
@@ -32,7 +33,20 @@ export const ErrorMessage = () => {
         theme: "colored",
       });
     }
-  }, [errorMessage, successMessage, clearError]);
+    if (warningMessage) {
+      toast.warn(warningMessage, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 60,
+        onClose: clearError,
+        theme: "colored",
+      });
+    }
+  }, [errorMessage, successMessage,warningMessage, clearError]);
 
   return <ToastContainer />;
 };
