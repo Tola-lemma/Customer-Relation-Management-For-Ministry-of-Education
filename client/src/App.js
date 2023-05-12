@@ -6,16 +6,24 @@ import { CheckTicket } from "./ClientContainer/Home/Ticket/CheckTicketStatus/Che
 import { LoginPage } from "./ClientContainer/Admin/LoginPage/LoginPage";
 import { AdminPage } from "./ClientContainer/Admin/Routes/AdminPage";
 import { PageNotFound } from "./ClientContainer/Admin/Pages/PageNotFound/PageNotFound";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./ClientContainer/Admin/theme";
 export const App = () => {
+  const [theme, colorMode] = useMode("light");
   return (
-    <Routes>
-      <Route path="/" element={<SupportHome />} />
-      <Route path="/knowledgebase" element={<Knowledgebase />} />
-      <Route path="/opennewticket" element={<OpenTicket />} />
-      <Route path="/checkticketstatus" element={<CheckTicket />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/admin/*" element={<AdminPage />} />
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<SupportHome />} />
+          <Route path="/knowledgebase" element={<Knowledgebase />} />
+          <Route path="/opennewticket" element={<OpenTicket />} />
+          <Route path="/checkticketstatus" element={<CheckTicket />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 };

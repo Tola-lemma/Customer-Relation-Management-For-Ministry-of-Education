@@ -3,6 +3,7 @@ import logo from "../../.././assets/images/MoELogo.png";
 import "./header.css";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Client } from "../../Admin/Pages/global/Client";
 export const NavBar = () => {
   const location = useLocation();
   const [activeLink, setActiveLink] = useState(location.pathname);
@@ -84,6 +85,12 @@ export const NavBar = () => {
                     Ticket Status
                   </Link>
                 </li>
+                <li className="nav-item ms-5" >
+                  <Link className="nav-link"  to="/login" style={{color:"#0072bc"}}>
+                  <i class="fa-solid fa-right-to-bracket"></i> Login
+                  </Link>
+                  </li>
+                <li className="nav-item ms-2"><Client/></li>
               </ul>
             </div>
           </div>
