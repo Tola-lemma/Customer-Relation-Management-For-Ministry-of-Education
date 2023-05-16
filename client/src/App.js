@@ -8,6 +8,8 @@ import { AdminPage } from "./ClientContainer/Admin/Routes/AdminPage";
 import { PageNotFound } from "./ClientContainer/Admin/Pages/PageNotFound/PageNotFound";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./ClientContainer/Admin/theme";
+import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
+import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (
@@ -20,6 +22,8 @@ export const App = () => {
           <Route path="/opennewticket" element={<OpenTicket />} />
           <Route path="/checkticketstatus" element={<CheckTicket />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/emailsubmission" element={<EmailSubmission />} />
+          <Route path="/passwordreset" element={<PasswordReset />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
