@@ -29,7 +29,7 @@ export const LoginPage = () => {
               <label htmlFor="password"> Password</label>
             </div>
             <div className="forgotPassword">
-              <Link to="#" className="forgotpasswordLink">Forgot Password?</Link>
+              <Link to="/emailsubmission" className="forgotpasswordLink">Forgot Password?</Link>
             </div>
             <button type="submit" className="loginbtn btn btn-primary" onClick={handleSubmit}>
               Login
