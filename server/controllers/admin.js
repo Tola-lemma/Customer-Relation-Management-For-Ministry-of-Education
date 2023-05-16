@@ -2,6 +2,8 @@ import { User } from "../models/user.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotfoundError } from "../error/errors.js";
 import bcrypt from "bcrypt";
+import {requestServiceUtil} from '../utils/serviceTypeUtil.js';
+import {RequestService} from '../models/requestService.js'
 
 //only adim can see all registered users
 export const getAllUsers = async (req, res) => {
@@ -53,3 +55,39 @@ export const updateRole = async (req, res) => {
   if (!user) throw new NotfoundError(`No user with id : ${userId} found.`);
   res.status(StatusCodes.OK).json({ success: true, msg: "Successfully updated." });
 };
+
+
+// CRud for the request service 
+
+// the admin can add service 
+export const addService = async(req,res) => {
+  // add the basic service at one time 
+  // const services = await RequestService.insertMany(requestServiceUtil);
+  // res.status(StatusCodes.CREATED).json({ success: true, services});
+
+  const newService = await RequestService.create({...req.body});
+  res.status(StatusCodes.CREATED).json({success: true, msg : "new Service is Added"})
+}
+
+export const getAllService = async(req,res) => {
+  const services = await RequestService.find({});
+  res.status(StatusCodes.OK).json({services});
+}
+
+export const getServiceById = async(req,res) => {
+  const service = await RequestService.findById(req.params.id);
+  if(!service) throw new NotfoundError(`No service with id : ${req.params.id} found`)
+  res.status(StatusCodes.OK).json({success: true, service});
+}
+
+export const updateServiceStatus = async(req,res) => {
+  const service = await RequestService.findByIdAndUpdate(req.params.id);
+  if(!service) throw new NotfoundError(`No service with id : ${req.params.id} is found`);
+  res.status(StatusCodes.OK).json({success:true, msg : "Successfully updated"});
+} 
+
+export const deleteService = async(req,res) => {
+  const service = await RequestService.findByIdAndDelete(req.params.id);
+  if(service) throw new NotfoundError(`unable to delete service with service id ${req.params.id}`);
+  res.status(StatusCodes.OK).json({success: true, msg : "Deleted Sucssfully"})
+}
