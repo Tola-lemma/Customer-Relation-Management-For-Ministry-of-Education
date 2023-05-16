@@ -28,3 +28,44 @@
     margin-left: 8rem;
     margin-right: 10rem;
 }
+/* Responsive styles for smaller screens */
+@media only screen and (max-width: 991px) {
+    .ticketstatusForm {
+      margin-right: 1rem;
+    }
+  
+    .emailAccesbtn {
+      margin-left: 8rem;
+    }
+  
+    .CheckStatusform {
+      margin-left: 4rem;
+      margin-right: 4rem;
+    }
+  }
+  
+  /* Responsive styles for tablets and smaller screens */
+  @media only screen and (max-width: 767px) {
+    .ticketstatusForm {
+      margin-right: 2rem;
+    }
+  
+    .emailAccesbtn {
+      margin-left: 2rem;
+    }
+  
+    .CheckStatusform {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+  
+  /* Responsive styles for mobile devices */
+  @media only screen and (max-width: 479px) {
+    .ticketstatusForm,
+    .emailAccesbtn,
+    .CheckStatusform {
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
+  }
