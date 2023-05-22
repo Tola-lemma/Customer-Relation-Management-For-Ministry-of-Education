@@ -2,13 +2,64 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataTeam } from "../.././data/mockData";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import { Header } from "../../components/Header";
+
+import {  useContext, useReducer} from "react";
+import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
+import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
+import Modal from "../../components/Modals/modal";
+import ModalButton from "../../components/Modals/modalButton";
+ const reducer = (state, action) => {
+  switch (action.type) {
+    case "UPDATE_ADMIN":
+      return {
+        ...state,
+        modalTitle: "Update Admin",
+        FullName: action.payload.FullName,
+      };
+
+    case "UPDATE_STAFF":
+      return {
+        ...state,
+        modalTitle: "Update Staff Members",
+        FullName: action.payload.FullName,
+        Email: action.payload.Email,
+        ContactNumber: action.payload.ContactNumber,
+        Role: action.payload.Role,
+      };
+    default:
+      return;
+  }
+};
+
 export const StaffMembers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { showWarning,showSuccess } = useContext(ErrorContext);
+//update purpose
+  const [state, dispatch] = useReducer(reducer, {
+    modalTitle: "",
+    FullName: "",
+    Email: "",
+    ContactNumber: "",
+    Role:""
+  });
+  const editClick = () => {
+    dispatch({
+      type: "UPDATE_STAFF",
+      payload: {
+        modalTitle: state.modalTitle,
+      },
+    });
+  };
+  
+  const handleDelete = () => {
+    showWarning("Deleted successfully")
+  }
+  const handleUpdate = () => {
+    showSuccess("updated successfully")
+  }
+//table
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -16,13 +67,6 @@ export const StaffMembers = () => {
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
     },
     {
       field: "phone",
@@ -35,36 +79,40 @@ export const StaffMembers = () => {
       flex: 1,
     },
     {
-      field: "accessLevel",
-      headerName: "Access Level",
+      field: "role",
+      headerName: "Role",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+      renderCell: ({ row: { role } }) => {
         return (
           <Box
-            width="60%"
+            width="100%"
             m="0 auto"
-            p="5px"
             display="flex"
-            justifyContent="center"
-            backgroundColor={
-              access === "admin"
-                ? colors.greenAccent[600]
-                : access === "manager"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
-            borderRadius="4px"
           >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
+            <Typography color={colors.grey[100]} >
+              {role}
             </Typography>
           </Box>
         );
       },
     },
+    //update
+    {
+      field:"action",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: () => {
+        return (
+          <Box
+            width="100%"
+            m="0 auto"
+            display="flex"
+          >
+           {<ModalButton  editClick={editClick}  handleDelete={handleDelete}/>}
+          </Box>
+        );
+      },
+    }
   ];
 
   return (
@@ -101,6 +149,17 @@ export const StaffMembers = () => {
       >
         <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
       </Box>
+       
+{/* update staff modal */}
+       <Modal
+        modalTitle={state.modalTitle}
+        fullName={state.fullName}
+        contactNumber={state.contactNumber}
+        email={state.email}
+        role={state.role}
+        onUpdate={handleUpdate}
+      />
+      <ErrorMessage />
     </Box>
   );
 };

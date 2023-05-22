@@ -50,3 +50,25 @@
     text-align: left;
     display: flex;
 }
+
+/* responsiveness-container */
+@media (max-width:1110px){
+    .SupportHomeContainer{
+        display: block;
+    }
+    .search-box{
+        margin-left: end;
+        margin-top: 5rem;
+        display: inline;
+    }
+    .landing-page{
+        display: inline;
+    }
+    .sidebar-container{
+        margin-left: 0px;
+    }
+    .sidebar-container .front-button >p .open,
+ .sidebar-container .front-button >p .check {
+    width: 100%;
+}
+}
