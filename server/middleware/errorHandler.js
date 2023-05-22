@@ -6,7 +6,7 @@ export const errorHandlerMiddleware = async (err, req, res, next) => {
     statusCode: err.statuscode || StatusCodes.INTERNAL_SERVER_ERROR,
   };
   //mongo errors
-  //duplicate error for username
+  //duplicate error for email
   if (err.code == 11000) {
     customError.message = `duplicate values for ${Object.keys(
       err.keyValue
