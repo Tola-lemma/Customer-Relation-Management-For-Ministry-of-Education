@@ -1,24 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./LoginPage.css";
-import axios from "axios";
-
-//initail state look like this : state = {  username: "",password: "",failedSubmitMsg: "",}
-
-const handleSubmit = async(event) => {
-  event.preventDefault();
-  const {email, password} = this.state
-  try {
-    const url = "http://localhost:3000/api/v1/auth/login";
-    const res = await axios.post(url, {email, password});
-    localStorage.setItem("authStatus", JSON.stringify({signedIn : true, token : res.data.token}))
-    //set your state here like :- signedIn : true, token : res.data.token
-    //and reset your previous email and password state to null like this:- username: "", password: ""
-  } catch (error) {
-    //set failedMsg state : failedMsg : error.response?.data?.msg || "An error occured while sending your message, please try again"
-    
-  }
-}
 
 export const LoginPage = () => {
   return (
