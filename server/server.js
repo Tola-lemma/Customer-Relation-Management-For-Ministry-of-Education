@@ -11,7 +11,7 @@ import { Roles } from "./models/roles.js";
 import { rateLimiter, speedLimiter} from "./utils/rateLimiters.js"
 
 const server = express();
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 3000;
 
 server.use(express.json());
 server.use(rateLimiter, speedLimiter);
