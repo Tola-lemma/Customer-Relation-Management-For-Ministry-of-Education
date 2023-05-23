@@ -9,23 +9,29 @@ export const getAllUsers = async (req, res) => {
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const users = await User.find({}).select("-password").skip(skip).limit(limit);
+  const users = await User.find({}).select("-password -resetPasswordToken -resetPasswordExpires").skip(skip).limit(limit);
 
   res.status(StatusCodes.OK).json({ success: true, users, count: users.length, msg: "list of users" });
 };
 
 export const getUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id });
+  const user = await User.findOne({ _id: req.params.id }).select("-password -resetPasswordToken -resetPasswordExpires");
   if (!user)
     throw new NotfoundError(`No user with id : ${req.params.id} found.`);
   res.status(StatusCodes.OK).json({ success: true, user });
 };
 //only adim can register other users
 export const register = async (req, res) => {
-  const hashPassword = await bcrypt.hash(req.body.password, 10);
+  const {password, confirmPassword} = req.body;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  
+  if(!passwordRegex.test(password)) throw new BadRequestError("Password should contain at least one uppercase letter, one lowercase letter, one digit, and one special symbol. It should be at least 8 characters long.");
+
+  if(password !== confirmPassword) throw new BadRequestError("password does not match.");
+  const hashPassword = await bcrypt.hash(password, 10);
   const user = await User.create({ ...req.body, password : hashPassword });
-  const token = user.jwtSign();
-  res.status(StatusCodes.CREATED).json({ success: true, token, msg: "registerd" });
+  // const token = user.jwtSign();
+  res.status(StatusCodes.CREATED).json({ success: true, msg: "registerd" });
 };
 
 //only admin can remove accounts

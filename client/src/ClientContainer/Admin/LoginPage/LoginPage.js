@@ -1,9 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
+<<<<<<< HEAD
+
+=======
 import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
+>>>>>>> bfdc19f49b77c13ee682b484b39d8bdb0438cff3
 export const LoginPage = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const [email, setEmail] = useState("");
