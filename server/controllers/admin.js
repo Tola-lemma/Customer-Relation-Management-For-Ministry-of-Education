@@ -30,8 +30,8 @@ export const register = async (req, res) => {
   if(password !== confirmPassword) throw new BadRequestError("password does not match.");
   const hashPassword = await bcrypt.hash(password, 10);
   const user = await User.create({ ...req.body, password : hashPassword });
-  const token = user.jwtSign();
-  res.status(StatusCodes.CREATED).json({ success: true, token, msg: "registerd" });
+  // const token = user.jwtSign();
+  res.status(StatusCodes.CREATED).json({ success: true, msg: "registerd" });
 };
 
 //only admin can remove accounts
