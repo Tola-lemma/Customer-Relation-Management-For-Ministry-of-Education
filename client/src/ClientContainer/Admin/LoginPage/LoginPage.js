@@ -1,15 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
-<<<<<<< HEAD
-
-=======
 import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
->>>>>>> bfdc19f49b77c13ee682b484b39d8bdb0438cff3
 export const LoginPage = () => {
-  const { showError,showSuccess } = useContext(ErrorContext);
+  const { showError } = useContext(ErrorContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -17,22 +13,13 @@ export const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post("/auth/login", { email, password });
-      const { token, msg } = response.data;
-      showSuccess("Successfully "+ msg + "!");
+      const { token} = response.data;
       localStorage.setItem("token", token);
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
       navigate("/admin")
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        showError(error.response.data.error);
+        showError(error.response.data?.msg||"An error occurred. Please try again.");
       }  
-      else if (error.message) {
-        showError(error.message);
-      } else {
-        showError("An error occurred. Please try again.");
-      }
-    }
-  };
+    };
   return (
     <div className="loginpage">
       <div className="login-box">
