@@ -36,8 +36,15 @@ export const changePassword = async (req, res) => {
 
   if (newPassword !== confirmNewPassword)
     throw new BadRequestError("password does not match.");
-  if (newPassword.length < 6)
-    throw new BadRequestError("password should contain more than 6 characters");
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  if (!passwordRegex.test(newPassword))
+    throw new BadRequestError(
+      "Password should contain at least one uppercase letter, one lowercase letter, one digit, and one special symbol. It should be at least 8 characters long."
+    );
+
   // retrieve the user's data from the database
   const user = await User.findById(req.user.Id);
   if (!user) throw new NotfoundError(`No user with id : ${req.user.Id} found.`);
@@ -77,7 +84,7 @@ export const forgetPassword = async (req, res) => {
   const requestLink = `${req.protocol}://${req.headers.host}/api/v1/auth/reset-password/${token}/${user._id}`;
 
   const result = await sendMail(
-    resetPasswordMailOptions(user.name, "covekyry@brand-app.biz", requestLink)
+    resetPasswordMailOptions(user.name, user.email, requestLink)
   );
   if (!result) throw new Error("Failed to send email");
 
@@ -87,9 +94,9 @@ export const forgetPassword = async (req, res) => {
 };
 
 export const getResetPassword = async (req, res) => {
-  const {token } = req.params
+  const { token } = req.params;
   const user = await User.findOne({
-    _id : req.params.userId,
+    _id: req.params.userId,
     resetPasswordToken: token,
     resetPasswordExpires: { $gt: Date.now() },
   });
@@ -104,9 +111,13 @@ export const resetPassword = async (req, res) => {
   const { token } = req.params;
 
   const decoded = jwt.verify(token, process.env.RESET_SECRET);
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  if (!password || !confirmPassword || password.length < 6)
-    throw new BadRequestError("password should contain more than 6 characters");
+  if (!confirmPassword || !passwordRegex.test(password))
+    throw new BadRequestError(
+      "Password should contain at least one uppercase letter, one lowercase letter, one digit, and one special symbol. It should be at least 8 characters long."
+    );
 
   if (password !== confirmPassword)
     throw new BadRequestError("Password does not match.");
@@ -116,7 +127,7 @@ export const resetPassword = async (req, res) => {
     resetPasswordToken: token,
     resetPasswordExpires: { $gt: Date.now() },
   });
-  
+
   if (!user) throw new BadRequestError("Invalid or expired reset token.");
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -129,4 +140,22 @@ export const resetPassword = async (req, res) => {
   res
     .status(StatusCodes.OK)
     .json({ success: true, msg: "Password reset successful" });
+};
+
+export const updateAccount = async (req, res) => {
+  const { name, phoneNumber, email } = req.body;
+
+  if(!name || !phoneNumber || !email) {
+    
+  }
+  const user = await User.findOneAndUpdate(
+    { _id: req.user.Id, role: req.user.role },
+    { name, phoneNumber, email },
+    { runValidators: true, new: true }
+  );
+
+  if (!user) throw new BadRequestError("");
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, msg: "Account updated successfully." });
 };

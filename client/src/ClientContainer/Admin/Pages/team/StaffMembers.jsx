@@ -2,9 +2,6 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataTeam } from "../.././data/mockData";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import { Header } from "../../components/Header";
 
 import {  useContext, useReducer} from "react";
@@ -88,26 +85,11 @@ export const StaffMembers = () => {
       renderCell: ({ row: { role } }) => {
         return (
           <Box
-            width="60%"
+            width="100%"
             m="0 auto"
-            p="5px"
             display="flex"
-            justifyContent="center"
-            backgroundColor={
-              role === "Teacher Transfer"
-                ? colors.greenAccent[600]
-                : role === "Sholarship"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
-            borderRadius="4px"
           >
-            {role === "Teacher Transfer" && <AdminPanelSettingsOutlinedIcon />}
-            {role === "Sholarship" && <SecurityOutlinedIcon />}
-            {role === "Student Transfer" && <SecurityOutlinedIcon />}
-            {role === "Complaint" && <LockOpenOutlinedIcon />}
-            {role === "studied Abroad" && <LockOpenOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+            <Typography color={colors.grey[100]} >
               {role}
             </Typography>
           </Box>
@@ -122,12 +104,9 @@ export const StaffMembers = () => {
       renderCell: () => {
         return (
           <Box
-            width="60%"
+            width="100%"
             m="0 auto"
-            p="5px"
             display="flex"
-            justifyContent="center"
-            borderRadius="4px"
           >
            {<ModalButton  editClick={editClick}  handleDelete={handleDelete}/>}
           </Box>
