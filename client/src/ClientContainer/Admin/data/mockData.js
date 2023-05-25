@@ -70,7 +70,6 @@ export const mockDataTeam = [
         name: "Tola Lemma",
         email: "tolalemmagmail.com",
         phone: "(251)24597367",
-        address: "Getshet, sunshines",
         registrarId: 123512,
       },
       {
@@ -78,7 +77,6 @@ export const mockDataTeam = [
         name: "Cersei Lannister",
         email: "cerseilannister@gmail.com",
         phone: "(421)314-2288",
-        address: "1234 Main Street, New York, NY 10001",
         registrarId: 123512,
       },
       {
@@ -86,7 +84,6 @@ export const mockDataTeam = [
         name: "Jaime Lannister",
         email: "jaimelannister@gmail.com",
         phone: "(422)982-6739",
-        address: "3333 Want Blvd, Estanza, NAY 42125",
         registrarId: 4132513,
       },
       {
@@ -94,7 +91,6 @@ export const mockDataTeam = [
         name: "Anya Stark",
         email: "anyastark@gmail.com",
         phone: "(921)425-6742",
-        address: "1514 Main Street, New York, NY 22298",
         registrarId: 123512,
       },
       {
@@ -102,7 +98,6 @@ export const mockDataTeam = [
         name: "Daenerys Targaryen",
         email: "daenerystargaryen@gmail.com",
         phone: "(421)445-1189",
-        address: "11122 Welping Ave, Tenting, CD 21321",
         registrarId: 123512,
       },
       {
@@ -110,7 +105,6 @@ export const mockDataTeam = [
         name: "Ever Melisandre",
         email: "evermelisandre@gmail.com",
         phone: "(232)545-6483",
-        address: "1234 Canvile Street, Esvazark, NY 10001",
         registrarId: 123512,
       },
       {
@@ -118,15 +112,12 @@ export const mockDataTeam = [
         name: "Ferrara Clifford",
         email: "ferraraclifford@gmail.com",
         phone: "(543)124-0123",
-        address: "22215 Super Street, Everting, ZO 515234",
         registrarId: 123512,
       },
       {
         id: 8,
         name: "Rossini Frances",
         email: "rossinifrances@gmail.com",
-        phone: "(222)444-5555",
-        address: "4123 Ever Blvd, Wentington, AD 142213",
         registrarId: 512315,
       },
       {
@@ -134,7 +125,6 @@ export const mockDataTeam = [
         name: "Harvey Roxie",
         email: "harveyroxie@gmail.com",
         phone: "(444)555-6239",
-        address: "51234 Avery Street, Cantory, ND 212412",
         registrarId: 928397,
       },
       {
@@ -142,7 +132,6 @@ export const mockDataTeam = [
         name: "Enteri Redack",
         email: "enteriredack@gmail.com",
         phone: "(222)444-5555",
-        address: "4123 Easer Blvd, Wentington, AD 142213",
         registrarId: 533215,
       },
       {
@@ -150,7 +139,6 @@ export const mockDataTeam = [
         name: "Steve Goodman",
         email: "stevegoodmane@gmail.com",
         phone: "(444)555-6239",
-        address: "51234 Fiveton Street, CunFory, ND 212412",
         registrarId: 92197,
       },
     ];

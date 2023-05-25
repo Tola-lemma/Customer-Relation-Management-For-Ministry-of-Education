@@ -1,15 +1,31 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Select, MenuItem} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Header } from "../../components/Header";
+import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
+import axios from "axios";
+import { useContext } from "react";
+import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 export const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const { showError,showSuccess } = useContext(ErrorContext);
+  const handleFormSubmit = async (values) => {
+    try {
+    const {data : {msg}} = await axios.post("/admin/register", { ...values}
+    , {
+      headers: {
+      'Accept': 'application/json',
+     'Content-Type': 'application/json',
+     'Authorization':`Bearer ${localStorage.getItem('token')}`
+      }
+    });
+      showSuccess("Successfully "+ msg + "!");
+    } catch (error) {
+        console.log(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg || "An error occurred. Please try again.");
   };
-
+  }
   return (
     <Box m="20px">
       <Header
@@ -43,27 +59,14 @@ export const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="Full Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Last Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
+                value={values.fullName}
+                name="name"
+                error={!!touched.fullName && !!errors.fullName}
+                helperText={touched.fullName && errors.fullName}
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
@@ -82,41 +85,40 @@ export const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Contact Number"
+                label="Phone Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.contact}
-                name="contact"
+                name="phoneNumber"
                 error={!!touched.contact && !!errors.contact}
                 helperText={touched.contact && errors.contact}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                fullWidth
+              <Select
+                name="role"
                 variant="filled"
-                type="text"
-                label="Address"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address}
-                name="address"
-                error={!!touched.address && !!errors.address}
-                helperText={touched.address && errors.address}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Role"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.role}
-                name="role"
                 error={!!touched.role && !!errors.role}
-                helperText={touched.role && errors.role}
+                renderValue={(selected) => selected || "Role"}
+                displayEmpty
                 sx={{ gridColumn: "span 4" }}
-              />
+              >
+                <MenuItem value=""><em>Select a Role</em></MenuItem>
+                <MenuItem value="transferCoordinator">
+                  Transfer Coordinator
+                </MenuItem>
+                <MenuItem value="studyAbroadCoordinator">
+                  Study Abroad Coordinator
+                </MenuItem>
+                <MenuItem value="scholarshipCoordinator">
+                  Scholarship Coordinator
+                </MenuItem>
+                <MenuItem value="complaintsCoordinator">
+                  Complaints Coordinator
+                </MenuItem>
+              </Select>
               <TextField
                 fullWidth
                 variant="filled"
@@ -152,6 +154,7 @@ export const Form = () => {
           </form>
         )}
       </Formik>
+      <ErrorMessage />
     </Box>
   );
 };
@@ -160,35 +163,33 @@ const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
+  name: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  contact: yup
+  phoneNumber: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
-  address: yup.string().required("required"),
   role: yup.string().required("required"),
-
   password: yup
-  .string()
-  .required('required')
-  .min(6, 'Password must be at least 6 characters long')
-  .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
-  .matches(/[0-9]/, 'Password must contain at least one number')
-  .matches(/[^a-zA-Z0-9]/, 'Password must contain at least one special character'),
-confirmPassword: yup
-  .string()
-  .oneOf([yup.ref('password'), null], 'Passwords must match')
-  .required('required'),
+    .string()
+    .required("required")
+    .min(6, "Password must be at least 6 characters long")
+    .matches(/[a-zA-Z]/, "Password must contain at least one letter")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(
+      /[^a-zA-Z0-9]/,
+      "Password must contain at least one special character"
+    ),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("required"),
 });
 const initialValues = {
-  firstName: "",
-  lastName: "",
+  name: "",
   email: "",
-  contact: "",
-  address: "",
+  phoneNumber: "",
   role: "",
-  password:"",
-  confirmPassword:""
+  password: "",
+  confirmPassword: "",
 };

@@ -4,25 +4,15 @@
   align-items: center;
   font-family: "Times New Roman", Times, serif;
   min-height: 100vh;
-  background-image: url("../../../assets/images/bg.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: animateBg 5s linear infinite;
-}
-@keyframes animateBg {
-  100%{
-    filter: hue-rotate(360deg);
-  }
 }
 .login-box {
   position: relative;
   width: 400px;
   height: 450px;
   border-radius: 20px;
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, .5);
-  backdrop-filter: blur(15px);
+  background-color:rgb(237, 231, 223);
+  border: 2px solid white;
+  box-shadow: 10px 10px 10px rgba(9, 8, 8, 0.2);
 }
 .login-parent {
   margin-top: 4rem;
@@ -32,14 +22,13 @@
 .login-parent h2 {
   font-size: 2em;
   font-weight: bold;
-  color: white;
   text-align: center;
 }
 .input-box {
   position: relative;
   width: 310px;
   margin: 30px 50px;
-  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid black;
 }
 .input-box label {
   position: absolute;
@@ -47,7 +36,6 @@
   left: 5px;
   transform: translateY(-50%);
   font-size: 1em;
-  color: #fff;
   pointer-events: none;
   transition: 0.5s;
 }
@@ -58,7 +46,6 @@
   border: none;
   outline: none;
   font-size: 1em;
-  color: #fff;
   padding: 0 30px 0 5px;
 }
 .input-box input:focus ~ label,
@@ -68,7 +55,6 @@
 .input-box .icon {
   position: absolute;
   right: 8px;
-  color: #fff;
   font-size: 1.2em;
   line-height: 57px;
 }
@@ -76,12 +62,10 @@
   margin-left: 18em;
   margin-bottom: 2em;
   font-size: 0.9em;
-  color: #fff;
 }
 .forgotPassword .forgotpasswordLink {
   text-decoration: none;
-  color: #fff;
-  font-weight: 300;
+  font-weight: bold;
 }
 .forgotPassword .forgotpasswordLink:hover {
   text-decoration: underline;
@@ -94,7 +78,6 @@
   border-radius: 40px;
   cursor: pointer;
   font-size: 1em;
-  color: #000;
   font-weight: 500;
 }
 @media only screen and (max-width: 1110px){
