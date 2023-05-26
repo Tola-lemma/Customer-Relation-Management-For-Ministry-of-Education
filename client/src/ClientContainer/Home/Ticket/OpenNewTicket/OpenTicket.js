@@ -6,7 +6,7 @@ import './OpenTicket.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Stack, Typography } from '@mui/material';
-import { Footer } from '../../../HeaderAndFooter/header/Footer';
+import { Footer } from '../../../HeaderAndFooter/footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
