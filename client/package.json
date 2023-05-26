@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.10.6",
+    "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.10.6",
     "@fullcalendar/core": "^5.11.4",
     "@fullcalendar/daygrid": "^5.11.4",
     "@fullcalendar/interaction": "^5.11.3",
     "@fullcalendar/list": "^5.11.4",
-    "@fullcalendar/react": "^5.11.3",
+    "@fullcalendar/react": "^5.11.5",
     "@fullcalendar/timegrid": "^5.11.4",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.0",
@@ -53,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "flow-babel-webpack-plugin": "^1.1.1"
   }
 }

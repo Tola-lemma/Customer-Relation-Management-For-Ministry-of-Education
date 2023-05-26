@@ -5,6 +5,7 @@ import { OpenTicket } from "./ClientContainer/Home/Ticket/OpenNewTicket/OpenTick
 import { CheckTicket } from "./ClientContainer/Home/Ticket/CheckTicketStatus/CheckTicket";
 import { LoginPage } from "./ClientContainer/Admin/LoginPage/LoginPage";
 import { AdminPage } from "./ClientContainer/Admin/Routes/AdminPage";
+import { StaffPage } from "./ClientContainer/StaffMemebers/Routes/StaffPage";
 import { PageNotFound } from "./ClientContainer/Admin/Pages/PageNotFound/PageNotFound";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./ClientContainer/Admin/theme";
@@ -27,6 +28,7 @@ export const App = () => {
           <Route path="/emailsubmission" element={<EmailSubmission />} />
           <Route path="/passwordreset" element={<PasswordReset />} />
           <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/staff/*" element={<StaffPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
