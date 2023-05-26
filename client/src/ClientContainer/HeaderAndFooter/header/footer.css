@@ -12,7 +12,7 @@ footer{
     margin: 0 20px;
 } */
 .scl-mda{
-    margin-top: 145px;
+    margin-top: 1.45rem;
 }
 .scl-mda>li i{
     margin-left: 1.5rem;
@@ -54,40 +54,40 @@ footer{
 }
 
 @media (max-width: 576px) {
-    .col-lg-4 {
-      display: block;
-      
+
+    footer{
+        display: flex;
+        height: 100%;
+        margin-left: 0px;
     }
   }
   
-  @media(max-width:767px){
-    .foot{
-        width: 50%;
-        margin-bottom: 30px;
-
-    }
-    .foot strong{
-        margin-right:60px;
-    }
-    
-    .sol {
-        margin-right: 112px;
-    }
   
-}
+  @media(max-width:767px){
+       
+    
+    footer{
+        display: flex;
+        height: 100%;
+        
+    }
+  }
+  
 
 @media(max-width:567px){
-    .foot{
+     
+    footer{
+        display: inline-flex;
         width: 100%;
-        margin-bottom: 30px;
-
+        height: 100%;
     }
-    p{
-        text-align: left;
-        margin: auto;
+}
+@media(min-width:568px){
+     
+    footer{
+        display: inline-flex;
+        width: 100%;
+        
+       
     }
-    .sol {
-        margin-right: 112px;
-    }
-  
 }

@@ -1,6 +1,6 @@
 import './footer.css'
 
-import ContactUs from '../Contact/ContactUs'
+
 export const  Footer=()=>{
   return(
     <footer style={{color:"white", marginTop:"30px"}}>
