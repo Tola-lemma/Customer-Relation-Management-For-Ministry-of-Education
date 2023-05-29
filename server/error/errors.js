@@ -34,4 +34,17 @@ class UnauthenticatedError extends CustomApiError {
   }
 }
 
-export {CustomApiError, BadRequestError, NotfoundError, UnauthorizedError, UnauthenticatedError}
+class UnsupportedMediaTypeError extends CustomApiError {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.UNSUPPORTED_MEDIA_TYPE;
+  }
+}
+export {
+  CustomApiError,
+  BadRequestError,
+  NotfoundError,
+  UnauthorizedError,
+  UnauthenticatedError,
+  UnsupportedMediaTypeError
+};
