@@ -5,8 +5,10 @@ import { HashLink as Link } from 'react-router-hash-link';
 import "./SupportHome.css";
 import { SearchTopic } from "../../SearchComponent/SearchTopic";
 import Topics from "../../.././Data.json";
+import { Footer } from "../../HeaderAndFooter/footer/Footer";
 export const SupportHome = () => {
   return (
+   <>
     <div>
       <NavBar />
       <div className="container SupportHomeContainer">
@@ -81,5 +83,7 @@ export const SupportHome = () => {
         </div>
       </div>
     </div>
+     <Footer/>
+   </>
   );
 };

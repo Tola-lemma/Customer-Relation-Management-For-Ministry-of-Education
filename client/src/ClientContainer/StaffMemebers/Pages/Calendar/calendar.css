@@ -1,0 +1,7 @@
+.fc .fc-scrollgrid a{
+    text-decoration:none;
+    color: var(--primary-color-light);
+}
+.fc-list-table a{
+    text-decoration:none;
+}

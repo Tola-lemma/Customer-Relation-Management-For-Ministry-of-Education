@@ -2,8 +2,10 @@ import React from "react";
 import { NavBar } from "../../../HeaderAndFooter/header/NavBar";
 import "./CheckTicket.css";
 import { Link } from "react-router-dom";
+import { Footer } from "../../../HeaderAndFooter/footer/Footer";
 export const CheckTicket = () => {
   return (
+   <>
     <div>
       <NavBar />
       <div className="container">
@@ -50,5 +52,8 @@ export const CheckTicket = () => {
         </p>
       </div>
     </div>
+   <Footer/>
+   </>
+   
   );
 };
