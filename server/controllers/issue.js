@@ -45,7 +45,7 @@ export const getIssues = async (req, res) => {
   res.status(StatusCodes.OK).json({count : requestIssue.length, serviceType, requestIssue, file})  
 }
 
-export const getFile = async (req, res) => {
+export const getFile = async(req, res) => {
   const {filename} = req.params
 
   if(!filename) throw new BadRequestError("file is required.")
@@ -61,4 +61,18 @@ export const getFile = async (req, res) => {
   if(file.length == 0) throw new NotfoundError(`No file with : ${filename} exist`);
 
   res.status(StatusCodes.OK).json({success : true, file})
+}
+
+export const streamFile = async(req, res) => {
+  const { filename } = req.params
+  if(!filename) throw new BadRequestError("file is required.")
+
+  // Create a new GridFSBucket instance 
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName : "files"
+  })
+  // find a file that with filename from the bucket
+  const downloadStream = bucket.openDownloadStreamByName(filename)
+  // Pipe the download stream to the response object to send the file
+  downloadStream.pipe(req);
 }
