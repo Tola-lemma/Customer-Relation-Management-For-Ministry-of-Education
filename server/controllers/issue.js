@@ -3,6 +3,8 @@ import { RequestIssue } from "../models/requestIssue.js";
 import { NotfoundError } from "../error/errors.js";
 import { sendMail } from "../utils/sendmail.js";
 import { requestNotificationMailOptions } from "../utils/mailOptions.js";
+import { ServiceTypes } from "../models/roles.js";
+import mongoose from "mongoose";
 
 export const upload = async (req, res) => {
   res
@@ -28,3 +30,17 @@ export const trackIssue = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ success: true, status: requestedIssue.status, requestedIssue });
 };
+
+export const getIssues = async (req, res) => {
+  const {role} = req.user;
+  const serviceType = ServiceTypes[role]
+  const requestIssue = await RequestIssue.find({serviceType})
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName : "files"
+  })
+  const requestIssueIds = Object.values(requestIssue).map((requestIssue) => requestIssue._id)
+  const file = await bucket.find({"metadata.requestIssueId" : {$in : requestIssueIds }}).toArray()
+
+  res.status(StatusCodes.OK).json({count : requestIssue.length, serviceType, requestIssue, file})
+  
+}
