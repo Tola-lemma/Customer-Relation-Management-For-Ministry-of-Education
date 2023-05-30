@@ -24,10 +24,10 @@ const requestIssueSchema = new mongoose.Schema(
       type: String,
       required: [true, "service type is required."],
       enum: [
-        "teacherStudentTransfer",
-        "studyAbroad",
-        "scholarship",
-        "complaint",
+        "transferRequest",
+        "studyAbroadRequest",
+        "scholarshipRequest",
+        "complaintRequest",
       ],
     },
     issueDescription: {
