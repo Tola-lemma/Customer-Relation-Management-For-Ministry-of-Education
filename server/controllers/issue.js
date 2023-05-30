@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { RequestIssue } from "../models/requestIssue.js";
-import { NotfoundError } from "../error/errors.js";
+import { BadRequestError, NotfoundError } from "../error/errors.js";
 import { sendMail } from "../utils/sendmail.js";
 import { requestNotificationMailOptions } from "../utils/mailOptions.js";
 import { ServiceTypes } from "../models/roles.js";
@@ -35,12 +35,30 @@ export const getIssues = async (req, res) => {
   const {role} = req.user;
   const serviceType = ServiceTypes[role]
   const requestIssue = await RequestIssue.find({serviceType})
+  // Create a new GridFSBucket instance 
   const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName : "files"
   })
   const requestIssueIds = Object.values(requestIssue).map((requestIssue) => requestIssue._id)
   const file = await bucket.find({"metadata.requestIssueId" : {$in : requestIssueIds }}).toArray()
 
-  res.status(StatusCodes.OK).json({count : requestIssue.length, serviceType, requestIssue, file})
-  
+  res.status(StatusCodes.OK).json({count : requestIssue.length, serviceType, requestIssue, file})  
+}
+
+export const getFile = async (req, res) => {
+  const {filename} = req.params
+
+  if(!filename) throw new BadRequestError("file is required.")
+
+  // Create a new GridFSBucket instance 
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName : "files"
+  })
+
+  // find a file that with filename from the bucket
+  const file = await bucket.find({filename}).toArray();
+
+  if(file.length == 0) throw new NotfoundError(`No file with : ${filename} exist`);
+
+  res.status(StatusCodes.OK).json({success : true, file})
 }
