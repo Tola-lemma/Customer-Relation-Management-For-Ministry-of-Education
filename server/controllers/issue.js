@@ -18,7 +18,6 @@ export const upload = async (req, res) => {
 
   if (!requestIssue)
     throw new NotfoundError(`No request issue with ${req.requestIssue.Id}.`);
-  
   await sendMail(requestNotificationMailOptions(requestIssue.name, requestIssue.email,requestIssue._id));
 };
 
