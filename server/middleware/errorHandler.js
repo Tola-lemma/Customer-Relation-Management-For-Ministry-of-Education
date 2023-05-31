@@ -1,9 +1,10 @@
 import { StatusCodes } from "http-status-codes";
+import {MulterError} from "multer"
 
 export const errorHandlerMiddleware = async (err, req, res, next) => {
   let customError = {
     message: err.message || "something went wrong. please try again later",
-    statusCode: err.statuscode || StatusCodes.INTERNAL_SERVER_ERROR,
+    statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
   };
   //mongo errors
   //duplicate error for email
@@ -37,6 +38,19 @@ export const errorHandlerMiddleware = async (err, req, res, next) => {
     customError.statusCode = StatusCodes.BAD_REQUEST;
   }
 
+  //uploading error
+  if(err instanceof MulterError && err.code == "LIMIT_FILE_SIZE"){
+    
+    customError.message = "File Size is too large. Allowed file size is 5MB"
+    customError.statusCode = 413
+  }
+
+  if(err instanceof MulterError && err.code === 'LIMIT_UNEXPECTED_FILE'){
+    
+    customError.message = "an error occured when uploading"
+    customError.statusCode = StatusCodes.UNPROCESSABLE_ENTITY
+  }
+  
   return res
     .status(customError.statusCode)
     .json({ success: false, msg: customError.message });

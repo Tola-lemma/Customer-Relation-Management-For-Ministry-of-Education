@@ -10,6 +10,7 @@ import { authMiddleware, isAuthorized } from "./middleware/auth.js";
 import { Roles } from "./models/roles.js";
 import { rateLimiter, speedLimiter} from "./utils/rateLimiters.js"
 import cors from 'cors'
+import { requestIssueRouter } from "./routes/issue.js";
 
 const server = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ server.use(
   isAuthorized(Roles.Admin),
   adminRoute
 );
+server.use("/api/v1/issue", requestIssueRouter)
 
 // Add the error handling middlewares
 server.use(errorHandlerMiddleware);
