@@ -2,9 +2,10 @@ import { StatusCodes } from "http-status-codes";
 import { RequestIssue } from "../models/requestIssue.js";
 import { BadRequestError, NotfoundError } from "../error/errors.js";
 import { sendMail } from "../utils/sendmail.js";
-import { requestNotificationMailOptions } from "../utils/mailOptions.js";
-import { ServiceTypes } from "../models/roles.js";
+import { requestDoneNotificationMailOptions, requestNotificationMailOptions } from "../utils/mailOptions.js";
+import { ServiceTypes } from "../models/serviceTypes.js";
 import mongoose from "mongoose";
+import { IssueStatus } from "../models/issueStatus.js";
 
 export const upload = async (req, res) => {
   res
@@ -76,3 +77,32 @@ export const streamFile = async(req, res) => {
   // Pipe the download stream to the response object to send the file
   downloadStream.pipe(req);
 }
+
+export const updateIssueStatus = async(req, res) => {
+  const {status} = req.body;
+  const {filename} = req.params;
+  const serviceType = ServiceTypes[req.user.role]
+
+  if(!filename || !status) throw new BadRequestError("please provide a complete information, filename and status is requred.")
+  
+  if(!IssueStatus[status]) throw new BadRequestError("Invalid value for issue status.")
+
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName : "files"
+  })
+
+  const issue = await bucket.find({filename}).toArray();
+  if(!filename) throw new BadRequestError(`No file name with ${filename} exist.`)
+
+  const requestId = issue[0].metadata.requestIssueId;
+  const requestedIssue = await RequestIssue.findOneAndUpdate({_id : requestId, serviceType : serviceType}, { issueStatus : IssueStatus[status]}, {runValidators : true, new : true})
+  
+  if(!requestedIssue) throw new NotfoundError(`No requestIssue found.`)
+
+  res.status(StatusCodes.OK).json({success : true, msg : "issue status updated successfully.", requestedIssue})
+
+  if(requestedIssue.issueStatus === IssueStatus.done) {
+    await sendMail(requestDoneNotificationMailOptions(requestedIssue.name, "savix11466@soremap.com", requestId))
+  }
+}
+
