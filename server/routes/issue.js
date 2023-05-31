@@ -5,6 +5,7 @@ import {
   trackIssue,
   getIssues,
   getFile,
+  streamFile,
 } from "../controllers/issue.js";
 import { storage } from "../utils/storage.js";
 import { fileFilter, limits } from "../utils/fileFilter.js";
@@ -38,6 +39,17 @@ router.get(
     Roles.TransferCoordinator
   ),
   getFile
+);
+router.get(
+  "/stream/:filename",
+  authMiddleware,
+  isAuthorized(
+    Roles.ComplaintsCoordinator,
+    Roles.ScholarshipCoordinator,
+    Roles.StudyAbroadCoordinator,
+    Roles.TransferCoordinator
+  ),
+  streamFile
 );
 
 export { router as requestIssueRouter };
