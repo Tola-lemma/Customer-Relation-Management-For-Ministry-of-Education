@@ -75,7 +75,7 @@ export const streamFile = async(req, res) => {
   // find a file that with filename from the bucket
   const downloadStream = bucket.openDownloadStreamByName(filename)
   // Pipe the download stream to the response object to send the file
-  downloadStream.pipe(req);
+  downloadStream.pipe(res);
 }
 
 export const updateIssueStatus = async(req, res) => {
