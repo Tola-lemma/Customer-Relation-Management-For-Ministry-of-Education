@@ -3,7 +3,7 @@ import { RequestIssue } from "../models/requestIssue.js";
 import { NotfoundError } from "../error/errors.js";
 import { sendMail } from "../utils/sendmail.js";
 import { requestNotificationMailOptions } from "../utils/mailOptions.js";
-import { ServiceTypes } from "../models/roles.js";
+import {ServiceTypes} from "../models/serviceTypes.js";
 import mongoose from "mongoose";
 
 export const upload = async (req, res) => {

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { NavBar } from '../../../HeaderAndFooter/header/NavBar';
 import './OpenTicket.css';
@@ -11,81 +11,96 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import UploadFile from './UploadFile';
+import axios from 'axios';
+import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
+import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
 
 export const OpenTicket = () => {
+  const { showError,showSuccess } = useContext(ErrorContext);
+  const initialFormState = {
+    fullName: '',
+    phoneN: '',
+    email: '',
+    txtArea: '',
+    selectedProblem: '',
+    selectedFile: null,
+    selectedFiles: [],
+  };
   
-  const [fullName, setFullName] = useState('');
-  const [phoneN, setPhoneN] = useState('');
-  const [email, setEmail] = useState('');
-  const [txtArea, setTxtArea] = useState('');
-  const [selectedProblem, setSelectedProblem] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
+  const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
-
+  
   const validateForm = () => {
     let formErrors = {};
-
-    if (!fullName.trim()) {
+  
+    if (!formData.fullName.trim()) {
       formErrors.fullName = 'Enter Your Full Name';
     }
-
-    if (!phoneN.trim()) {
+  
+    if (!formData.phoneN.trim()) {
       formErrors.phone = 'Enter Your Phone Number';
-    } else if (!/^\d+$/.test(phoneN.trim())) {
+    } else if (!/^\d+$/.test(formData.phoneN.trim())) {
       formErrors.phone = 'Invalid Phone Number';
     }
-
-    if (!email.trim()) {
+  
+    if (!formData.email.trim()) {
       formErrors.email = 'Enter Working Email Address';
-    } else if (!/\S+@\S+\.\S+/.test(email.trim())) {
+    } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
       formErrors.email = 'Invalid Email Address';
     }
-
-    if (!selectedProblem) {
+  
+    if (!formData.selectedProblem) {
       formErrors.problem = 'Select Your Problem';
     }
-
-    if (!selectedFile && selectedFiles.length === 0) {
-      formErrors.file = 'Upload a File';
-    }
-
-    if (!txtArea.trim()) {
+  
+    // if (!formData.selectedFile && formData.selectedFiles.length === 0) {
+    //   formErrors.file = 'Upload a File';
+    // }
+  
+    if (!formData.txtArea.trim()) {
       formErrors.textArea = "Don't forget to write your problem summary";
     }
-
+  
     setErrors(formErrors);
-
+  
     return Object.keys(formErrors).length === 0;
   };
+  const {fullName,phoneN,email,selectedProblem, selectedFiles,} = formData
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (validateForm()) {
-      // Perform form submission
-      console.log('Form submitted successfully');
-      // Reset form fields and state
-      setFullName('');
-      setPhoneN('');
-      setEmail('');
-      setTxtArea('');
-      setSelectedProblem('');
-      setSelectedFile(null);
-      setSelectedFiles([]);
+      const requestBody = {
+        name:fullName,
+        phoneNumber:phoneN,
+        email:email,
+        issueDescription: selectedProblem,
+        files:selectedFiles 
+      }
+      
+      try {
+      const {data: {msg}} = await axios.post("/issue/ticket-issue",requestBody, {
+        headers: {
+          'Accept': 'application/json',
+         'Content-Type': 'application/json',
+          }
+      });
+      showSuccess("Successfully "+ msg + "!");
+    } catch (error) {
+        console.log(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg || "An error occurred. Please try again.");
+  };
+      console.log(formData);
+
+      setFormData(initialFormState);
       setErrors({});
     }
-    
-  
   };
+  
   const handleReset = () => {
-    setFullName('');
-    setPhoneN('');
-    setEmail('');
-    setTxtArea('');
-    setSelectedProblem('');
-    setSelectedFile(null);
-    setSelectedFiles([]);
+    setFormData(initialFormState);
     setErrors({});
   };
   return (
@@ -102,8 +117,8 @@ export const OpenTicket = () => {
               label='Full Name'
               id='fullName'
               type='name'
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={formData.fullName}
+              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
               error={!!errors.fullName}
               helperText={errors.fullName}
             />
@@ -115,8 +130,8 @@ export const OpenTicket = () => {
               label='Phone Number'
               id='phoneNumeber'
               type='number'
-              value={phoneN}
-              onChange={(e) => setPhoneN(e.target.value)}
+              value={formData.phoneN}
+              onChange={(e) => setFormData({ ...formData, phoneN: e.target.value })}
               error={!!errors.phone}
               helperText={errors.phone}
             />
@@ -128,8 +143,8 @@ export const OpenTicket = () => {
               label='Email'
               id='email'
               type='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email:e.target.value})}
               error={!!errors.email}
               helperText={errors.email}
             />
@@ -138,20 +153,23 @@ export const OpenTicket = () => {
           <FormControl sx={{ width: 600, maxWidth: '100%', mt: 2 }}>
             <InputLabel htmlFor='grouped-native-select'>Select Your Problem</InputLabel>
             <Select native defaultValue='' id='grouped-native-select' label='Select your problem'
-            onChange={e => setSelectedProblem(e.target.value)}
+            onChange={e => setFormData({ ...formData, selectedProblem: e.target.value })}
             error={!!errors.problem}>
               <option aria-label='None' value='' />
-              <option value={1}>Student transfer request</option>
-              <option value={2}>Teacher transfer request</option>
-              <option value={3}>Scholarship Question</option>
-              <option value={4}>Request to return to work after studying abroad</option>
-              <option value={5}>Various academic and administrative complaints</option>
+              <option value="transferRequest">Student transfer request</option>
+              <option value="transferRequest">Teacher transfer request</option>
+              <option value="studyAbroadRequest">Scholarship Question</option>
+              <option value="scholarshipRequest">Request to return to work after studying abroad</option>
+              <option value="complaintRequest">Various academic and administrative complaints</option>
             </Select>
             {errors.problem && <p style={{ color: "red", display: 'inline' }}>{errors.problem}</p>}
           </FormControl>
 
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
-            <UploadFile />
+            <UploadFile  
+             selectedFiles={formData.selectedFiles}
+             setSelectedFiles={formData.setSelectedFiles} 
+             />
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', mt: 2 }}>
@@ -161,8 +179,8 @@ export const OpenTicket = () => {
               multiline
               rows={4}
               fullWidth
-              value={txtArea}
-              onChange={(e) => setTxtArea(e.target.value)}
+              value={formData.txtArea}
+              onChange={(e) =>  setFormData({ ...formData, txtArea: e.target.value })}
               error={!!errors.textArea}
               helperText={errors.textArea}
             />
@@ -179,6 +197,7 @@ export const OpenTicket = () => {
         </div>
       </div>
     </form>
+    <ErrorMessage />
     <Footer />
   </div>
     
