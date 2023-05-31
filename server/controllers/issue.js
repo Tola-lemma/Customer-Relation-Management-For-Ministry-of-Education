@@ -2,8 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import { RequestIssue } from "../models/requestIssue.js";
 import { BadRequestError, NotfoundError } from "../error/errors.js";
 import { sendMail } from "../utils/sendmail.js";
-import { requestNotificationMailOptions } from "../utils/mailOptions.js";
-import {ServiceTypes} from "../models/serviceTypes.js";
 import {
   requestDoneNotificationMailOptions,
   requestNotificationMailOptions,
