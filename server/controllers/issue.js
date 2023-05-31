@@ -127,8 +127,9 @@ export const updateIssueStatus = async (req, res) => {
   });
 
   const issue = await bucket.find({ filename }).toArray();
-  if (!filename)
-    throw new BadRequestError(`No file name with ${filename} exist.`);
+  
+  if (!issue.length)
+    throw new BadRequestError(`No file with filename ${filename} exists.`);
 
   const requestId = issue[0].metadata.requestIssueId;
   const requestedIssue = await RequestIssue.findOneAndUpdate(
