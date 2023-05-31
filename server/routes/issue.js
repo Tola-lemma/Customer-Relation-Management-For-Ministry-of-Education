@@ -6,6 +6,7 @@ import {
   getIssues,
   getFile,
   streamFile,
+  updateIssueStatus,
 } from "../controllers/issue.js";
 import { storage } from "../utils/storage.js";
 import { fileFilter, limits } from "../utils/fileFilter.js";
@@ -40,6 +41,7 @@ router.get(
   ),
   getFile
 );
+
 router.get(
   "/stream/:filename",
   authMiddleware,
@@ -51,5 +53,17 @@ router.get(
   ),
   streamFile
 );
+
+router.put(
+    "/update/:filename",
+    authMiddleware,
+    isAuthorized(
+      Roles.ComplaintsCoordinator,
+      Roles.ScholarshipCoordinator,
+      Roles.StudyAbroadCoordinator,
+      Roles.TransferCoordinator
+    ),
+    updateIssueStatus
+  );
 
 export { router as requestIssueRouter };
