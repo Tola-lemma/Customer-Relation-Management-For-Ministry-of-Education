@@ -13,7 +13,7 @@ import cors from 'cors'
 import { requestIssueRouter } from "./routes/issue.js";
 
 const server = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 server.use(cors())
 server.use(express.json());
