@@ -7,7 +7,7 @@ import {
   requestNotificationMailOptions,
 } from "../utils/mailOptions.js";
 import { ServiceTypes } from "../models/serviceTypes.js";
-import mongoose, { Mongoose, mongo } from "mongoose";
+import mongoose, { mongo, ObjectId } from "mongoose";
 import { IssueStatus } from "../models/issueStatus.js";
 
 export const upload = async (req, res) => {
@@ -77,8 +77,8 @@ export const getRequestedIssue = async (req, res) => {
   const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName : "files"
   })
-
-  const file = await bucket.find({"metadata.requestIssueId" : new mongo.ObjectId(requestIssueId)}).toArray();
+  
+  const file = await bucket.find({"metadata.requestIssueId" : new mongoose.Types.ObjectId(requestIssueId)}).toArray();
   
   if(!file.length) throw new NotfoundError(`No file for the requestIssue with id : ${requestIssueId} found.`);
   
