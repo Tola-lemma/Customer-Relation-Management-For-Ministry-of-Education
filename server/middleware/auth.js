@@ -18,7 +18,7 @@ export const authMiddleware = async (req, res, next) => {
 
 export const isAuthorized = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role.toLowerCase())) {
+    if (!roles.includes(req.user.role)) {
       throw new UnauthorizedError("Access Denied.");
     }
     next();

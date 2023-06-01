@@ -87,7 +87,7 @@ export const NavBar = () => {
                 </li>
                 <li className="nav-item ms-5" >
                   <Link className="nav-link"  to="/login" style={{color:"#0072bc"}}>
-                  <i class="fa-solid fa-right-to-bracket"></i> Login
+                  <i className="fa-solid fa-right-to-bracket"></i> Login
                   </Link>
                   </li>
                 <li className="nav-item ms-2"><Client/></li>

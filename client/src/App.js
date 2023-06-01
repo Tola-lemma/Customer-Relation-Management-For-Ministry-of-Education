@@ -13,7 +13,7 @@ import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
 import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 import ContactUs from "./ClientContainer/HeaderAndFooter/ContactUs/ContactUs";
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000/api/v1";
+axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (
