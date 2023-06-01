@@ -3,7 +3,7 @@ import { useState } from "react";
 const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 15;
 
-function UploadFile() {
+function UploadFile({ selectedFiles, setSelectedFiles }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileLimitExceeded, setFileLimitExceeded] = useState(false);
 
@@ -30,6 +30,7 @@ function UploadFile() {
             },
           ];
           setUploadedFiles(uploaded);
+          setSelectedFiles(uploaded);
         }
       }
     });
@@ -45,6 +46,7 @@ function UploadFile() {
       <input
         id="uploadFile"
         type="file"
+        name="selectedFiles"
         multiple
         accept="application/pdf"
         onChange={handleFileEvent}
