@@ -11,6 +11,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./ClientContainer/Admin/theme";
 import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
 import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
+import ContactUs from "./ClientContainer/HeaderAndFooter/ContactUs/ContactUs";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:3000/api/v1";
 export const App = () => {
@@ -26,6 +27,7 @@ export const App = () => {
           <Route path="/checkticketstatus" element={<CheckTicket />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/emailsubmission" element={<EmailSubmission />} />
+          <Route path="/contactUs" element={<ContactUs/>}/>
           <Route path="/passwordreset" element={<PasswordReset />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />

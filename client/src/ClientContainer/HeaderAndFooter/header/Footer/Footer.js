@@ -1,6 +1,5 @@
 import './footer.css'
 
-
 export const  Footer=()=>{
   return(
     <footer style={{color:"white", marginTop:"30px"}}>

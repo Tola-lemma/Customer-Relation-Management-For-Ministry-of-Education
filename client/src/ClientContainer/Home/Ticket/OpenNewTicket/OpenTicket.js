@@ -6,12 +6,28 @@ import './OpenTicket.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Stack, Typography } from '@mui/material';
-import { Footer } from '../../../HeaderAndFooter/header/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import UploadFile from './UploadFile';
+import { Footer } from '../../../HeaderAndFooter/header/Footer/Footer';
+import { createMuiTheme, ThemeProvider } from '@mui/material';
+import { PhoneInput } from "react-contact-number-input";
 
+const theme = createMuiTheme({
+  overrides: {
+    MuiInput: {
+      underline: {
+        "&:before": {
+          borderBottom: "2px solid #ff0000", // Set your desired border color
+        },
+        "&:hover:not($disabled):before": {
+          borderBottom: "2px solid #00ff00", // Set your desired border color on hover
+        },
+      },
+    },
+  },
+});
 export const OpenTicket = () => {
   
   const [fullName, setFullName] = useState('');
@@ -21,7 +37,7 @@ export const OpenTicket = () => {
   const [selectedProblem, setSelectedProblem] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
+  const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -96,6 +112,7 @@ export const OpenTicket = () => {
         <div className='container all-container'>
           <Typography variant='h1'>Ask New Questions</Typography>
           <Typography variant='h3'>Please fill out this form to submit your problem.</Typography>
+          <ThemeProvider theme={theme}>
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
             <TextField
               fullWidth
@@ -118,8 +135,15 @@ export const OpenTicket = () => {
               value={phoneN}
               onChange={(e) => setPhoneN(e.target.value)}
               error={!!errors.phone}
-              helperText={errors.phone}
-            />
+              helperText={errors.phone}>
+              </TextField>
+              <PhoneInput
+               country={"eg"}
+                enableSearch={true}
+                value={phone}
+                onChange={(phone) => setPhone(phone)}
+                fullWidth
+                />
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
@@ -167,6 +191,7 @@ export const OpenTicket = () => {
               helperText={errors.textArea}
             />
           </Box>
+          </ThemeProvider>
 
           <Stack direction='row' spacing={2} mt={2} mb={2} mr={4} size='large'>
             <Button type='submit' variant='contained' color='success' size='large'>
@@ -186,4 +211,3 @@ export const OpenTicket = () => {
 };
 
 export default OpenTicket;
-

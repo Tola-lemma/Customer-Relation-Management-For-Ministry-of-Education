@@ -3,12 +3,13 @@ import { ColorModeContext, useMode } from "../theme";
 import { StaffTopbar } from "../Pages/global/Topbar";
 import { Routes, Route } from "react-router-dom";
 import { StaffDashboard } from "../Pages/Dashboard/Dashboard";
-import { StaffContact } from "../Pages/Contact/Contact";
+// import { StaffContact } from "../Pages/Contact/Contact";
 import { StaffCalendar } from "../Pages/Calendar/Calendar";
 import { StaffFAQ } from "../Pages/Faq/FAQ";
 import { StaffSidebar } from "../Pages/global/Sidebar";
 import { StaffForm } from "../Pages/Form/Form";
 import { StaffPageNotFound } from "../Pages/PageNotFound/PageNotFound";
+import Data from "../Data/Data";
 export const StaffPage = () => {
     const [theme, colorMode] = useMode("dark");
     return (
@@ -21,7 +22,7 @@ export const StaffPage = () => {
               <StaffTopbar />
               <Routes>
                 <Route path="/" element={<StaffDashboard />} />
-                <Route path="/contact" element={<StaffContact />} />
+                <Route path="/contact" element={<Data />} />
                 <Route path="/form" element={<StaffForm />} />
                 <Route path="/faq" element={<StaffFAQ />} />
                 <Route path="/calendar" element={<StaffCalendar />} />

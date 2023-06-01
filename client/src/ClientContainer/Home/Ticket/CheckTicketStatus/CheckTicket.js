@@ -2,7 +2,7 @@ import React from "react";
 import { NavBar } from "../../../HeaderAndFooter/header/NavBar";
 import "./CheckTicket.css";
 import { Link } from "react-router-dom";
-import { Footer } from "../../../HeaderAndFooter/header/Footer";
+import { Footer } from "../../../HeaderAndFooter/header/Footer/Footer";
 export const CheckTicket = () => {
   return (
    <>

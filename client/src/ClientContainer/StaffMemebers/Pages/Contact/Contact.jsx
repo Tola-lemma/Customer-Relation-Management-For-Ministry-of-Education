@@ -26,6 +26,12 @@ export const StaffContact = () => {
       headerName: "Email",
       flex: 1,
     },
+    {
+      field: "action",
+      headerName: "Action",
+      flex: 1,
+      
+    },
   ];
 
   return (
