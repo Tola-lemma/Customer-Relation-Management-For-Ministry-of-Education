@@ -79,7 +79,7 @@ export const OpenTicket = () => {
         issueDescription: selectedProblem,
         files:selectedFiles 
       }
-      
+console.log(requestBody);
       try {
       const {data: {msg}} = await axios.post("/issue/ticket-issue",requestBody, {
         headers: {
@@ -168,7 +168,8 @@ export const OpenTicket = () => {
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
             <UploadFile  
              selectedFiles={formData.selectedFiles}
-             setSelectedFiles={formData.setSelectedFiles} 
+             setSelectedFiles={(files) => setFormData({ ...formData, selectedFiles: files })}
+           
              />
           </Box>
 
