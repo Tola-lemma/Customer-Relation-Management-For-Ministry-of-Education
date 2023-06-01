@@ -12,7 +12,7 @@ import InputLabel from '@mui/material/InputLabel';
 import UploadFile from './UploadFile';
 import { Footer } from '../../../HeaderAndFooter/header/Footer/Footer';
 import { createMuiTheme, ThemeProvider } from '@mui/material';
-import { PhoneInput } from "react-contact-number-input";
+import PhoneInput from 'react-contact-number-input';
 
 const theme = createMuiTheme({
   overrides: {
@@ -37,7 +37,7 @@ export const OpenTicket = () => {
   const [selectedProblem, setSelectedProblem] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [phone, setPhone] = useState("");
+
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -135,15 +135,8 @@ export const OpenTicket = () => {
               value={phoneN}
               onChange={(e) => setPhoneN(e.target.value)}
               error={!!errors.phone}
-              helperText={errors.phone}>
-              </TextField>
-              <PhoneInput
-               country={"eg"}
-                enableSearch={true}
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
-                fullWidth
-                />
+              helperText={errors.phone}
+            />
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>

@@ -4,3 +4,7 @@
   align-items: center;
   justify-content: center;
 }
+.country-code{
+  margin-top: 2px;
+  border: none;
+}
