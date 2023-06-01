@@ -7,7 +7,7 @@ import {
   requestNotificationMailOptions,
 } from "../utils/mailOptions.js";
 import { ServiceTypes } from "../models/serviceTypes.js";
-import mongoose from "mongoose";
+import mongoose, { Mongoose, mongo } from "mongoose";
 import { IssueStatus } from "../models/issueStatus.js";
 
 export const upload = async (req, res) => {
@@ -64,16 +64,25 @@ export const getIssues = async (req, res) => {
 };
 
 export const getRequestedIssue = async (req, res) => {
-  const { requestId } = req.params;
+  const { requestIssueId } = req.params;
   const serviceType = ServiceTypes[req.user.role];
 
   const requestedIssue = await RequestIssue.findOne({
-    _id: requestId,
+    _id: requestIssueId,
     serviceType: serviceType,
   });
-  if (!requestedIssue) throw new NotfoundError(`No requestIssue found.`);
 
-  res.status(StatusCodes.OK).json({ success: true, requestedIssue });
+  if (!requestedIssue) throw new NotfoundError(`No requestIssue with id ${requestIssueId} found.`);
+
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName : "files"
+  })
+
+  const file = await bucket.find({"metadata.requestIssueId" : new mongo.ObjectId(requestIssueId)}).toArray();
+  
+  if(!file.length) throw new NotfoundError(`No file for the requestIssue with id : ${requestIssueId} found.`);
+  
+  res.status(StatusCodes.OK).json({ success: true, requestedIssue, file });
 };
 
 export const getFile = async (req, res) => {
