@@ -112,6 +112,11 @@ export const streamFile = async (req, res) => {
   const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName: "files",
   });
+
+  const fileToStream = await bucket.find({filename}).toArray()
+
+  if(!fileToStream.length) throw new NotfoundError(`file not found.`)
+  
   // find a file that with filename from the bucket
   const downloadStream = bucket.openDownloadStreamByName(filename);
   // Pipe the download stream to the response object to send the file
