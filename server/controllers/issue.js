@@ -7,8 +7,9 @@ import {
   requestNotificationMailOptions,
 } from "../utils/mailOptions.js";
 import { ServiceTypes } from "../models/serviceTypes.js";
-import mongoose, { mongo, ObjectId } from "mongoose";
+import mongoose from "mongoose";
 import { IssueStatus } from "../models/issueStatus.js";
+import { Roles } from "../models/roles.js";
 
 export const upload = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
@@ -45,7 +46,7 @@ export const trackIssue = async (req, res) => {
 
 export const getIssues = async (req, res) => {
   const { role } = req.user;
-  const serviceType = ServiceTypes[role];
+  const serviceType = role === Roles.Admin ? {} : ServiceTypes[role];
   //pagination
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -63,9 +64,9 @@ export const getIssues = async (req, res) => {
         as: "files",
       },
     },
+    {$skip : skip},
+    {$limit : limit}
   ])
-    .skip(skip)
-    .limit(limit);
 
   res
     .status(StatusCodes.OK)
@@ -96,7 +97,9 @@ export const getRequestedIssue = async (req, res) => {
   if (!requestedIssue.length)
     throw new NotfoundError(`No requestIssue with id ${requestIssueId} found.`);
 
-  res.status(StatusCodes.OK).json({ success: true, requestedIssue });
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, requestedIssue });
 };
 
 export const getFile = async (req, res) => {
@@ -150,23 +153,18 @@ export const updateIssueStatus = async (req, res) => {
   if (!IssueStatus[status])
     throw new BadRequestError("Invalid value for issue status.");
 
-  const issueToUpdate = await RequestIssue.findOne({
-    _id: requestIssueId,
-    serviceType: serviceType,
-  });
+  const issueToUpdate = await RequestIssue.findOne({ _id: requestIssueId, serviceType: serviceType });
+    
+  if (!issueToUpdate) throw new NotfoundError(`No Issue with id : ${requestIssueId} found.`);
 
-  if (!issueToUpdate)
-    throw new NotfoundError(`No Issue with id : ${requestIssueId} found.`);
+  const currentIssueStatus = issueToUpdate.issueStatus
+  const newStatus = IssueStatus[status]
+  
+  if(currentIssueStatus === newStatus) throw new BadRequestError("Can't update the same status")
 
-  const currentIssueStatus = issueToUpdate.issueStatus;
-  const newStatus = IssueStatus[status];
-
-  if (currentIssueStatus === newStatus)
-    throw new BadRequestError("Can't update the same status");
-
-  issueToUpdate.issueStatus = newStatus;
-  await issueToUpdate.save();
-
+  issueToUpdate.issueStatus = newStatus
+  await issueToUpdate.save()
+ 
   res.status(StatusCodes.OK).json({
     success: true,
     msg: "issue status updated successfully.",
@@ -236,4 +234,80 @@ export const deleteIssue = async (req, res) => {
     success: true,
     msg: `${confirmFiles.deletedCount} files and ${confirmChunks.deletedCount} chunks deleted successfully.`,
   });
+};
+
+export const generateReport = async (req, res) => {
+  const serviceType = req.user.role === Roles.Admin ? {} : ServiceTypes[req.user.role];
+
+  const aggregateReport = await RequestIssue.aggregate([
+    { $match: { serviceType } },
+    {
+      $lookup: {
+        from: "files.files",
+        localField: "_id",
+        foreignField: "metadata.requestIssueId",
+        as: "files",
+      },
+    },
+    {
+      $group: {
+        _id: {
+          serviceType: "$serviceType",
+          issueStatus: "$issueStatus",
+        },
+        count: { $sum: 1 },
+        totalFiles: { $sum: { $size: "$files" } },
+        totalFileLength: { $sum: { $sum: "$files.length" } },
+        createdAt: { $min: "$createdAt" },
+        updatedAt: { $max: "$updatedAt" },
+        issueDescriptions: { $addToSet: "$issueDescription" },
+        resolvedIssues: {
+          $push: {
+            $cond: [{ $eq: ["$issueStatus", "done"] }, { $subtract: ["$updatedAt", "$createdAt"] }, null],
+          },
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id.serviceType",
+        count: { $sum: "$count" },
+        totalFiles: { $sum: "$totalFiles" },
+        totalFileLength: { $sum: "$totalFileLength" },
+        issueStatus: {
+          $push: {
+            status: "$_id.issueStatus",
+            count: "$count",
+          },
+        },
+        averageFileLength: { $avg: "$totalFileLength" },
+        minFileLength: { $min: "$totalFileLength" },
+        maxFileLength: { $max: "$totalFileLength" },
+        resolvedIssues: { $push: "$resolvedIssues"  },
+        averageIssueResolutionTime: {
+          $avg: {
+            $cond: [{ $ne: ["$resolvedIssues", null] }, { $avg: "$resolvedIssues" }, null],
+          },
+        },
+        mostCommonIssueDescriptions: { $first: "$issueDescriptions" },
+      },
+    },
+    {
+      $project: {
+        serviceType: "$_id",
+        _id: 0,
+        count: 1,
+        totalFiles: 1,
+        totalFileLength: 1,
+        issueStatus: 1,
+        averageFileLength: 1,
+        minFileLength: 1,
+        maxFileLength: 1,
+        averageIssueResolutionTime: 1,
+        mostCommonIssueDescriptions: 1,
+      },
+    },
+  ]);
+  
+  res.status(StatusCodes.OK).json({ success: true, aggregateReport });
 };
