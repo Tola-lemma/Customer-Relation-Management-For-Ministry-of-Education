@@ -96,9 +96,7 @@ export const getRequestedIssue = async (req, res) => {
   if (!requestedIssue.length)
     throw new NotfoundError(`No requestIssue with id ${requestIssueId} found.`);
 
-  res
-    .status(StatusCodes.OK)
-    .json({ success: true, requestedIssue });
+  res.status(StatusCodes.OK).json({ success: true, requestedIssue });
 };
 
 export const getFile = async (req, res) => {
@@ -141,47 +139,46 @@ export const streamFile = async (req, res) => {
 
 export const updateIssueStatus = async (req, res) => {
   const { status } = req.body;
-  const { filename } = req.params;
+  const { requestIssueId } = req.params;
   const serviceType = ServiceTypes[req.user.role];
 
-  if (!filename || !status)
+  if (!status)
     throw new BadRequestError(
-      "please provide a complete information, filename and status is requred."
+      "please provide a complete information, status is requred."
     );
 
   if (!IssueStatus[status])
     throw new BadRequestError("Invalid value for issue status.");
 
-  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-    bucketName: "files",
+  const issueToUpdate = await RequestIssue.findOne({
+    _id: requestIssueId,
+    serviceType: serviceType,
   });
 
-  const issue = await bucket.find({ filename }).toArray();
+  if (!issueToUpdate)
+    throw new NotfoundError(`No Issue with id : ${requestIssueId} found.`);
 
-  if (!issue.length)
-    throw new BadRequestError(`No file with filename ${filename} exists.`);
+  const currentIssueStatus = issueToUpdate.issueStatus;
+  const newStatus = IssueStatus[status];
 
-  const requestId = issue[0].metadata.requestIssueId;
-  const requestedIssue = await RequestIssue.findOneAndUpdate(
-    { _id: requestId, serviceType: serviceType },
-    { issueStatus: IssueStatus[status] },
-    { runValidators: true, new: true }
-  );
+  if (currentIssueStatus === newStatus)
+    throw new BadRequestError("Can't update the same status");
 
-  if (!requestedIssue) throw new NotfoundError(`No requestIssue found.`);
+  issueToUpdate.issueStatus = newStatus;
+  await issueToUpdate.save();
 
   res.status(StatusCodes.OK).json({
     success: true,
     msg: "issue status updated successfully.",
-    requestedIssue,
+    issueToUpdate,
   });
 
-  if (requestedIssue.issueStatus === IssueStatus.done) {
+  if (issueToUpdate.issueStatus === IssueStatus.done) {
     await sendMail(
       requestDoneNotificationMailOptions(
-        requestedIssue.name,
-        "savix11466@soremap.com",
-        requestId
+        issueToUpdate.name,
+        issueToUpdate.email,
+        requestIssueId
       )
     );
   }
