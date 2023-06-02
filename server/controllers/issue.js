@@ -46,43 +46,59 @@ export const trackIssue = async (req, res) => {
 export const getIssues = async (req, res) => {
   const { role } = req.user;
   const serviceType = ServiceTypes[role];
-  const requestIssue = await RequestIssue.find({ serviceType });
-  // Create a new GridFSBucket instance
-  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-    bucketName: "files",
-  });
-  const requestIssueIds = Object.values(requestIssue).map(
-    (requestIssue) => requestIssue._id
-  );
-  const file = await bucket
-    .find({ "metadata.requestIssueId": { $in: requestIssueIds } })
-    .toArray();
+  //pagination
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  //aggregate query to get the issue that matched with the given servie type
+  const requestedIssues = await RequestIssue.aggregate([
+    { $match: { serviceType } },
+    { $sort: { createdAt: -1 } },
+    {
+      $lookup: {
+        from: "files.files",
+        localField: "_id",
+        foreignField: "metadata.requestIssueId",
+        as: "files",
+      },
+    },
+  ])
+    .skip(skip)
+    .limit(limit);
 
   res
     .status(StatusCodes.OK)
-    .json({ count: requestIssue.length, serviceType, requestIssue, file });
+    .json({ count: requestedIssues.length, requestedIssues });
 };
 
 export const getRequestedIssue = async (req, res) => {
   const { requestIssueId } = req.params;
   const serviceType = ServiceTypes[req.user.role];
 
-  const requestedIssue = await RequestIssue.findOne({
-    _id: requestIssueId,
-    serviceType: serviceType,
-  });
+  const requestedIssue = await RequestIssue.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(requestIssueId),
+        serviceType: serviceType,
+      },
+    },
+    {
+      $lookup: {
+        from: "files.files",
+        localField: "_id",
+        foreignField: "metadata.requestIssueId",
+        as: "files",
+      },
+    },
+  ]);
 
-  if (!requestedIssue) throw new NotfoundError(`No requestIssue with id ${requestIssueId} found.`);
+  if (!requestedIssue.length)
+    throw new NotfoundError(`No requestIssue with id ${requestIssueId} found.`);
 
-  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-    bucketName : "files"
-  })
-  
-  const file = await bucket.find({"metadata.requestIssueId" : new mongoose.Types.ObjectId(requestIssueId)}).toArray();
-  
-  if(!file.length) throw new NotfoundError(`No file for the requestIssue with id : ${requestIssueId} found.`);
-  
-  res.status(StatusCodes.OK).json({ success: true, requestedIssue, file });
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, requestedIssue });
 };
 
 export const getFile = async (req, res) => {
@@ -113,10 +129,10 @@ export const streamFile = async (req, res) => {
     bucketName: "files",
   });
 
-  const fileToStream = await bucket.find({filename}).toArray()
+  const fileToStream = await bucket.find({ filename }).toArray();
 
-  if(!fileToStream.length) throw new NotfoundError(`file not found.`)
-  
+  if (!fileToStream.length) throw new NotfoundError(`file not found.`);
+
   // find a file that with filename from the bucket
   const downloadStream = bucket.openDownloadStreamByName(filename);
   // Pipe the download stream to the response object to send the file
@@ -141,7 +157,7 @@ export const updateIssueStatus = async (req, res) => {
   });
 
   const issue = await bucket.find({ filename }).toArray();
-  
+
   if (!issue.length)
     throw new BadRequestError(`No file with filename ${filename} exists.`);
 
@@ -154,13 +170,11 @@ export const updateIssueStatus = async (req, res) => {
 
   if (!requestedIssue) throw new NotfoundError(`No requestIssue found.`);
 
-  res
-    .status(StatusCodes.OK)
-    .json({
-      success: true,
-      msg: "issue status updated successfully.",
-      requestedIssue,
-    });
+  res.status(StatusCodes.OK).json({
+    success: true,
+    msg: "issue status updated successfully.",
+    requestedIssue,
+  });
 
   if (requestedIssue.issueStatus === IssueStatus.done) {
     await sendMail(
@@ -187,29 +201,42 @@ export const deleteIssue = async (req, res) => {
   });
 
   const filesToDelete = await bucket
-  .find({ "metadata.requestIssueId": new mongoose.Types.ObjectId(requestIssueId) })
-  .toArray();
+    .find({
+      "metadata.requestIssueId": new mongoose.Types.ObjectId(requestIssueId),
+    })
+    .toArray();
 
   if (!filesToDelete.length)
-    throw new BadRequestError(`No issue with request id ${requestIssueId} exists.`);
-
-  const fileIds = Object.values(filesToDelete).map(file => file._id)  
-
-  // Delete the files and their associated chunks
-  const confirmFiles = await mongoose.connection.db.collection("files.files").deleteMany({ _id: { $in: fileIds } });
-
-  const confirmChunks = await mongoose.connection.db.collection("files.chunks").deleteMany({ files_id: { $in: fileIds } });
-  
-  if(!confirmFiles.acknowledged || !confirmChunks.acknowledged) throw new BadRequestError("Error while deleteing the files and it's chunks")
-  
-  const requestedIssue = await RequestIssue.findOneAndDelete({_id : requestIssueId, serviceType : serviceType});
-  
-  if (!requestedIssue)
-    throw new NotfoundError(
-      `No requestIssue found with id ${requestIssueId}.`
+    throw new BadRequestError(
+      `No issue with request id ${requestIssueId} exists.`
     );
 
-  res
-    .status(StatusCodes.OK)
-    .json({ success: true, msg: `${confirmFiles.deletedCount} files and ${confirmChunks.deletedCount} chunks deleted successfully.` });
+  const fileIds = Object.values(filesToDelete).map((file) => file._id);
+
+  // Delete the files and their associated chunks
+  const confirmFiles = await mongoose.connection.db
+    .collection("files.files")
+    .deleteMany({ _id: { $in: fileIds } });
+
+  const confirmChunks = await mongoose.connection.db
+    .collection("files.chunks")
+    .deleteMany({ files_id: { $in: fileIds } });
+
+  if (!confirmFiles.acknowledged || !confirmChunks.acknowledged)
+    throw new BadRequestError(
+      "Error while deleteing the files and it's chunks"
+    );
+
+  const requestedIssue = await RequestIssue.findOneAndDelete({
+    _id: requestIssueId,
+    serviceType: serviceType,
+  });
+
+  if (!requestedIssue)
+    throw new NotfoundError(`No requestIssue found with id ${requestIssueId}.`);
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    msg: `${confirmFiles.deletedCount} files and ${confirmChunks.deletedCount} chunks deleted successfully.`,
+  });
 };
