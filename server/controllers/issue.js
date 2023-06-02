@@ -172,3 +172,44 @@ export const updateIssueStatus = async (req, res) => {
     );
   }
 };
+
+export const deleteIssue = async (req, res) => {
+  const { requestIssueId } = req.params;
+  const serviceType = ServiceTypes[req.user.role];
+
+  if (!requestIssueId)
+    throw new BadRequestError(
+      "please provide a complete information, request issue id is requred."
+    );
+
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: "files",
+  });
+
+  const filesToDelete = await bucket
+  .find({ "metadata.requestIssueId": new mongoose.Types.ObjectId(requestIssueId) })
+  .toArray();
+
+  if (!filesToDelete.length)
+    throw new BadRequestError(`No issue with request id ${requestIssueId} exists.`);
+
+  const fileIds = Object.values(filesToDelete).map(file => file._id)  
+
+  // Delete the files and their associated chunks
+  const confirmFiles = await mongoose.connection.db.collection("files.files").deleteMany({ _id: { $in: fileIds } });
+
+  const confirmChunks = await mongoose.connection.db.collection("files.chunks").deleteMany({ files_id: { $in: fileIds } });
+  
+  if(!confirmFiles.acknowledged || !confirmChunks.acknowledged) throw new BadRequestError("Error while deleteing the files and it's chunks")
+  
+  const requestedIssue = await RequestIssue.findOneAndDelete({_id : requestIssueId, serviceType : serviceType});
+  
+  if (!requestedIssue)
+    throw new NotfoundError(
+      `No requestIssue found with id ${requestIssueId}.`
+    );
+
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, msg: `${confirmFiles.deletedCount} files and ${confirmChunks.deletedCount} chunks deleted successfully.` });
+};
