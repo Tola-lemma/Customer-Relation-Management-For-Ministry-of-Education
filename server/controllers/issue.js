@@ -12,23 +12,23 @@ import { IssueStatus } from "../models/issueStatus.js";
 import { Roles } from "../models/roles.js";
 
 export const upload = async (req, res) => {
-  res.status(StatusCodes.CREATED).json({
-    success: true,
-    msg: "file uploaded successfully, please check your email to get your ticket number for the submitted issue.",
-  });
 
   const requestIssue = await RequestIssue.findById(req.requestIssue.Id);
-
+  
   if (!requestIssue)
-    throw new NotfoundError(`No request issue with ${req.requestIssue.Id}.`);
-
+  throw new NotfoundError(`No request issue with ${req.requestIssue.Id}.`);
+  
   await sendMail(
     requestNotificationMailOptions(
       requestIssue.name,
       requestIssue.email,
       requestIssue._id
-    )
-  );
+    ));
+
+  res.status(StatusCodes.CREATED).json({
+    success: true,
+    msg: "file uploaded successfully, please check your email to get your ticket number for the submitted issue.",
+  });
 };
 
 export const trackIssue = async (req, res) => {
@@ -165,22 +165,23 @@ export const updateIssueStatus = async (req, res) => {
   issueToUpdate.issueStatus = newStatus
   await issueToUpdate.save()
  
-  res.status(StatusCodes.OK).json({
-    success: true,
-    msg: "issue status updated successfully.",
-    issueToUpdate,
-  });
-
+  
   if (issueToUpdate.issueStatus === IssueStatus.done) {
     await sendMail(
       requestDoneNotificationMailOptions(
         issueToUpdate.name,
         issueToUpdate.email,
         requestIssueId
-      )
-    );
-  }
-};
+        )
+        );
+      }
+    };
+
+res.status(StatusCodes.OK).json({
+  success: true,
+  msg: "issue status updated successfully.",
+  issueToUpdate,
+});
 
 export const deleteIssue = async (req, res) => {
   const { requestIssueId } = req.params;
