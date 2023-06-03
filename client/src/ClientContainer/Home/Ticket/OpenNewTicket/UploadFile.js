@@ -46,7 +46,7 @@ function UploadFile({ selectedFiles, setSelectedFiles }) {
       <input
         id="uploadFile"
         type="file"
-        name="selectedFiles"
+        name="files"
         multiple
         accept="application/pdf"
         onChange={handleFileEvent}
@@ -60,8 +60,8 @@ function UploadFile({ selectedFiles, setSelectedFiles }) {
       </label>
 
       <div className="uploaded-files-list">
-        {uploadedFiles.map((file) => (
-          <div>
+        {uploadedFiles.map((file,index) => (
+          <div key={index}>
             {file.name} ({file.size} MB)
           </div>
         ))}
