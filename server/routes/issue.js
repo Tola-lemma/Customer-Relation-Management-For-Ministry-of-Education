@@ -8,6 +8,8 @@ import {
   streamFile,
   updateIssueStatus,
   getRequestedIssue,
+  deleteIssue,
+  generateReport,
 } from "../controllers/issue.js";
 import { storage } from "../utils/storage.js";
 import { fileFilter, limits } from "../utils/fileFilter.js";
@@ -56,7 +58,7 @@ router.get(
 );
 
 router.put(
-  "/update/:filename",
+  "/update/:requestIssueId",
   authMiddleware,
   isAuthorized(
     Roles.ComplaintsCoordinator,
@@ -68,7 +70,7 @@ router.put(
 );
 
 router.get(
-  "/request-issue/:requestId",
+  "/request-issue/:requestIssueId",
   authMiddleware,
   isAuthorized(
     Roles.ComplaintsCoordinator,
@@ -78,4 +80,29 @@ router.get(
   ),
   getRequestedIssue
 );
+
+router.delete(
+  "/delete/:requestIssueId",
+  authMiddleware,
+  isAuthorized(
+    Roles.ComplaintsCoordinator,
+    Roles.ScholarshipCoordinator,
+    Roles.StudyAbroadCoordinator,
+    Roles.TransferCoordinator
+  ),
+  deleteIssue
+);
+
+router.get(
+  "/report",
+  authMiddleware,
+  isAuthorized(
+    Roles.ComplaintsCoordinator,
+    Roles.ScholarshipCoordinator,
+    Roles.StudyAbroadCoordinator,
+    Roles.TransferCoordinator
+  ),
+  generateReport
+);
+
 export { router as requestIssueRouter };
