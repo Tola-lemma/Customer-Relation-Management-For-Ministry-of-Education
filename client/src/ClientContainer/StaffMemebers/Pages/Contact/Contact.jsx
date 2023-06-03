@@ -19,7 +19,7 @@ const reducer = (state, action) => {
     case "UPDATE_STAFF":
       return {
         ...state,
-        modalTitle: "Update Staff Members",
+        modalTitle: "Views of Customer Detail",
         FullName: action.payload.FullName,
         Email: action.payload.Email,
         ContactNumber: action.payload.ContactNumber,
@@ -91,7 +91,7 @@ export const StaffContact = () => {
 
   return (
     <Box m="20px">
-      <Header title="CONTACTS" subtitle="List of Staff Members contacts for future reference" />
+      <Header title="CUSTOMER ISSUE" subtitle="List of Customer Issue " />
       <Box
         m="40px 0 0 0"
         height="75vh"

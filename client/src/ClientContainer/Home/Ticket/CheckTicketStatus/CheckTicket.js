@@ -2,11 +2,9 @@ import React from "react";
 import { NavBar } from "../../../HeaderAndFooter/header/NavBar";
 import "./CheckTicket.css";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
+
 import { Footer } from "../../../HeaderAndFooter/header/Footer/Footer";
-=======
-import { Footer } from "../../../HeaderAndFooter/footer/Footer";
->>>>>>> 201df7cf7e42c2b3774ec9b8d83cfb9cb50eab62
+
 export const CheckTicket = () => {
   return (
    <>

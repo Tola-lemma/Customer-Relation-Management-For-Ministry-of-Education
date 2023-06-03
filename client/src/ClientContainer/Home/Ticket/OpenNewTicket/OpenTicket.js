@@ -6,7 +6,7 @@ import './OpenTicket.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Stack, Typography } from '@mui/material';
-import { Footer } from '../../../HeaderAndFooter/footer/Footer';
+import { Footer } from '../../../HeaderAndFooter/header/Footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -15,7 +15,8 @@ import { createMuiTheme, ThemeProvider } from '@mui/material';
 import axios from 'axios';
 import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
 import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
-
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 const theme = createMuiTheme({
   overrides: {
     MuiInput: {
@@ -30,6 +31,7 @@ const theme = createMuiTheme({
     },
   },
 });
+
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialFormState = {
@@ -141,15 +143,19 @@ console.log(requestBody);
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
-            <TextField
-              fullWidth
-              label='Phone Number'
-              id='phoneNumeber'
-              type='number'
+            
+            <PhoneInput
+              country="et"
               value={formData.phoneN}
-              onChange={(e) => setFormData({ ...formData, phoneN: e.target.value })}
-              error={!!errors.phone}
-              helperText={errors.phone}
+              onChange={(phone) => setFormData({ ...formData, phoneN: phone })}
+              inputStyle={{ width: '100%', height:'3.4rem' }}
+              inputExtraProps={{
+                name: 'phoneN',
+                required: true,
+                autoFocus: true,
+                placehoder:"Enter your phone number",
+              }}
+              className={"input-phone-number"}
             />
           </Box>
 

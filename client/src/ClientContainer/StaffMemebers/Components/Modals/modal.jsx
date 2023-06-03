@@ -1,3 +1,4 @@
+
 import React from "react";
 
 const Modal = ({ modalTitle, fullName, contactNumber, email, role, onUpdate }) => {
@@ -25,16 +26,19 @@ const Modal = ({ modalTitle, fullName, contactNumber, email, role, onUpdate }) =
               </div>
               <div className="input-group mb-3">
                 <span className="input-group-text">Role:</span>
-                <select className="form-select" value={role}>
-                  <option>Transfer Coordinator</option>
-                  <option>Study Abroad Coordinator</option>
-                  <option>Scholarship Coordinator</option>
-                  <option>Complaints Coordinator</option>
-                </select>
+                <input type="text" className="form-control"  />
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text">File</span>
+                <input type="text" className="form-control"/>
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text">Summary</span>
+                <input type="text" className="form-control"/>
               </div>
             </div>
             <button type="button" className="btn btn-primary float-end" onClick={onUpdate}>
-              Update
+              Send
             </button>
           </div>
         </div>
