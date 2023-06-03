@@ -21,7 +21,7 @@ const router = express.Router();
 const uploadM = multer({ storage, fileFilter, limits });
 
 router.post("/ticket-issue", uploadM.array("files", limits.files), upload);
-router.get("/track-issue", trackIssue);
+router.post("/track-issue", trackIssue);
 router.get(
   "/requested-issues",
   authMiddleware,
