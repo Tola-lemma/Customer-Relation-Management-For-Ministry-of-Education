@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import { NavBar } from '../../../HeaderAndFooter/header/NavBar';
@@ -70,47 +69,44 @@ export const OpenTicket = () => {
       formErrors.problem = 'Select Your Problem';
     }
   
-    // if (!formData.selectedFile && formData.selectedFiles.length === 0) {
-    //   formErrors.file = 'Upload a File';
-    // }
+    if (!formData.selectedFile && formData.selectedFiles.length === 0) {
+      formErrors.file = 'Upload a File';
+    }
   
     if (!formData.txtArea.trim()) {
-      formErrors.textArea = "Don't forget to write your problem summary";
+      formErrors.txtArea = "Don't forget to write your problem summary";
     }
   
     setErrors(formErrors);
   
     return Object.keys(formErrors).length === 0;
   };
-  const {fullName,phoneN,email,selectedProblem, selectedFiles,} = formData
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
       const requestBody = {
-        name:fullName,
-        phoneNumber:phoneN,
-        email:email,
-        issueDescription: selectedProblem,
-        files:selectedFiles 
-      }
+        name: formData.fullName,
+        phoneNumber: formData.phoneN,
+        email: formData.email,
+        serviceType: formData.selectedProblem,
+        issueDescription:formData.txtArea,
+        files: formData.selectedFiles,
+      };
 console.log(requestBody);
       try {
-      const {data: {msg}} = await axios.post("/issue/ticket-issue",requestBody, {
+      const {data: {msg}} = await axios.post("/issue/ticket-issue",requestBody,{
         headers: {
           'Accept': 'application/json',
-         'Content-Type': 'application/json',
-          }
-      });
+          'Content-Type': 'application/json',
+        }});
       showSuccess("Successfully "+ msg + "!");
     } catch (error) {
         console.log(error?.response?.data?.msg);
         showError(error?.response?.data?.msg || "An error occurred. Please try again.");
   };
-      console.log(formData);
-
+      
       setFormData(initialFormState);
       setErrors({});
     }
@@ -191,21 +187,22 @@ console.log(requestBody);
             <UploadFile  
              selectedFiles={formData.selectedFiles}
              setSelectedFiles={(files) => setFormData({ ...formData, selectedFiles: files })}
-           
              />
+             
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', mt: 2 }}>
             <TextField
               id='outlined-multiline-static'
-              label=' Summary'
+              label='Summary'
+              name="txtArea"
               multiline
               rows={4}
               fullWidth
               value={formData.txtArea}
               onChange={(e) =>  setFormData({ ...formData, txtArea: e.target.value })}
-              error={!!errors.textArea}
-              helperText={errors.textArea}
+              error={!!errors.txtArea}
+              helperText={errors.txtArea}
             />
           </Box>
           </ThemeProvider>
