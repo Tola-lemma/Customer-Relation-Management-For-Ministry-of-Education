@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import { NavBar } from '../../../HeaderAndFooter/header/NavBar';
 import './OpenTicket.css';
 import Box from '@mui/material/Box';
@@ -9,127 +9,114 @@ import { Footer } from '../../../HeaderAndFooter/footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import UploadFile from './UploadFile';
 import axios from 'axios';
 import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
 import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
-
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css';
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
-  const initialFormState = {
-    fullName: '',
+  const initialValue = {
+    name: '',
     phoneN: '',
     email: '',
-    txtArea: '',
-    selectedProblem: '',
-    selectedFile: null,
-    selectedFiles: [],
+    issueDescription: '',
+    serviceType: ''
   };
   
-  const [formData, setFormData] = useState(initialFormState);
-  const [errors, setErrors] = useState({});
+  const [value, setValue] = useState(initialValue);
+  const fileInputRef = useRef(null);
   
-  const validateForm = () => {
-    let formErrors = {};
-  
-    if (!formData.fullName.trim()) {
-      formErrors.fullName = 'Enter Your Full Name';
-    }
-  
-    if (!formData.phoneN.trim()) {
-      formErrors.phone = 'Enter Your Phone Number';
-    } else if (!/^\d+$/.test(formData.phoneN.trim())) {
-      formErrors.phone = 'Invalid Phone Number';
-    }
-  
-    if (!formData.email.trim()) {
-      formErrors.email = 'Enter Working Email Address';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
-      formErrors.email = 'Invalid Email Address';
-    }
-  
-    if (!formData.selectedProblem) {
-      formErrors.problem = 'Select Your Problem';
-    }
-  
-    if (!formData.selectedFile && formData.selectedFiles.length === 0) {
-      formErrors.file = 'Upload a File';
-    }
-  
-    if (!formData.txtArea.trim()) {
-      formErrors.txtArea = "Don't forget to write your problem summary";
-    }
-  
-    setErrors(formErrors);
-  
-    return Object.keys(formErrors).length === 0;
-  };
+ 
+  let {name, email,phoneN,serviceType, issueDescription} = value
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phoneNumber", phoneN);
+    formData.append("serviceType", serviceType);
+    formData.append( "issueDescription",issueDescription);
+    // Get all the selected files
+    const files = Array.from(fileInputRef.current.files);
+    // files.forEach((file) => formData.append("files", file));
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+    const allowedType = "application/pdf";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      const requestBody = {
-        name: formData.fullName,
-        phoneNumber: formData.phoneN,
-        email: formData.email,
-        serviceType: formData.selectedProblem,
-        issueDescription:formData.txtArea,
-        files: formData.selectedFiles,
-      };
-console.log(requestBody);
+    // Validate each file before appending to FormData
+    let isValid = true;
+    files.forEach((file) => {
+      // Check file size
+      if (file.size > maxSize) {
+        showError(`File ${file.name} exceeds the maximum allowed size of 5MB.`);
+        isValid = false;
+        return;
+      }
+
+      // Check file type
+      if (file.type !== allowedType) {
+        showError(`File ${file.name} has an invalid file type. Allowed type: PDF.`);
+        isValid = false;
+        return;
+      }
+
+      formData.append("files", file);
+    });
+
+    if (isValid) {
+      if (!formData.has("files")) {
+        showError("Please select at least one file.");
+        return;
+      }
       try {
-      const {data: {msg}} = await axios.post("/issue/ticket-issue",requestBody,{
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }});
-      showSuccess("Successfully "+ msg + "!");
-    } catch (error) {
-        console.log(error?.response?.data?.msg);
-        showError(error?.response?.data?.msg || "An error occurred. Please try again.");
-  };
-      
-      setFormData(initialFormState);
-      setErrors({});
+        const {
+          data: { msg },
+        } = await axios.post(
+          "/issue/ticket-issue",
+          formData
+        );
+        showSuccess(msg);
+      } catch (error) {
+        console.error(error);
+        showError("An error occurred during the file upload.");
+      }
     }
+    setValue(initialValue);
   };
   
   const handleReset = () => {
-    setFormData(initialFormState);
-    setErrors({});
+    setValue(initialValue);
   };
   return (
     <div>
-    <form onSubmit={handleSubmit} onReset={handleReset}>
-      <div className=''>
+     <form onSubmit={onSubmit} onReset={handleReset}>
+      <div className=''> 
         <NavBar />
         <div className='container all-container'>
           <Typography variant='h1'>Ask New Questions</Typography>
-          <Typography variant='h3'>Please fill out this form to submit your problem.</Typography>
+          <Typography variant='h3'>Please fill out this form to submit your Issue.</Typography>
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
             <TextField
               fullWidth
               label='Full Name'
               id='fullName'
               type='name'
-              value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              error={!!errors.fullName}
-              helperText={errors.fullName}
+              value={value.fullName}
+              onChange={(e) => setValue({ ...value, name: e.target.value })}
             />
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
-            <TextField
-              fullWidth
-              label='Phone Number'
-              id='phoneNumeber'
-              type='number'
-              value={formData.phoneN}
-              onChange={(e) => setFormData({ ...formData, phoneN: e.target.value })}
-              error={!!errors.phone}
-              helperText={errors.phone}
+          <PhoneInput 
+              country="et" 
+              value={value.phoneN} 
+              onChange={(phone) => setValue({ ...value, phoneN: phone })}
+              inputStyle={{ width: '100%', height:'3.4rem' }}
+              inputExtraProps={{  
+                required: true, 
+                autoFocus: true, 
+              }} 
+              className={"input-phone-number"} 
             />
           </Box>
 
@@ -139,18 +126,16 @@ console.log(requestBody);
               label='Email'
               id='email'
               type='email'
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email:e.target.value})}
-              error={!!errors.email}
-              helperText={errors.email}
+              value={value.email}
+              onChange={(e) => setValue({...value, email:e.target.value})}
             />
           </Box>
 
           <FormControl sx={{ width: 600, maxWidth: '100%', mt: 2 }}>
             <InputLabel htmlFor='grouped-native-select'>Select Your Problem</InputLabel>
-            <Select native defaultValue='' id='grouped-native-select' label='Select your problem'
-            onChange={e => setFormData({ ...formData, selectedProblem: e.target.value })}
-            error={!!errors.problem}>
+            <Select native defaultValue='' id='grouped-native-select' label='Select your Issue'
+            onChange={e => setValue({ ...value, serviceType: e.target.value })}
+            >
               <option aria-label='None' value='' />
               <option value="transferRequest">Student transfer request</option>
               <option value="transferRequest">Teacher transfer request</option>
@@ -158,29 +143,22 @@ console.log(requestBody);
               <option value="scholarshipRequest">Request to return to work after studying abroad</option>
               <option value="complaintRequest">Various academic and administrative complaints</option>
             </Select>
-            {errors.problem && <p style={{ color: "red", display: 'inline' }}>{errors.problem}</p>}
           </FormControl>
 
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
-            <UploadFile  
-             selectedFiles={formData.selectedFiles}
-             setSelectedFiles={(files) => setFormData({ ...formData, selectedFiles: files })}
-             />
-             
+          <input type="file" ref={fileInputRef} multiple />
           </Box>
 
           <Box sx={{ width: 600, maxWidth: '100%', mt: 2 }}>
             <TextField
               id='outlined-multiline-static'
               label='Summary'
-              name="txtArea"
+              name="issueDescription"
               multiline
               rows={4}
               fullWidth
-              value={formData.txtArea}
-              onChange={(e) =>  setFormData({ ...formData, txtArea: e.target.value })}
-              error={!!errors.txtArea}
-              helperText={errors.txtArea}
+              value={value.issueDescription}
+              onChange={(e) =>  setValue({ ...value, issueDescription: e.target.value })}
             />
           </Box>
 
@@ -194,11 +172,11 @@ console.log(requestBody);
           </Stack>
         </div>
       </div>
-    </form>
-    <ErrorMessage />
+    </form> 
+     <ErrorMessage />
     <Footer />
   </div>
-    
+
   );
 };
 
