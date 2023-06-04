@@ -12,6 +12,7 @@ import { ColorModeContext, useMode } from "./ClientContainer/Admin/theme";
 import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
 import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 import axios from "axios";
+import { ChangePassword } from "./ClientContainer/Admin/LoginPage/ChangePassword";
 axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
@@ -27,6 +28,7 @@ export const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/emailsubmission" element={<EmailSubmission />} />
           <Route path="/passwordreset" element={<PasswordReset />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />
           <Route path="*" element={<PageNotFound />} />

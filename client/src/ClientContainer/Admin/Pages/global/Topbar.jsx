@@ -15,6 +15,7 @@ export const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
   const hadleLogout= ()=>{
+    localStorage.setItem("token", "")
        navigate("/login")
   }
   
