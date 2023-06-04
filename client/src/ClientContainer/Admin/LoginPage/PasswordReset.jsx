@@ -13,13 +13,6 @@ export const PasswordReset = () => {
         <div className="login-parent">
           <h2>Password Reset</h2>
           <form>
-          <div className="input-box">
-              <span className="icon">
-                <i className="fa-solid fa-lock"></i>
-              </span>
-              <input type="password" required />
-              <label htmlFor="password">Old Password</label>
-            </div>
             <div className="input-box">
               <span className="icon">
                 <i className="fa-solid fa-lock"></i>
@@ -34,7 +27,7 @@ export const PasswordReset = () => {
               <input type="password" required />
               <label htmlFor="password">Confirm New Password</label>
             </div>
-            <button type="submit" className="loginbtn btn btn-primary" onClick={handleReset}>
+            <button type="submit" className="loginbtn btn btn-primary mt-5" onClick={handleReset}>
               Reset
             </button>
           </form>
