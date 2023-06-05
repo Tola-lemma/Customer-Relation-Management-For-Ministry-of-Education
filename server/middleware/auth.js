@@ -12,7 +12,16 @@ export const authMiddleware = async (req, res, next) => {
     req.user = { Id: decoded.userId, role: decoded.role };
     next();
   } catch (error) {
+    //token expired error
+  if (error.name === "TokenExpiredError") {
+    throw new UnauthenticatedError("token session time out");
+  }
+  if (error.name === "JsonWebTokenError") {
+    throw new UnauthenticatedError("Invalid token");
+  }
+  else{
     throw new UnauthenticatedError("Invalid Credentials");
+  }
   }
 };
 

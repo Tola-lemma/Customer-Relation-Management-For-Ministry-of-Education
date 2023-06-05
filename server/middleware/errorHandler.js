@@ -28,15 +28,6 @@ export const errorHandlerMiddleware = async (err, req, res, next) => {
       .join(",");
     customError.statusCode = StatusCodes.BAD_REQUEST;
   }
-  //token expired error
-  if (err.name === "TokenExpiredError") {
-    customError.message = "Reset password link has expired";
-    customError.statusCode = StatusCodes.BAD_REQUEST;
-  }
-  if (err.name === "JsonWebTokenError") {
-    customError.message = "Invalid reset password token";
-    customError.statusCode = StatusCodes.BAD_REQUEST;
-  }
 
   //uploading error
   if(err instanceof MulterError && err.code == "LIMIT_FILE_SIZE"){
