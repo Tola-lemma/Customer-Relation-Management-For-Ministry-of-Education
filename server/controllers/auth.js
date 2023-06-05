@@ -22,7 +22,7 @@ export const login = async (req, res) => {
   if (!isMatch) throw new UnauthenticatedError("Incorrect Password");
 
   const token = user.jwtSign();
-  res.status(StatusCodes.CREATED).json({ success: true, token, msg: "login" });
+  res.status(StatusCodes.CREATED).json({ success: true, token, username : user.name, role : user.role, msg: "login" });
 };
 
 export const changePassword = async (req, res) => {
