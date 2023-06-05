@@ -159,3 +159,7 @@ export const updateAccount = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ success: true, msg: "Account updated successfully." });
 };
+
+export const checkAuth = async(req, res) => {
+  res.status(StatusCodes.OK).json({success : true, role : req.user.role})
+}
