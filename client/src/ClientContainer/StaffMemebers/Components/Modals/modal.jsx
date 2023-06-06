@@ -1,7 +1,8 @@
 
 import React from "react";
 
-const Modal = ({ modalTitle, fullName, contactNumber, email, role, onUpdate }) => {
+
+const Modal = ({ modalTitle, fullName, contactNumber, email }) => {
   return (
     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
       <div className="modal-dialog modal-lg modal-dialog-centered">
@@ -37,9 +38,6 @@ const Modal = ({ modalTitle, fullName, contactNumber, email, role, onUpdate }) =
                 <input type="text" className="form-control"/>
               </div>
             </div>
-            <button type="button" className="btn btn-primary float-end" onClick={onUpdate}>
-              Send
-            </button>
           </div>
         </div>
       </div>

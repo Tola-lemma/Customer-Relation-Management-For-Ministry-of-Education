@@ -1,7 +1,7 @@
 import { Button, useTheme } from '@mui/material';
 import React from 'react'
 import { tokens } from '../../theme';
-const ModalButton = ({editClick,handleDelete}) => {
+const ModalButton = ({editClick}) => {
       const theme = useTheme();
       const colors = tokens(theme.palette.mode);
   return (
@@ -16,11 +16,7 @@ const ModalButton = ({editClick,handleDelete}) => {
        <Button style={{ fontSize: "12px",color:colors.primary[700] ,backgroundColor:colors.greenAccent[600]}} > View </Button>
       </span>
     </button>
-    <button
-      className="btn btn-sm shadow-lg  rounded-pill ms-2"
-      onClick={() => {handleDelete()}}
-    >
-    </button>
+ 
     </div>
   )
 }

@@ -30,7 +30,7 @@ export const StaffDashboard = () => {
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Generate Reports
+            Generate Report
           </Button>
         </Box>
       </Box>
