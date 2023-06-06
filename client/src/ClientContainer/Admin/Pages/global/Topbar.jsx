@@ -9,12 +9,15 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate }from "react-router-dom"
+import { UserContext } from "./LoginContext";
 export const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
+  const { logout } = useContext(UserContext);
   const hadleLogout= ()=>{
+     logout();
     localStorage.setItem("token", "")
        navigate("/login")
   }

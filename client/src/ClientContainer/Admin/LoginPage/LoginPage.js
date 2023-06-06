@@ -1,40 +1,67 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
+import { UserContext } from "../Pages/global/LoginContext";
 export const LoginPage = () => {
   const { showError } = useContext(ErrorContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { login, user } = useContext(UserContext);
   const navigate = useNavigate();
   
-  useEffect(()=>{
+  const roleRoutes = useMemo(
+    () => ({
+      admin: "/admin",
+      transferCoordinator: "/staff",
+      studyAbroadCoordinator: "/staff",
+      scholarshipCoordinator: "/staff",
+      complaintsCoordinator: "/staff",
+    }),
+    []
+  );
+  useEffect(() => {
     const tokenInLs = localStorage.getItem("token");
-    axios.get("/auth/check-auth", {headers : {
-      authorization : `Bearer ${tokenInLs}`
-    }}).then(() => {
+    if (tokenInLs && user.username && user.role) {
       setIsAuthenticated(true);
-    }).catch(() => {
-      setIsAuthenticated(false)
-    })
-  },[])
+      navigate(roleRoutes[user.role]);
+    } else {
+      axios
+        .get("/auth/check-auth", {
+          headers: {
+            authorization: `Bearer ${tokenInLs}`,
+          },
+        })
+        .then(() => {
+          setIsAuthenticated(true);
+          navigate(roleRoutes[user.role]);
+        })
+        .catch(() => {
+          setIsAuthenticated(false);
+        });
+    }
+  }, [navigate, roleRoutes, user.role, user.username]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("/auth/login", { email, password });
-      const { token} = response.data;
+      const { token,username, role} = response.data;
       localStorage.setItem("token", token);
+      login(username, role);
+    if (role in roleRoutes) {
+      navigate(roleRoutes[role]);
       setIsAuthenticated(true);
+    }
     } catch (error) {
       console.log(error);
         showError(error.response?.data?.msg||"An error occurred. Please try again.");
       }  
     };
-  return isAuthenticated ? navigate("/admin") : (
+  return isAuthenticated ? null: (
   <> 
   <button className="btn btn-primary rounded-pill ms-2 mt-3" onClick={()=>navigate('/')}>🏠 Back to Home</button>
   <div className="loginpage">

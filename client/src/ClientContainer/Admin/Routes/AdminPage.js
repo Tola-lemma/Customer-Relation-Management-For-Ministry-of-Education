@@ -11,10 +11,12 @@ import { StaffSummary } from "../Pages/staffMembers/StaffSummary";
 import { StaffMembers } from "../Pages/team/StaffMembers";
 import { PageNotFound } from "../Pages/PageNotFound/PageNotFound";
 import { Sidebar } from "../Pages/global/Sidebar";
+import { UserProvider } from "../Pages/global/LoginContext";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode("dark");
   return (
     <ColorModeContext.Provider value={colorMode}>
+      <UserProvider >
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
@@ -34,6 +36,7 @@ export const AdminPage = () => {
           </main>
         </div>
       </ThemeProvider>
+      </UserProvider>
     </ColorModeContext.Provider>
   );
 };

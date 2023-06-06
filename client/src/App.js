@@ -13,11 +13,13 @@ import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
 import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 import axios from "axios";
 import { ChangePassword } from "./ClientContainer/Admin/LoginPage/ChangePassword";
+import { UserProvider } from "./ClientContainer/Admin/Pages/global/LoginContext";
 axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (
     <ColorModeContext.Provider value={colorMode}>
+      <UserProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
@@ -34,6 +36,7 @@ export const App = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
+      </UserProvider>
     </ColorModeContext.Provider>
   );
 };
