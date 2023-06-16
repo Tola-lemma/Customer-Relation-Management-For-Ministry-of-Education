@@ -7,7 +7,6 @@ import { Contacts } from "../Pages/contacts/Contacts";
 import { Form } from "../Pages/form/Form";
 import { FAQ } from "../Pages/faq/FAQ";
 import { Calendar } from "../Pages/calendar/Calendar";
-import { StaffSummary } from "../Pages/staffMembers/StaffSummary";
 import { StaffMembers } from "../Pages/team/StaffMembers";
 import { PageNotFound } from "../Pages/PageNotFound/PageNotFound";
 import { Sidebar } from "../Pages/global/Sidebar";
@@ -27,7 +26,6 @@ export const AdminPage = () => {
               <Route path="/" element={<Dashboard />} />
               <Route path="/team" element={<StaffMembers />} />
               <Route path="/contacts" element={<Contacts />} />
-              <Route path="/staff_summary" element={<StaffSummary />} />
               <Route path="/form" element={<Form />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
