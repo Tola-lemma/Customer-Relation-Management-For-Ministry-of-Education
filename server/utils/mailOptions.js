@@ -165,7 +165,7 @@ export const requestNotificationMailOptions = (name, email, ticketNumber) => {
           </p>
         
           <p class="btn">
-            <a class="button" href="http://localhost:3000/api/v1/issue/track-issue?ticket=${ticketNumber}">Track Issue</a>
+            <a class="button" href="http://localhost:3000/api/v1/issue/track-issue">Track Issue</a>
           </p>
         
           <p>
