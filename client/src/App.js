@@ -13,12 +13,14 @@ import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
 import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 import ContactUs from "./ClientContainer/HeaderAndFooter/ContactUs/ContactUs";
 import axios from "axios";
-
+import { UserProvider } from "./ClientContainer/Admin/Pages/global/LoginContext";
+import { ChangePassword } from "./ClientContainer/Admin/LoginPage/ChangePassword";
 axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (
     <ColorModeContext.Provider value={colorMode}>
+      <UserProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
@@ -30,11 +32,13 @@ export const App = () => {
           <Route path="/emailsubmission" element={<EmailSubmission />} />
           <Route path="/contactUs" element={<ContactUs/>}/>
           <Route path="/passwordreset" element={<PasswordReset />} />
+          <Route path="/changepassword" element={<ChangePassword/>} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
+      </UserProvider>
     </ColorModeContext.Provider>
   );
 };

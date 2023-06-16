@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import adminProfilePicture from "../../../.././assets/images/admin.png";
+import { UserContext } from "../../../Admin/Pages/global/LoginContext";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -34,6 +35,7 @@ export const StaffSidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const { user } = useContext(UserContext);
   return (
     <Box
     height="660px"
@@ -74,7 +76,7 @@ export const StaffSidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  Staff Member
+                {user.role !== 'admin' && user.role}
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -101,7 +103,7 @@ export const StaffSidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Meles Zawude
+                 {user.role !== 'admin' && user.username}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   MoE CRM Staff Memeber
