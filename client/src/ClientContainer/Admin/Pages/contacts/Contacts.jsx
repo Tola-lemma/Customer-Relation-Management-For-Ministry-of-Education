@@ -4,12 +4,22 @@ import { tokens } from "../.././theme";
 import { mockDataContacts } from "../.././data/mockData";
 import { Header } from "../../components/Header";
 import './contact.css'
+import { useEffect, useState } from "react";
 export const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [contactInfo, setContactInfo] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await mockDataContacts();
+      setContactInfo(data);
+    };
+
+    fetchData();
+  }, []);
   const columns = [
-    { field: "id", headerName: "ID",flex:0.5},
-    {field: "registrarId", headerName: "Registrar ID",},
+    { field: "id", headerName: "ID",flex:0.1},
+    {field: "registrarId",flex:1, headerName: "Registrar ID",},
     {
       field: "name",
       headerName: "Name",
@@ -64,7 +74,7 @@ export const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={contactInfo}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

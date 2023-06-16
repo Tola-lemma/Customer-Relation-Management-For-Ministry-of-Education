@@ -3,8 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataTeam } from "../.././data/mockData";
 import { Header } from "../../components/Header";
-
-import {  useContext, useReducer} from "react";
+import {  useContext, useEffect, useReducer, useState} from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import Modal from "../../components/Modals/modal";
@@ -36,6 +35,15 @@ export const StaffMembers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { showWarning,showSuccess } = useContext(ErrorContext);
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await mockDataTeam();
+      setUserData(data);
+    };
+
+    fetchData();
+  }, []);
 //update purpose
   const [state, dispatch] = useReducer(reducer, {
     modalTitle: "",
@@ -61,7 +69,7 @@ export const StaffMembers = () => {
   }
 //table
   const columns = [
-    { field: "id", headerName: "ID" },
+    { field: "id", headerName: "ID" ,flex:0.1},
     {
       field: "name",
       headerName: "Name",
@@ -147,7 +155,7 @@ export const StaffMembers = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+        <DataGrid checkboxSelection rows={userData} columns={columns} />
       </Box>
        
 {/* update staff modal */}
