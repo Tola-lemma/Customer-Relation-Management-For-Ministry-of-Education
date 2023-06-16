@@ -14,6 +14,7 @@ import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 import axios from "axios";
 import { ChangePassword } from "./ClientContainer/Admin/LoginPage/ChangePassword";
 import { UserProvider } from "./ClientContainer/Admin/Pages/global/LoginContext";
+import { ContactUs } from "./ClientContainer/Home/ContactUs/ContactUs";
 axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
@@ -33,6 +34,7 @@ export const App = () => {
           <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />
+          <Route path="/contactUs" element={<ContactUs />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
