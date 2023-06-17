@@ -1,17 +1,17 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { ColorModeContext, useMode } from "../../../theme";
-import { Topbar } from "../../global/Topbar";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard } from "../../Dashboard/Dashboard";
-import { Contacts } from "../../contacts/Contacts";
-import { Form } from "../../form/Form";
-import { FAQ } from "../../faq/FAQ";
-import { Calendar } from "../../calendar/Calendar";
-import { StaffMembers } from "../StaffMembers";
-import { PageNotFound } from "../../PageNotFound/PageNotFound";
-import { Sidebar } from "../../global/Sidebar";
-import { UserProvider } from "../../global/LoginContext";
-import { ErrorProvider } from "../../../ToastErrorPage/ErrorContext";
+import { UserProvider } from "../global/LoginContext";
+import { ErrorProvider } from "../../ToastErrorPage/ErrorContext";
+import { PageNotFound } from "../PageNotFound/PageNotFound";
+import { Sidebar } from "../global/Sidebar";
+import { StaffMembers } from "../team/StaffMembers";
+import { Calendar } from "../calendar/Calendar";
+import { FAQ } from "../faq/FAQ";
+import { Contacts } from "../contacts/Contacts";
+import { Form } from "../form/Form";
+import { Dashboard } from "../Dashboard/Dashboard";
+import { Topbar } from "../global/Topbar";
+import { ColorModeContext,useMode } from "../../theme";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode("dark");
   return (

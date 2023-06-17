@@ -1,11 +1,30 @@
-import React , { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./LoginPage.css";
 import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 export const PasswordReset = () => {
   const { showError } = useContext(ErrorContext);
-  const handleReset = () => {
-    showError('Please Fill Correctly!');
+  const [passwords, setPasswords] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const { token } = useParams();
+
+  const handleReset = async () => {
+    const { password, confirmPassword } = passwords;
+    try {
+      await axios.post(`auth/reset-password/${token}`, {
+        password,
+        confirmPassword,
+      });
+    } catch (error) {}
+    showError("Please Fill Correctly!");
+  };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setPasswords({ ...passwords, [name]: value });
   };
   return (
     <div className="loginpage">
@@ -17,21 +36,37 @@ export const PasswordReset = () => {
               <span className="icon">
                 <i className="fa-solid fa-lock"></i>
               </span>
-              <input type="password" required />
+              <input
+                type="password"
+                required
+                value={passwords.password}
+                name="password"
+                onChange={handleInputChange}
+              />
               <label htmlFor="password">New Password</label>
             </div>
             <div className="input-box">
               <span className="icon">
                 <i className="fa-solid fa-lock"></i>
               </span>
-              <input type="password" required />
+              <input
+                type="password"
+                required
+                value={passwords.confirmPassword}
+                name="confirmPassword"
+                onChange={handleInputChange}
+              />
               <label htmlFor="password">Confirm New Password</label>
             </div>
-            <button type="submit" className="loginbtn btn btn-primary mt-5" onClick={handleReset}>
+            <button
+              type="submit"
+              className="loginbtn btn btn-primary mt-5"
+              onClick={handleReset}
+            >
               Reset
             </button>
           </form>
-      <ErrorMessage/>
+          <ErrorMessage />
         </div>
       </div>
     </div>

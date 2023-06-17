@@ -139,8 +139,8 @@ export const OpenTicket = () => {
               <option aria-label='None' value='' />
               <option value="transferRequest">Student transfer request</option>
               <option value="transferRequest">Teacher transfer request</option>
-              <option value="studyAbroadRequest">Scholarship Question</option>
-              <option value="scholarshipRequest">Request to return to work after studying abroad</option>
+              <option value="scholarshipRequest">Scholarship Question</option>
+              <option value="studyAbroadRequest">Request to return to work after studying abroad</option>
               <option value="complaintRequest">Various academic and administrative complaints</option>
             </Select>
           </FormControl>

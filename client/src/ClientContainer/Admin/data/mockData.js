@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const mockDataTeam = async () => {
   try {
-    const response = await axios.get('http://localhost:3001/api/v1/admin/users',
+    const response = await axios.get('/admin/users',
     {
       headers: {
      'Authorization':`Bearer ${localStorage.getItem('token')}`
@@ -24,7 +24,7 @@ export const mockDataTeam = async () => {
 };
 export const mockDataContacts = async () => {
   try {
-    const response = await axios.get('http://localhost:3001/api/v1/admin/users',
+    const response = await axios.get('/admin/users',
     {
       headers: {
      'Authorization':`Bearer ${localStorage.getItem('token')}`

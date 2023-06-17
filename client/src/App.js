@@ -4,7 +4,6 @@ import { Knowledgebase } from "./ClientContainer/Home/Knowledgebase/Knowledgebas
 import { OpenTicket } from "./ClientContainer/Home/Ticket/OpenNewTicket/OpenTicket";
 import { CheckTicket } from "./ClientContainer/Home/Ticket/CheckTicketStatus/CheckTicket";
 import { LoginPage } from "./ClientContainer/Admin/LoginPage/LoginPage";
-import { AdminPage } from "./ClientContainer/Admin/Routes/AdminPage";
 import { StaffPage } from "./ClientContainer/StaffMemebers/Routes/StaffPage";
 import { PageNotFound } from "./ClientContainer/Admin/Pages/PageNotFound/PageNotFound";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -15,12 +14,15 @@ import axios from "axios";
 import { ChangePassword } from "./ClientContainer/Admin/LoginPage/ChangePassword";
 import { UserProvider } from "./ClientContainer/Admin/Pages/global/LoginContext";
 import { ContactUs } from "./ClientContainer/Home/ContactUs/ContactUs";
+import { ErrorProvider } from "./ClientContainer/Admin/ToastErrorPage/ErrorContext";
+import { AdminPage } from "./ClientContainer/Admin/Pages/Routes/AdminPage";
 axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (
     <ColorModeContext.Provider value={colorMode}>
       <UserProvider>
+      <ErrorProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
@@ -29,15 +31,16 @@ export const App = () => {
           <Route path="/opennewticket" element={<OpenTicket />} />
           <Route path="/checkticketstatus" element={<CheckTicket />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/emailsubmission" element={<EmailSubmission />} />
-          <Route path="/passwordreset" element={<PasswordReset />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/forget-password" element={<EmailSubmission />} />
+          <Route path="/reset-password" element={<PasswordReset />} />
+          <Route path="/change-password/:token/:userId" element={<ChangePassword />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
+      </ErrorProvider>
       </UserProvider>
     </ColorModeContext.Provider>
   );
