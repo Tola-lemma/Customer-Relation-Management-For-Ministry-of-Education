@@ -2,20 +2,24 @@ import React, { useContext, useState } from "react";
 import "./LoginPage.css";
 import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
-
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 export const EmailSubmission = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
-  const { showSuccess } = useContext(ErrorContext);
+  const { showError,showSuccess } = useContext(ErrorContext);
 
   const handleSend = async () => {
     try {
      await axios.post("/auth/forget-password", { email });
       showSuccess('Please check your email address!');
+      navigate("/");
     } catch (error) {
+      showError(`error occured`)
       console.log(error);
+  
     }
   };
 
