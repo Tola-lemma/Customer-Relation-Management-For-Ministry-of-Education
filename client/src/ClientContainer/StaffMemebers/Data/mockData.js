@@ -66,27 +66,34 @@ export const mockDataTeam = [
   ];
   export const mockDataContacts = async () => {
     try {
-      const response = await axios.get('/issue/requested-issues',
-      {
+      const response = await axios.get('/issue/requested-issues', {
         headers: {
-       'Authorization':`Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       let Id = 1;
       const { requestedIssues } = response.data;
-      return requestedIssues.map(requestedIssues => ({
-        id: Id++,
-        name: requestedIssues.name,
-        email: requestedIssues.email,
-        phone: requestedIssues.phoneNumber,
-        issueDescription :requestedIssues.issueDescription ,
-        createdAt: new Date(requestedIssues.createdAt).toLocaleDateString('en-US'),
-      }));
+      const contacts = requestedIssues.map(issue => {
+        const { name, email, phoneNumber, issueDescription, createdAt } = issue;
+        const filename = issue.files[0].filename;
+        return {
+          id: Id++,
+          name,
+          email,
+          phone: phoneNumber,
+          issueDescription,
+          createdAt: new Date(createdAt).toLocaleDateString('en-US'),
+          filename
+        };
+      });
+      console.log(contacts); // Check the contacts array with filenames
+      return contacts;
     } catch (error) {
       console.log('Error fetching user data:', error);
       return [];
     }
   };
+  
   // export const mockDataContacts = [
   //   {
   //     id: 1,

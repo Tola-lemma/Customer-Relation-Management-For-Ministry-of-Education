@@ -4,6 +4,7 @@ import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export const PasswordReset = () => {
   const { showError } = useContext(ErrorContext);
   const [passwords, setPasswords] = useState({
@@ -11,14 +12,19 @@ export const PasswordReset = () => {
     confirmPassword: "",
   });
   const { token } = useParams();
-
+  const navigate = useNavigate();
   const handleReset = async () => {
     const { password, confirmPassword } = passwords;
+    if(password !== confirmPassword){
+      showError(`passwords don't match`)
+      return
+    }
     try {
       await axios.post(`auth/reset-password/${token}`, {
         password,
         confirmPassword,
       });
+      navigate("/login");
     } catch (error) {}
     showError("Please Fill Correctly!");
   };
