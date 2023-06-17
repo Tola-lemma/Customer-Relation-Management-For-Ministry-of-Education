@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataTeam } from "../.././data/mockData";
 import { Header } from "../../components/Header";
+
 import {  useContext, useEffect, useReducer, useState} from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
@@ -69,7 +70,7 @@ export const StaffMembers = () => {
   }
 //table
   const columns = [
-    { field: "id", headerName: "ID" ,flex:0.1},
+    { field: "id", headerName: "ID" },
     {
       field: "name",
       headerName: "Name",

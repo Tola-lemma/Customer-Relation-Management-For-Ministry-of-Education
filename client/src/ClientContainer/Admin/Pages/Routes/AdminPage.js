@@ -1,21 +1,23 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { ColorModeContext, useMode } from "../theme";
-import { Topbar } from "../Pages/global/Topbar";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard } from "../Pages/Dashboard/Dashboard";
-import { Contacts } from "../Pages/contacts/Contacts";
-import { Form } from "../Pages/form/Form";
-import { FAQ } from "../Pages/faq/FAQ";
-import { Calendar } from "../Pages/calendar/Calendar";
-import { StaffMembers } from "../Pages/team/StaffMembers";
-import { PageNotFound } from "../Pages/PageNotFound/PageNotFound";
-import { Sidebar } from "../Pages/global/Sidebar";
-import { UserProvider } from "../Pages/global/LoginContext";
+import { UserProvider } from "../global/LoginContext";
+import { ErrorProvider } from "../../ToastErrorPage/ErrorContext";
+import { PageNotFound } from "../PageNotFound/PageNotFound";
+import { Sidebar } from "../global/Sidebar";
+import { StaffMembers } from "../team/StaffMembers";
+import { Calendar } from "../calendar/Calendar";
+import { FAQ } from "../faq/FAQ";
+import { Contacts } from "../contacts/Contacts";
+import { Form } from "../form/Form";
+import { Dashboard } from "../Dashboard/Dashboard";
+import { Topbar } from "../global/Topbar";
+import { ColorModeContext,useMode } from "../../theme";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode("dark");
   return (
     <ColorModeContext.Provider value={colorMode}>
       <UserProvider >
+      <ErrorProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
@@ -34,6 +36,7 @@ export const AdminPage = () => {
           </main>
         </div>
       </ThemeProvider>
+      </ErrorProvider>
       </UserProvider>
     </ColorModeContext.Provider>
   );

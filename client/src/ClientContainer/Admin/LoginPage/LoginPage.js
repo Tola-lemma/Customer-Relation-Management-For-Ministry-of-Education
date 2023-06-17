@@ -88,7 +88,7 @@ export const LoginPage = () => {
             <label htmlFor="password"> Password</label>
           </div>
           <div className="forgotPassword">
-            <Link to="/emailsubmission" className="forgotpasswordLink">
+            <Link to="/forget-password" className="forgotpasswordLink">
               Forgot Password?
             </Link>
           </div>
