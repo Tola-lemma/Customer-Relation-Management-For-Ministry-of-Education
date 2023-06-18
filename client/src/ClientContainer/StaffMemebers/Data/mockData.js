@@ -75,7 +75,8 @@ export const mockDataTeam = [
       const { requestedIssues } = response.data;
       const contacts = requestedIssues.map(issue => {
         const { name, email, phoneNumber, issueDescription, createdAt } = issue;
-        const filename = issue.files[0].filename;
+        const { filename, metadata } = issue.files[0];
+        const originalname = metadata.originalname; // Get the originalname property from metadata
         return {
           id: Id++,
           name,
@@ -83,16 +84,18 @@ export const mockDataTeam = [
           phone: phoneNumber,
           issueDescription,
           createdAt: new Date(createdAt).toLocaleDateString('en-US'),
-          filename
+          filename,
+          originalname // Add originalname property to the object
         };
       });
-      console.log(contacts); // Check the contacts array with filenames
+      console.log(contacts); // Check the contacts array with filenames and originalnames
       return contacts;
     } catch (error) {
       console.log('Error fetching user data:', error);
       return [];
     }
   };
+  
   
   // export const mockDataContacts = [
   //   {
