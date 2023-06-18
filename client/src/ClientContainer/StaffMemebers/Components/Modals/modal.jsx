@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { TextField } from "@mui/material";
 import axios from "axios";
-// import axios from "axios";
+import download from "downloadjs";
 const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { name, email, phone, createdAt,issueDescription,filename  } = selectedRow || {};
+  const {
+    name,
+    email,
+    phone,
+    createdAt,
+    issueDescription,
+    filename,
+    originalname,
+  } = selectedRow || {};
 
-  const [reply, setReply] = useState("");
   const [showTextArea, setShowTextArea] = useState(false);
   const handleReplyClick = () => {
     setShowTextArea(true);
@@ -19,41 +25,42 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
     // Logic to send the reply
     // ...
     setShowTextArea(false);
-    setReply("");
   };
-  const handleViewPDF = async (filename) => {
+  const handleViewPDF = async (filename, originalname) => {
     try {
       const response = await axios.get(`/issue/stream/${filename}`, {
         responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-  
+
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-  
-      window.open(fileURL, "_blank");
+
+      const newTab = window.open("", "_blank");
+      newTab.document.write(
+        `<iframe src="${fileURL}" width="100%" height="100%" style="border: none;"></iframe>`
+      );
+      newTab.document.title = originalname; // Set the originalname as the title of the new tab
     } catch (error) {
       console.log("Error viewing PDF:", error);
     }
   };
-  
+
   const handleDownload = async (filename) => {
     try {
       const response = await axios.get(`/issue/stream/${filename}`, {
-        responseType: 'blob',
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-  
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', filename);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      download(response.data, originalname);
     } catch (error) {
-      console.log('Error downloading file:', error);
+      console.log("Error downloading file:", error);
     }
   };
-  
 
   return (
     <div
@@ -78,51 +85,56 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
             <p>Email: {email}</p>
             <p>Phone: {phone}</p>
             <p>Created At: {createdAt}</p>
-            <p>Filename:{filename}</p>
-
             <div style={{ marginTop: "20px" }}>
-              <p><strong>Issue Description:</strong></p>
-              <div className="shadow-lg ml-2 mt-2" style={{fontSize:"1rem"}}>
-               {issueDescription}
+              <p>
+                <strong>Issue Description:</strong>
+              </p>
+              <div className="shadow-lg ml-2 mt-2" style={{ fontSize: "1rem" }}>
+                {issueDescription}
               </div>
+            </div>
+            <div className="mt-3" style={{ textAlign: "center" }}>
+              <button
+                style={{ width: "30%" }}
+                className="btn btn-warning rounded-pill"
+                onClick={() => handleDownload(filename)}
+              >
+                Download File
+              </button>
+              <button
+                style={{ width: "30%", marginLeft: "1rem" }}
+                className="btn btn-primary rounded-pill"
+                onClick={() => handleViewPDF(filename, originalname)}
+              >
+                View File
+              </button>
             </div>
             <div
               style={{
-                marginTop: "20px",
+                marginTop: "50px",
                 display: "flex",
                 justifyContent: "space-between",
               }}
             >
-               <button
-            className="btn btn-primary rounded-pill"
-            onClick={() => handleDownload(filename)}
-          >
-            Download File
-          </button>
-          <button
-                className="btn btn-primary rounded-pill"
-                onClick={() => handleViewPDF(filename)}
-              >
-                View PDF
-              </button>
               {showTextArea ? (
                 <div style={{ flex: 1 }}>
-                  <TextField
-                    label="Reply"
-                    multiline
-                    rows={4}
-                    value={reply}
-                    onChange={(e) => setReply(e.target.value)}
-                    fullWidth
-                    style={{
-                      backgroundColor: colors.primary[500],
-                      color: colors.primary[400],
-                    }}
+                  <textarea
+                    style={{ width: "100%", height: "auto", minHeight: "75px" }}
+                    rows={3}
+                    placeholder={`Write your reply message to ${name} here...`}
                   />
+                  <select
+                    class="form-select"
+                  >
+                    <option selected>Update the Status of the issue</option>
+                    <option value="progress">progress</option>
+                    <option value="done">Done</option>
+                  </select>
                   <button
-                    className="btn btn-primary rounded-pill mt-3"
+                    className="btn btn-success rounded-pill mt-3"
                     onClick={handleSend}
                     style={{
+                      width: "30%",
                       marginLeft: "auto",
                       marginRight: "auto",
                       display: "block",
@@ -132,22 +144,13 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
                   </button>
                 </div>
               ) : (
-                <div>
+                <div style={{ width: "100%", textAlign: "center" }}>
                   <button
-                    className="btn btn-primary rounded-pill"
+                    className="btn btn-success rounded-pill"
                     onClick={handleReplyClick}
-                    style={{ marginRight: "10px" }}
+                    style={{ width: "100%" }}
                   >
                     Reply
-                  </button>
-                  <button className="btn btn-primary rounded-pill">
-                    Progress
-                  </button>
-                  <button
-                    className="btn btn-primary rounded-pill"
-                    style={{ marginLeft: "10px" }}
-                  >
-                    Done
                   </button>
                 </div>
               )}
