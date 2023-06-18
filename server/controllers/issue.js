@@ -21,7 +21,7 @@ export const upload = async (req, res) => {
     requestNotificationMailOptions(
       requestIssue.name,
       requestIssue.email,
-      requestIssue._id
+      requestIssue.ticketNumber
     )
   );
 
@@ -40,7 +40,7 @@ export const trackIssue = async (req, res) => {
   
   if(!emailRegex.test(email)) throw new BadRequestError("invalid emial address.")
 
-  const requestedIssue = await RequestIssue.findOne({_id : ticket, email}).select("name serviceType issueStatus");
+  const requestedIssue = await RequestIssue.findOne({ticketNumber : ticket, email}).select("name serviceType issueStatus");
   if (!requestedIssue)
     throw new NotfoundError("Issue not found.");
 
