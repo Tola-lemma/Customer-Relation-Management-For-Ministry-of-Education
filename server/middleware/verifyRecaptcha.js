@@ -1,4 +1,4 @@
-import { UnauthenticatedError } from "../error/errors"
+import { UnauthenticatedError } from "../error/errors.js"
 
 export const verifyRecaptcha = async(req, res, next) => {
     const {token} = req.body
