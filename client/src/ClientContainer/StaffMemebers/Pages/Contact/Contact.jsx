@@ -44,9 +44,6 @@ export const StaffContact = () => {
 
     fetchData();
   }, []);
-  const handleUpdate = () => {
-    // showSuccess("updated successfully")
-  }
   const columns = [
     { field: "id", headerName: "ID",flex:0.1},
     {field: "createdAt", headerName: "Issue Created on", flex:1},
@@ -125,7 +122,6 @@ export const StaffContact = () => {
         <Modal
           modalTitle={state.modalTitle}
           selectedRow={state.selectedRow}
-          onUpdate={handleUpdate}
         />
       </Box>
     </Box>

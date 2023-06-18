@@ -12,6 +12,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import adminProfilePicture from "../../../.././assets/images/admin.png";
 import { UserContext } from "../../../Admin/Pages/global/LoginContext";
+import {Roles} from "../../../Admin/Pages/global/Roles";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -75,8 +76,8 @@ export const StaffSidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
-                {user.role !== 'admin' && user.role}
+                <Typography variant="h4" color={colors.grey[100]}>
+                {user.role !== 'admin' && Roles[user.role]}
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -98,7 +99,7 @@ export const StaffSidebar = () => {
               </Box>
               <Box textAlign="center">
                 <Typography
-                  variant="h2"
+                  variant="h4"
                   color={colors.grey[100]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}

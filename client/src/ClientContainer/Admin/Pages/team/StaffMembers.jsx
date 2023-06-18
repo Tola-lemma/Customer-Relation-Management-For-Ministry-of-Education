@@ -3,12 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataTeam } from "../.././data/mockData";
 import { Header } from "../../components/Header";
-
 import {  useContext, useEffect, useReducer, useState} from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import Modal from "../../components/Modals/modal";
 import ModalButton from "../../components/Modals/modalButton";
+import axios from "axios";
  const reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_ADMIN":
@@ -21,11 +21,8 @@ import ModalButton from "../../components/Modals/modalButton";
     case "UPDATE_STAFF":
       return {
         ...state,
-        modalTitle: "Update Staff Members",
-        FullName: action.payload.FullName,
-        Email: action.payload.Email,
-        ContactNumber: action.payload.ContactNumber,
-        Role: action.payload.Role,
+        modalTitle: "Update Staff Member's role",
+        selectedRow: action.payload.selectedRow,
       };
     default:
       return;
@@ -35,39 +32,46 @@ import ModalButton from "../../components/Modals/modalButton";
 export const StaffMembers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { showWarning,showSuccess } = useContext(ErrorContext);
+  const { showWarning,showError} = useContext(ErrorContext);
   const [userData, setUserData] = useState([]);
+  const fetchData = async () => {
+    const data = await mockDataTeam();
+    setUserData(data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await mockDataTeam();
-      setUserData(data);
-    };
-
     fetchData();
   }, []);
 //update purpose
   const [state, dispatch] = useReducer(reducer, {
     modalTitle: "",
-    FullName: "",
-    Email: "",
-    ContactNumber: "",
-    Role:""
+    selectedRow: null
   });
-  const editClick = () => {
+  const editClick = (row) => {
     dispatch({
       type: "UPDATE_STAFF",
       payload: {
+        selectedRow: row,
         modalTitle: state.modalTitle,
       },
     });
   };
   
-  const handleDelete = () => {
-    showWarning("Deleted successfully")
-  }
-  const handleUpdate = () => {
-    showSuccess("updated successfully")
-  }
+  const handleDelete = async (row) => {
+    const userId = row.userId;
+    if (userId) {
+      try {
+        const response = await axios.delete(`/admin/delete-account/${userId}`,
+          { headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },});
+        showWarning("Customers Account deleted successfully!"||response?.msg)
+        await fetchData();
+      } catch (error) {
+        showError(error||"Error while deleting")
+      }
+    }
+  }; 
+  
 //table
   const columns = [
     { field: "id", headerName: "ID" },
@@ -110,14 +114,11 @@ export const StaffMembers = () => {
       field:"action",
       headerName: "Actions",
       flex: 1,
-      renderCell: () => {
+      renderCell: (params) => {
+        const row = params.row;
         return (
-          <Box
-            width="100%"
-            m="0 auto"
-            display="flex"
-          >
-           {<ModalButton  editClick={editClick}  handleDelete={handleDelete}/>}
+          <Box width="100%" m="0 auto" display="flex">
+            <ModalButton editClick={() => editClick(row)} handleDelete={()=>handleDelete(row)} />
           </Box>
         );
       },
@@ -160,14 +161,11 @@ export const StaffMembers = () => {
       </Box>
        
 {/* update staff modal */}
-       <Modal
-        modalTitle={state.modalTitle}
-        fullName={state.fullName}
-        contactNumber={state.contactNumber}
-        email={state.email}
-        role={state.role}
-        onUpdate={handleUpdate}
-      />
+<Modal
+  modalTitle={state.modalTitle}
+  selectedRow={state.selectedRow}
+/>
+
       <ErrorMessage />
     </Box>
   );
