@@ -7,7 +7,6 @@ import { StaffContact } from "../Pages/Contact/Contact";
 import { StaffCalendar } from "../Pages/Calendar/Calendar";
 import { StaffFAQ } from "../Pages/Faq/FAQ";
 import { StaffSidebar } from "../Pages/global/Sidebar";
-import { StaffForm } from "../Pages/Form/Form";
 import { StaffPageNotFound } from "../Pages/PageNotFound/PageNotFound";
 import { ErrorProvider } from "../../Admin/ToastErrorPage/ErrorContext";
 export const StaffPage = () => {
@@ -24,7 +23,6 @@ export const StaffPage = () => {
               <Routes>
                 <Route path="/" element={<StaffDashboard />} />
                 <Route path="/contact" element={<StaffContact />} />
-                <Route path="/form" element={<StaffForm />} />
                 <Route path="/faq" element={<StaffFAQ />} />
                 <Route path="/calendar" element={<StaffCalendar />} />
                 <Route path="/*" element={<StaffPageNotFound />} />
