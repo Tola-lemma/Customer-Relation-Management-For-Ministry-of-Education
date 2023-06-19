@@ -124,10 +124,11 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
                     placeholder={`Write your reply message to ${name} here...`}
                   />
                   <select
-                    class="form-select"
+                    classNamescree="form-select"
                   >
                     <option selected>Update the Status of the issue</option>
-                    <option value="progress">progress</option>
+                    <option value="todo">Todo</option>
+                    <option value="progress">Progress</option>
                     <option value="done">Done</option>
                   </select>
                   <button
