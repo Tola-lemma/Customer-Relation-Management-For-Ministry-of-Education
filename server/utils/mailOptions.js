@@ -165,7 +165,7 @@ export const requestNotificationMailOptions = (name, email, ticketNumber) => {
           </p>
         
           <p class="btn">
-            <a class="button" href="http://localhost:3000/api/v1/issue/track-issue?ticket=${ticketNumber}">Track Issue</a>
+            <a class="button" href="http://localhost:3000/api/v1/issue/track-issue">Track Issue</a>
           </p>
         
           <p>
@@ -278,3 +278,11 @@ export const requestDoneNotificationMailOptions = (name, email, ticketNumber) =>
       `
       }
   }
+
+  export const contactUsMailOptions = (firstName, lastName, email, subject, message, phoneNumber, companyName = null, country = null) => {
+    return {
+        from: process.env.SMTP_FROM,
+        to: email,
+        subject: subject,
+        html: `${message}<br>${firstName +" " + lastName}<br>${phoneNumber}<br>${companyName ?? ""}<br>${country ?? ""}`
+      }}

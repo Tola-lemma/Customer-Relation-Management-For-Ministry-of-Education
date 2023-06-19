@@ -42,6 +42,10 @@ const requestIssueSchema = new mongoose.Schema(
       enum: ["todo", "inprogress", "done"],
       default: "todo",
     },
+    ticketNumber : {
+      type : String,
+      default : null
+    }
   },
   { timestamps  : true}
 );
