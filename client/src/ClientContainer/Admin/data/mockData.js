@@ -10,13 +10,14 @@ export const mockDataTeam = async () => {
     });
     let Id = 1;
     const { users } = response.data;
-    return users.map(user => ({
+    const filteredUsers = users.filter((user) => user.role !== "admin")
+    return filteredUsers.map(user => ({
       id: Id++,
       userId:user._id,
       name: user.name,
       email: user.email,
       phone: user.phoneNumber,
-      role: user.role,
+      role:  user.role,
     }));
   } catch (error) {
     console.log('Error fetching user data:', error);

@@ -14,6 +14,7 @@ import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
 import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css';
+import CustomButton from '../../../Admin/Pages/global/Button.jsx'
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialValue = {
@@ -26,7 +27,7 @@ export const OpenTicket = () => {
   
   const [value, setValue] = useState(initialValue);
   const fileInputRef = useRef(null);
-  
+  const [updating, setUpdating] = useState(false);
  
   let {name, email,phoneN,serviceType, issueDescription} = value
   const onSubmit = async (event) => {
@@ -69,6 +70,7 @@ export const OpenTicket = () => {
         return;
       }
       try {
+        setUpdating(true);
         const {
           data: { msg },
         } = await axios.post(
@@ -77,8 +79,10 @@ export const OpenTicket = () => {
         );
         showSuccess(msg);
       } catch (error) {
-        console.error(error);
         showError("An error occurred during the file upload.");
+      }
+      finally {
+        setUpdating(false); // Set updating back to false after the API call completes
       }
     }
     setValue(initialValue);
@@ -93,7 +97,7 @@ export const OpenTicket = () => {
       <div className=''> 
         <NavBar />
         <div className='container all-container'>
-          <Typography variant='h1'>Ask New Questions</Typography>
+          <Typography variant='h1'>Submit your Issue Here</Typography>
           <Typography variant='h3'>Please fill out this form to submit your Issue.</Typography>
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
             <TextField
@@ -163,9 +167,7 @@ export const OpenTicket = () => {
           </Box>
 
           <Stack direction='row' spacing={2} mt={2} mb={2} mr={4} size='large'>
-            <Button type='submit' variant='contained' color='success' size='large'>
-              Create Ticket
-            </Button>
+            <CustomButton type='submit' className="btn btn-success" disabled={updating} loading={updating}> Create Ticket</CustomButton>
             <Button type='reset' variant='contained' color='success' size='large'>
               Reset
             </Button>
