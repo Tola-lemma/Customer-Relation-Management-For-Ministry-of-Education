@@ -11,6 +11,7 @@ import { Roles } from "./models/roles.js";
 import { rateLimiter, speedLimiter} from "./utils/rateLimiters.js"
 import cors from 'cors'
 import { requestIssueRouter } from "./routes/issue.js";
+import { contactRouter } from "./routes/contactUs.js";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -26,6 +27,7 @@ server.use(
   adminRoute
 );
 server.use("/api/v1/issue", requestIssueRouter)
+server.use("/api/v1/contact-us", contactRouter);
 
 // Add the error handling middlewares
 server.use(errorHandlerMiddleware);
