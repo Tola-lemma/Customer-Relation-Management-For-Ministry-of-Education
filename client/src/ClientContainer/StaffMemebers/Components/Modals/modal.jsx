@@ -44,7 +44,8 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       );
       newTab.document.title = originalname; // Set the originalname as the title of the new tab
     } catch (error) {
-      console.log("Error viewing PDF:", error);
+      alert(error?.response?.data?.msg || "Error while viewing PDF");
+      
     }
   };
 
@@ -58,7 +59,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       });
       download(response.data, originalname);
     } catch (error) {
-      console.log("Error downloading file:", error);
+      alert(error?.response?.data?.msg || "Error while downloading file");
     }
   };
 

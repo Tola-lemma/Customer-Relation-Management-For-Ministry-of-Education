@@ -3,7 +3,7 @@ import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import axios from "axios";
 import { Roles } from "../../Pages/global/Roles";
 import CustomButton from "../../Pages/global/Button";
-const Modal = ({ modalTitle, selectedRow}) => {
+const Modal = ({ modalTitle, selectedRow,onRefresh}) => {
   const { userId, role } = selectedRow || {};
   const [selectedRole, setSelectedRole] = useState(role);
   const { showSuccess,showError} = useContext(ErrorContext);
@@ -19,8 +19,9 @@ const Modal = ({ modalTitle, selectedRow}) => {
           },
         });
         showSuccess("Role updated successfully!"||response.msg)
+        onRefresh();
       } catch (error) {
-        showError(error.message ||"Unable to update role please try again")
+        showError(error?.response?.data?.msg ||"Unable to update role please try again")
       }
       finally {
         setUpdating(false); // Set updating back to false after the API call completes

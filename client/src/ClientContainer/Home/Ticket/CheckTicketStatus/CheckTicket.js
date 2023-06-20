@@ -19,10 +19,9 @@ export const CheckTicket = () => {
     try {
       const response = await axios.post(`/issue/track-issue`, { ticket, email });
       const { requestedIssue } = response.data;
-      console.log(requestedIssue.name);
       setRequestedIssue(requestedIssue);
     } catch (error) {
-      showError(error.message || "Unable to see the status please try again");
+      showError(error?.response?.data?.msg || "Unable to see the status please try again");
     }
   };
   return (

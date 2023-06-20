@@ -76,7 +76,9 @@ export const StaffMembers = () => {
       setIsDeleteModalOpen(true);
     }
   };
-
+  const handleRefresh = () => {
+        fetchData();
+  };
   const confirmDelete = async () => {
     if (confirmInput.toLowerCase() === "delete") {
       try {
@@ -93,7 +95,7 @@ export const StaffMembers = () => {
         );
         await fetchData();
       } catch (error) {
-        showError(error || "Error while deleting");
+        showError(error?.response?.data?.msg || "Error while deleting");
       }
     } else {
       showError("Invalid input. Deletion canceled.");
@@ -230,7 +232,7 @@ export const StaffMembers = () => {
       </Dialog>
 
       {/* update staff modal */}
-      <Modal modalTitle={state.modalTitle} selectedRow={state.selectedRow} />
+      <Modal modalTitle={state.modalTitle} selectedRow={state.selectedRow} onRefresh={handleRefresh}/>
 
       <ErrorMessage />
     </Box>

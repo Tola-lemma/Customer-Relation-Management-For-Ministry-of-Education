@@ -5,10 +5,12 @@ import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
 import { UserContext } from "../Pages/global/LoginContext";
+import CustomButton from "../Pages/global/Button";
 export const LoginPage = () => {
   const { showError } = useContext(ErrorContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [updating, setUpdating] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { login, user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -48,6 +50,7 @@ export const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setUpdating(true);
       const response = await axios.post("/auth/login", { email, password });
       const { token,username, role} = response.data;
       localStorage.setItem("token", token);
@@ -57,9 +60,11 @@ export const LoginPage = () => {
       setIsAuthenticated(true);
     }
     } catch (error) {
-      console.log(error);
-        showError(error.response?.data?.msg||"An error occurred. Please try again.");
+        showError(error?.response?.data?.msg||"An error occurred. Please try again.");
       }  
+      finally {
+        setUpdating(false);
+      }
     };
   return isAuthenticated ? null: (
   <> 
@@ -92,12 +97,10 @@ export const LoginPage = () => {
               Forgot Password?
             </Link>
           </div>
-          <button
-            type="submit"
-            className="loginbtn btn btn-primary"
-          >
-            Login
-          </button>
+          <CustomButton  
+          type="submit"
+          className="loginbtn btn btn-primary"
+          disabled={updating} loading={updating}> Login</CustomButton>
         </form>
         <ErrorMessage />
       </div>
