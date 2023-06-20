@@ -70,7 +70,7 @@ export const resetPasswordMailOptions= (name, email, requestLink) => {
                 <p>Hello ${name},</p>
                 <p>We have received a request to reset your password. Please click the button below to proceed:</p>
                 <p class="btn"><a href="${requestLink}" class="button" target="_blank" rel="noopener noreferrer">Reset your Password</a></p>
-                <p>If you don’t use this link within 1 hour, it will expire. To get a new password reset link, visit :&nbsp; <a href="some-link">https:/www.password-reset.com </a></p>
+                <p>If you don’t use this link within 1 hour, it will expire. To get a new password reset link, visit :&nbsp; <a href="some-link">http://localhost:3000/forget-password </a></p>
                 <p>If you did not request a password reset, please ignore this email.</p>
                 <p>Thank you,</p>
                 <p>The Contact Team</p>
@@ -165,7 +165,7 @@ export const requestNotificationMailOptions = (name, email, ticketNumber) => {
           </p>
         
           <p class="btn">
-            <a class="button" href="http://localhost:3000/api/v1/issue/track-issue">Track Issue</a>
+            <a class="button" href="http://localhost:3000/checkticketstatus">Track Issue</a>
           </p>
         
           <p>
@@ -281,8 +281,60 @@ export const requestDoneNotificationMailOptions = (name, email, ticketNumber) =>
 
   export const contactUsMailOptions = (firstName, lastName, email, subject, message, phoneNumber, companyName = null, country = null) => {
     return {
-        from: process.env.SMTP_FROM,
-        to: email,
+        from: email,
+        to: process.env.SMTP_FROM,
         subject: subject,
-        html: `${message}<br>${firstName +" " + lastName}<br>${phoneNumber}<br>${companyName ?? ""}<br>${country ?? ""}`
+        html: `${message}<br>${firstName +" " + lastName}<br>${phoneNumber}<br>${companyName ?? ""},&nbsp;${country ?? ""}`,
+        html: `
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Contact Form Submission</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              margin: 0;
+              padding: 20px;
+            }
+        
+            h2 {
+              color: #333333;
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+        
+            p {
+              color: #333333;
+              font-size: 16px;
+              margin-bottom: 10px;
+            }
+          </style>
+        </head>
+        <body>
+          <h2>Contact Form Submission</h2>
+        
+          <p><strong>Message:</strong><br>
+            ${message}
+          </p>
+        
+          <p><strong>Name:</strong><br>
+            ${firstName} ${lastName}
+          </p>
+        
+          <p><strong>Phone Number:</strong><br>
+            ${phoneNumber}
+          </p>
+        
+          <p><strong>Company Name:</strong><br>
+            ${companyName}
+          </p>
+        
+          <p><strong>Country:</strong><br>
+            ${country}
+          </p>
+        </body>
+        </html>
+        `
       }}
