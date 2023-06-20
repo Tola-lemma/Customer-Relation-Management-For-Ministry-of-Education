@@ -4,22 +4,26 @@ import { ErrorMessage } from "../ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import CustomButton from "../Pages/global/Button";
 
 export const EmailSubmission = () => {
   const [email, setEmail] = useState("");
+  const [updating, setUpdating] = useState(false);
   const navigate = useNavigate();
 
   const { showError,showSuccess } = useContext(ErrorContext);
 
-  const handleSend = async () => {
+  const handleSend = async (e) => {
+    e.preventDefault();
     try {
-     await axios.post("/auth/forget-password", { email });
-      showSuccess('Please check your email address!');
-      navigate("/");
+      setUpdating(true);
+     const {data:{msg}} = await axios.post("/auth/forget-password", { email });
+      showSuccess(`${msg}, please check your email`);
     } catch (error) {
-      showError(`error occured`)
-      console.log(error);
-  
+      showError("An error occurred, " + error?.response?.data?.msg)
+    }
+    finally {
+      setUpdating(false);
     }
   };
 
@@ -29,6 +33,7 @@ export const EmailSubmission = () => {
   };
 
   return (
+    <><button className="btn btn-primary rounded-pill ms-2 mt-3" onClick={()=>navigate('/')}>🏠 Back to Home</button>
     <div className="loginpage">
       <div className="login-box">
         <div className="login-parent">
@@ -46,18 +51,19 @@ export const EmailSubmission = () => {
               />
               <label htmlFor="email"> Enter Your Email Account</label>
             </div>
-            <button
-              type="submit"
-              className="loginbtn btn btn-primary"
-              onClick={handleSend}
-              style={{ marginTop: "4rem" }}
-            >
+            <CustomButton 
+            type="submit" 
+            className="loginbtn btn btn-primary" 
+            onClick={handleSend}
+            style={{ marginTop: "4rem" }}
+            disabled={updating} loading={updating}>
               Send
-            </button>
+            </CustomButton>
           </form>
           <ErrorMessage />
         </div>
       </div>
     </div>
+    </>
   );
 };

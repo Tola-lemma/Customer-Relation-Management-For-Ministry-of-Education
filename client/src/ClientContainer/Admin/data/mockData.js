@@ -10,8 +10,7 @@ export const mockDataTeam = async () => {
     });
     let Id = 1;
     const { users } = response.data;
-    const filteredUsers = users.filter((user) => user.role !== "admin")
-    return filteredUsers.map(user => ({
+    return users.map(user => ({
       id: Id++,
       userId:user._id,
       name: user.name,
@@ -20,7 +19,7 @@ export const mockDataTeam = async () => {
       role:  user.role,
     }));
   } catch (error) {
-    console.log('Error fetching user data:', error);
+    alert(error?.response?.data?.msg || "Error while viewing PDF");
     return [];
   }
 };
@@ -42,7 +41,7 @@ export const mockDataContacts = async () => {
       registrarId: user._id,
     }));
   } catch (error) {
-    console.log('Error fetching user data:', error);
+    alert(error?.response?.data?.msg || "An error occurred while fetching user data");
     return [];
   }
 };
