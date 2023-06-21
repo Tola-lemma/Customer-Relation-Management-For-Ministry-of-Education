@@ -130,7 +130,7 @@ export const StaffSidebar = () => {
             </Typography>
 
             <Item
-              title="Manage Customer"
+              title="Customer Issue"
               to="/staff/contact"
               icon={<ContactsOutlinedIcon />}
               selected={selected}

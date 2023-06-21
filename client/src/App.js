@@ -31,6 +31,8 @@ export const App = () => {
           <Route path="/opennewticket" element={<OpenTicket />} />
           <Route path="/checkticketstatus" element={<CheckTicket />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/emailsubmission" element={<EmailSubmission />} />
+          <Route path="/passwordreset" element={<PasswordReset />} />
           <Route path="/forget-password" element={<EmailSubmission />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/reset-password/:token/:userId" element={<PasswordReset />} />
