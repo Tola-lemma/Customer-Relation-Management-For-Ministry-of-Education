@@ -2,7 +2,9 @@ import React, {useState,useContext} from "react";
 import { NavBar } from "../../../HeaderAndFooter/header/NavBar";
 import "./CheckTicket.css";
 import { Link } from "react-router-dom";
-import { Footer } from "../../../HeaderAndFooter/footer/Footer";
+
+import { Footer } from "../../../HeaderAndFooter/header/Footer/Footer";
+
 import axios from "axios";
 import { ErrorMessage } from "../../../Admin/ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../../../Admin/ToastErrorPage/ErrorContext";

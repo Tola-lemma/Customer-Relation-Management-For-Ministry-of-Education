@@ -5,17 +5,34 @@ import './OpenTicket.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Stack, Typography } from '@mui/material';
-import { Footer } from '../../../HeaderAndFooter/footer/Footer';
+import { Footer } from '../../../HeaderAndFooter/header/Footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+// import UploadFile from './UploadFile';
+import { createMuiTheme, ThemeProvider } from '@mui/material';
 import axios from 'axios';
 import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
 import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
-import PhoneInput from 'react-phone-input-2'
+import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import CustomButton from '../../../Admin/Pages/global/Button.jsx'
-import ReCAPTCHA from 'react-google-recaptcha';
+const theme = createMuiTheme({
+  overrides: {
+    MuiInput: {
+      underline: {
+        "&:before": {
+          borderBottom: "2px solid #ff0000", // Set your desired border color
+        },
+        "&:hover:not($disabled):before": {
+          borderBottom: "2px solid #00ff00", // Set your desired border color on hover
+        },
+      },
+    },
+  },
+});
+
+
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialValue = {
@@ -32,13 +49,6 @@ export const OpenTicket = () => {
 
   const recaptchaRef = useRef(null);
   const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
-  const handleRecaptchaChange = (value) => {
-    if (value) {
-      setRecaptchaVerified(true);
-    } else {
-      setRecaptchaVerified(false);
-    }
-  };
   let {name, email,phoneN,serviceType, issueDescription} = value
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -117,6 +127,11 @@ export const OpenTicket = () => {
       <div className=''> 
         <NavBar />
         <div className='container all-container'>
+          <Typography variant='h1'>Ask New Questions</Typography>
+          <Typography variant='h3'>Please fill out this form to submit your problem.</Typography>
+          <ThemeProvider theme={theme}>
+
+
           <Typography variant='h1'>Submit your Issue Here</Typography>
           <Typography variant='h3'>Please fill out this form to submit your Issue.</Typography>
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
@@ -185,11 +200,8 @@ export const OpenTicket = () => {
               onChange={(e) =>  setValue({ ...value, issueDescription: e.target.value })}
             />
           </Box>
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-            onChange={handleRecaptchaChange}
-            />
+          </ThemeProvider>
+
           <Stack direction='row' spacing={2} mt={2} mb={2} mr={4} size='large'>
             <CustomButton type='submit' className="btn btn-success" disabled={updating} loading={updating}> Create Ticket</CustomButton>
             <Button type='reset' variant='contained' color='success' size='large'>
@@ -207,4 +219,3 @@ export const OpenTicket = () => {
 };
 
 export default OpenTicket;
-

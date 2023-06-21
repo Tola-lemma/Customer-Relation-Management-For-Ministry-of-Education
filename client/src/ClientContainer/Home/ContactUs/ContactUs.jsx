@@ -1,10 +1,11 @@
+
+import { Footer } from '../../HeaderAndFooter/header/Footer/Footer';
+import TextField from '@mui/material/TextField';
+import { Box } from '@mui/material';
 import React, { useState, useRef, useContext } from "react";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
-import { Footer } from "../../HeaderAndFooter/footer/Footer";
-import TextField from "@mui/material/TextField";
-import { Box } from "@mui/material";
 import axios from "axios";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorContext } from "../../Admin/ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../Admin/ToastErrorPage/ErrorMessage";
 import CustomButton from "../../Admin/Pages/global/Button";
@@ -14,13 +15,6 @@ export const ContactUs = () => {
   const recaptchaRef = useRef(null);
   const [updating, setUpdating] = useState(false);
   const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
-  const handleRecaptchaChange = (value) => {
-    if (value) {
-      setRecaptchaVerified(true);
-    } else {
-      setRecaptchaVerified(false);
-    }
-  };
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -192,12 +186,6 @@ export const ContactUs = () => {
               required
               fullWidth
               style={{ marginBottom: "1rem" }}
-            />
-            <ReCAPTCHA
-              style={{ width: "16%", marginLeft: "40%",marginBottom:"3px" }}
-              ref={recaptchaRef}
-              sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-              onChange={handleRecaptchaChange}
             />
             <CustomButton
               type="submit"
