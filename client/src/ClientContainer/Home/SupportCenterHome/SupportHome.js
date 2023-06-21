@@ -5,7 +5,7 @@ import { HashLink as Link } from 'react-router-hash-link';
 import "./SupportHome.css";
 import { SearchTopic } from "../../SearchComponent/SearchTopic";
 import Topics from "../../.././Data.json";
-import { Footer } from "../../HeaderAndFooter/header/Footer/Footer";
+import { Footer } from "../../HeaderAndFooter/Footer/Footer";
 export const SupportHome = () => {
   return (
    <>

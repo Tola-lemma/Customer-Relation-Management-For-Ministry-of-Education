@@ -257,8 +257,6 @@ export const generateReport = async (req, res) => {
   }
 
   const aggregateReport = await RequestIssue.aggregate([
-    // dateMatch,
-    // { $match: { serviceType } },
     {
       $lookup: {
         from: "files.files",

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { Header } from '../../Components/Header'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import { tokens } from '../../theme';
@@ -8,11 +8,57 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../Components/StatBox";
+import { UserContext } from '../../../Admin/Pages/global/LoginContext';
+import Scholarship from '../../Reports/Scholarship/Scholarship';
+import Transfer from '../../Reports/TransferRequest/Transfer';
+import StudyAbroad from '../../Reports/StudyAbroad/StudyAbroad';
+import Complaint from '../../Reports/Complaints/Complaint';
 
 export const StaffDashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { user } = useContext(UserContext);
+  const [scholarshipModal,setScholarshipModal] = useState(false);
+  const [transferModal,setTransferModal] = useState(false);
+  const [studyAbroadModal,setStudyAbroadModal] = useState(false);
+  const [complaintModal,setCompplaintModal] = useState(false);
 
+  const handleGenerateReport = () => {
+    if (user.role === "transferCoordinator") {
+      openTransferModal();
+    } else if (user.role === "scholarshipCoordinator") {
+      openScholarshipModal();
+    } else if (user.role === "studyAbroadCoordinator") {
+      openStudyAbroadModal();
+    } else if (user.role === "complaintsCoordinator") {
+      openComplaintModal();
+    }
+  };
+  
+  const openScholarshipModal =()=>{
+    setScholarshipModal(true)
+  }
+  const closeScholarshipModal =()=>{
+    setScholarshipModal(false)
+  }
+  const openTransferModal = () => {
+    setTransferModal(true)
+  }
+  const closeTransferModal = () => {
+    setTransferModal(false)
+  }
+  const openStudyAbroadModal =()=>{
+    setStudyAbroadModal(true)
+  }
+  const closeStudyAbroadModal =()=>{
+    setStudyAbroadModal(false)
+  }
+  const openComplaintModal = () =>{
+    setCompplaintModal(true)
+  }
+  const closeComplaintModal = () =>{
+    setCompplaintModal(false)
+  }
   return (
     <Box m="20px">
         {/* HEADER */}
@@ -28,6 +74,7 @@ export const StaffDashboard = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
+            onClick={handleGenerateReport}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Generate Report
@@ -136,13 +183,13 @@ export const StaffDashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Download Specific report
+                Download Report
                 <hr/>
               </Typography>
             </Box>
-            <Box display="flex " justifyContent="space-between">
+           {user.role==="transferCoordinator" && <Box display="flex " justifyContent="space-between">
               <Typography
-                variant="h5"
+                variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[200]}
               >
@@ -150,13 +197,14 @@ export const StaffDashboard = () => {
               </Typography>
               <IconButton>
                 <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                 onClick={openTransferModal}
+                  sx={{ fontSize: "29px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
-            <Box display="flex " justifyContent="space-between">
+            </Box> }
+            {user.role==="transferCoordinator" && <><Box display="flex " justifyContent="space-between">
               <Typography
-                variant="h5"
+                variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[200]}
               >
@@ -164,13 +212,16 @@ export const StaffDashboard = () => {
               </Typography>
               <IconButton>
                 <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                 onClick={openTransferModal}
+                  sx={{ fontSize: "29px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
             </Box>
-            <Box display="flex " justifyContent="space-between">
+            <p style={{fontSize:"1rem" ,fontStyle:"italic"}}>To access and download the report, simply press the 'Download' button. Once downloaded, you can analyze the report and gain valuable insights.</p>
+            </>}
+           {user.role==="scholarshipCoordinator" && <> <Box display="flex " justifyContent="space-between">
               <Typography
-                variant="h5"
+                variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[200]}
               >
@@ -178,13 +229,17 @@ export const StaffDashboard = () => {
               </Typography>
               <IconButton>
                 <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                onClick={openScholarshipModal}
+                  sx={{ fontSize: "29px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
             </Box>
-            <Box display="flex " justifyContent="space-between">
+            <p style={{fontSize:"1rem" ,fontStyle:"italic"}}>To access and download the report, simply press the 'Download' button. Once downloaded, you can analyze the report and gain valuable insights.</p>
+        </>
+            }
+           {user.role==="studyAbroadCoordinator" &&<> <Box display="flex " justifyContent="space-between">
               <Typography
-                variant="h5"
+                variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[200]}
               >
@@ -192,13 +247,16 @@ export const StaffDashboard = () => {
               </Typography>
               <IconButton>
                 <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                 onClick={openStudyAbroadModal}
+                  sx={{ fontSize: "29px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
             </Box>
-            <Box display="flex " justifyContent="space-between">
+            <p style={{fontSize:"1rem" ,fontStyle:"italic"}}>To access and download the report, simply press the 'Download' button. Once downloaded, you can analyze the report and gain valuable insights.</p>
+            </>}
+            {user.role==="complaintsCoordinator" &&<> <Box display="flex " justifyContent="space-between">
               <Typography
-                variant="h5"
+                variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[200]}
               >
@@ -206,12 +264,19 @@ export const StaffDashboard = () => {
               </Typography>
               <IconButton>
                 <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                 onClick={openComplaintModal}
+                  sx={{ fontSize: "29px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
             </Box>
+            <p style={{fontSize:"1rem" ,fontStyle:"italic"}}>To access and download the report, simply press the 'Download' button. Once downloaded, you can analyze the report and gain valuable insights.</p>
+            </>}
           </Box>
           </Box>
+          <Scholarship  title="Scholarship Reports" scholarshipModal={scholarshipModal} closeScholarshipModal={closeScholarshipModal} />
+          <Transfer  title="Transfer Reports" transferModal={transferModal} closeTransferModal={closeTransferModal} />
+          <StudyAbroad  title="Request to return to work after studying abroad" studyAbroadModal={studyAbroadModal} closeStudyAbroadModal={closeStudyAbroadModal} />
+          <Complaint  title="Complaint Reports" complaintModal={complaintModal} closeComplaintModal={closeComplaintModal} />
           </Box>
     </Box>
   )
