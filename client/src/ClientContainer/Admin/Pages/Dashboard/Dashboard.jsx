@@ -9,11 +9,19 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../components/StatBox";
 import Reports from '../Reports/Reports';
+import Transfer from '../Reports/transferReport/Transfer';
+import Scholarship from '../Reports/scholarShipReport/Scholarship';
+import Complaint from '../Reports/complaintReport/Complaint';
+import StudyAbroad from '../Reports/StudyAbroadReport/StudyAbroad';
 
 export const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [modalOpen, setModalOpen] = useState(false);
+  const [transferModal,setTransferModal] = useState(false);
+  const [scholarshipModal,setScholarshipModal] = useState(false);
+  const [complaintModal,setCompplaintModal] = useState(false);
+  const [studyAbroadModal,setStudyAbroadModal] = useState(false);
 
   const openModal = () => {
     setModalOpen(true);
@@ -22,7 +30,30 @@ export const Dashboard = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-
+const openTransferModal = () => {
+  setTransferModal(true)
+}
+const closeTransferModal = () => {
+  setTransferModal(false)
+}
+const openScholarshipModal =()=>{
+  setScholarshipModal(true)
+}
+const closeScholarshipModal =()=>{
+  setScholarshipModal(false)
+}
+const openComplaintModal = () =>{
+  setCompplaintModal(true)
+}
+const closeComplaintModal = () =>{
+  setCompplaintModal(false)
+}
+const openStudyAbroadModal =()=>{
+  setStudyAbroadModal(true)
+}
+const closeStudyAbroadModal =()=>{
+  setStudyAbroadModal(false)
+}
   return (
     <Box m="20px">
         {/* HEADER */}
@@ -159,8 +190,10 @@ export const Dashboard = () => {
               >
                 Student Transfer
               </Typography>
-              <IconButton>
+              <IconButton
+                 >
                 <DownloadOutlinedIcon
+                   onClick={openTransferModal}
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
@@ -173,8 +206,10 @@ export const Dashboard = () => {
               >
                 Teacher Transfer
               </Typography>
-              <IconButton>
+              <IconButton
+              >
                 <DownloadOutlinedIcon
+                onClick={openTransferModal}
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
@@ -187,8 +222,10 @@ export const Dashboard = () => {
               >
                 Scholarship Question
               </Typography>
-              <IconButton>
+              <IconButton
+              >
                 <DownloadOutlinedIcon
+                onClick={openScholarshipModal}
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
@@ -201,8 +238,10 @@ export const Dashboard = () => {
               >
                 A request to return to work after completing their studies abroad
               </Typography>
-              <IconButton>
+              <IconButton
+              >
                 <DownloadOutlinedIcon
+                onClick={openStudyAbroadModal}
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
@@ -215,7 +254,9 @@ export const Dashboard = () => {
               >
                 Various academic and administrative complaints
               </Typography>
-              <IconButton>
+              <IconButton
+              onClick={openComplaintModal}
+              >
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
@@ -225,6 +266,10 @@ export const Dashboard = () => {
           </Box>
           </Box>
           <Reports  title="All Reports" modalOpen={modalOpen} closeModal={closeModal} />
+          <Transfer  title="Transfer Reports" transferModal={transferModal} closeTransferModal={closeTransferModal} />
+          <Scholarship  title="Scholarship Reports" scholarshipModal={scholarshipModal} closeScholarshipModal={closeScholarshipModal} />
+          <Complaint  title="Complaint Reports" complaintModal={complaintModal} closeComplaintModal={closeComplaintModal} />
+          <StudyAbroad  title="Request to return to work after studying abroad" studyAbroadModal={studyAbroadModal} closeStudyAbroadModal={closeStudyAbroadModal} />
     </Box>
   )
 }
