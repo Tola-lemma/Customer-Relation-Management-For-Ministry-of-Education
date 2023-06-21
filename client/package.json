@@ -31,6 +31,7 @@
     "react": "^18.2.0",
     "react-contact-number-input": "^1.1.1",
     "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-phone-input-2": "^2.15.1",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.9.0",

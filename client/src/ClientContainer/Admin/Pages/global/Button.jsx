@@ -1,9 +1,9 @@
 import React from "react";
 import { CircularProgress } from "@mui/material";
 
-const CustomButton = ({ onClick, disabled, loading, children,className  }) => {
+const CustomButton = ({ onClick, disabled, loading, children,className,style  }) => {
   return (
-    <button className={`btn ${className} `} disabled={disabled || loading} onClick={onClick}>
+    <button className={`btn ${className} `} disabled={disabled || loading} onClick={onClick} style={style}>
       {loading ? (
         <>
           <CircularProgress size={20} color="inherit" />

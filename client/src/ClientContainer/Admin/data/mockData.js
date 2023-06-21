@@ -16,10 +16,10 @@ export const mockDataTeam = async () => {
       name: user.name,
       email: user.email,
       phone: user.phoneNumber,
-      role: user.role,
+      role:  user.role,
     }));
   } catch (error) {
-    console.log('Error fetching user data:', error);
+    alert(error?.response?.data?.msg || "Error while viewing PDF");
     return [];
   }
 };
@@ -41,7 +41,7 @@ export const mockDataContacts = async () => {
       registrarId: user._id,
     }));
   } catch (error) {
-    console.log('Error fetching user data:', error);
+    alert(error?.response?.data?.msg || "An error occurred while fetching user data");
     return [];
   }
 };

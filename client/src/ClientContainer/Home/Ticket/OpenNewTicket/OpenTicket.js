@@ -16,6 +16,7 @@ import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
 import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import CustomButton from '../../../Admin/Pages/global/Button.jsx'
 const theme = createMuiTheme({
   overrides: {
     MuiInput: {
@@ -31,6 +32,7 @@ const theme = createMuiTheme({
   },
 });
 
+
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialValue = {
@@ -43,11 +45,18 @@ export const OpenTicket = () => {
   
   const [value, setValue] = useState(initialValue);
   const fileInputRef = useRef(null);
-  
- 
+  const [updating, setUpdating] = useState(false);
+
+  const recaptchaRef = useRef(null);
+  const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
   let {name, email,phoneN,serviceType, issueDescription} = value
   const onSubmit = async (event) => {
     event.preventDefault();
+    if (!isRecaptchaVerified) {
+      showError("reCAPTCHA verification faild, please try again!")
+      return;
+    }
+    const token = await recaptchaRef.current.getValue();
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
@@ -86,17 +95,25 @@ export const OpenTicket = () => {
         return;
       }
       try {
+        setUpdating(true);
         const {
           data: { msg },
         } = await axios.post(
           "/issue/ticket-issue",
-          formData
+          {
+            ...formData,
+            token: token
+          }
         );
         showSuccess(msg);
+        
       } catch (error) {
-        console.error(error);
-        showError("An error occurred during the file upload.");
+        showError(error?.response?.data?.msg || "An error occurred during the file upload.");
       }
+      finally {
+        setUpdating(false); // Set updating back to false after the API call completes
+        setRecaptchaVerified(false);
+     } 
     }
     setValue(initialValue);
   };
@@ -114,6 +131,8 @@ export const OpenTicket = () => {
           <Typography variant='h3'>Please fill out this form to submit your problem.</Typography>
           <ThemeProvider theme={theme}>
 
+
+          <Typography variant='h1'>Submit your Issue Here</Typography>
           <Typography variant='h3'>Please fill out this form to submit your Issue.</Typography>
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
             <TextField
@@ -184,9 +203,7 @@ export const OpenTicket = () => {
           </ThemeProvider>
 
           <Stack direction='row' spacing={2} mt={2} mb={2} mr={4} size='large'>
-            <Button type='submit' variant='contained' color='success' size='large'>
-              Create Ticket
-            </Button>
+            <CustomButton type='submit' className="btn btn-success" disabled={updating} loading={updating}> Create Ticket</CustomButton>
             <Button type='reset' variant='contained' color='success' size='large'>
               Reset
             </Button>

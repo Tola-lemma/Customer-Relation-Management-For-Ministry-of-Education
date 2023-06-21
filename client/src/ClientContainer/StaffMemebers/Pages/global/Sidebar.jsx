@@ -38,7 +38,7 @@ export const StaffSidebar = () => {
   const { user } = useContext(UserContext);
   return (
     <Box
-    height="660px"
+    height="718px"
       sx={{
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,

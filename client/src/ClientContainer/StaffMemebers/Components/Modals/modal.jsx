@@ -49,7 +49,8 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       );
       newTab.document.title = originalname; // Set the originalname as the title of the new tab
     } catch (error) {
-      console.log("Error viewing PDF:", error);
+      alert(error?.response?.data?.msg || "Error while viewing PDF");
+      
     }
   };
 
@@ -63,7 +64,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       });
       download(response.data, originalname);
     } catch (error) {
-      console.log("Error downloading file:", error);
+      alert(error?.response?.data?.msg || "Error while downloading file");
     }
   };
 
@@ -129,10 +130,11 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
                     placeholder={`Write your reply message to ${name} here...`}
                   />
                   <select
-                    class="form-select"
+                    classNamescree="form-select"
                   >
                     <option selected>Update the Status of the issue</option>
-                    <option value="progress">progress</option>
+                    <option value="todo">Todo</option>
+                    <option value="progress">Progress</option>
                     <option value="done">Done</option>
                   </select>
                   <button

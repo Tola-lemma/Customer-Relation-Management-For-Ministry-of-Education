@@ -22,7 +22,7 @@ export const login = async (req, res) => {
   if (!isMatch) throw new UnauthenticatedError("Incorrect Password");
 
   const token = user.jwtSign();
-  res.status(StatusCodes.CREATED).json({ success: true, token, username : user.name, role : user.role, msg: "login" });
+  res.status(StatusCodes.CREATED).json({ success: true, token, username : user.name, phoneNumber : user.phoneNumber, role : user.role, msg: "login" });
 };
 
 export const changePassword = async (req, res) => {
@@ -57,10 +57,11 @@ export const changePassword = async (req, res) => {
   const hashPassword = await bcrypt.hash(newPassword, 10);
   user.password = hashPassword;
   await user.save();
+  const token = user.jwtSign();
 
   res
     .status(StatusCodes.OK)
-    .json({ success: true, msg: "Password Successfully Updated" });
+    .json({ success: true, token, msg: "Password Successfully Updated" });
 };
 
 export const forgetPassword = async (req, res) => {

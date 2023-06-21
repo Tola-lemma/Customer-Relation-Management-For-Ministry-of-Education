@@ -90,10 +90,9 @@ export const mockDataTeam = [
           originalname // Add originalname property to the object
         };
       });
-      console.log(contacts); // Check the contacts array with filenames and originalnames
       return contacts;
     } catch (error) {
-      console.log('Error fetching user data:', error);
+      alert(error?.response?.data?.msg || "Error while fetching user data");
       return [];
     }
   };

@@ -5,6 +5,7 @@ import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "../Pages/global/Button";
 export const PasswordReset = () => {
   const { showError } = useContext(ErrorContext);
   const [passwords, setPasswords] = useState({
@@ -13,26 +14,35 @@ export const PasswordReset = () => {
   });
   const { token } = useParams();
   const navigate = useNavigate();
-  const handleReset = async () => {
+  const [updating, setUpdating] = useState(false);
+  const handleReset = async (e) => {
+    e.preventDefault();
     const { password, confirmPassword } = passwords;
     if(password !== confirmPassword){
       showError(`passwords don't match`)
       return
     }
     try {
+      setUpdating(true);
       await axios.post(`auth/reset-password/${token}`, {
         password,
         confirmPassword,
       });
       navigate("/login");
-    } catch (error) {}
-    showError("Please Fill Correctly!");
+    } catch (error) {
+    showError("Please Fill Correctly!"+ error?.response?.data?.msg);
+  }
+    finally {
+    setUpdating(false);
+  }
   };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setPasswords({ ...passwords, [name]: value });
   };
   return (
+    <>
+    <button className="btn btn-primary rounded-pill ms-2 mt-3" onClick={()=>navigate('/')}>🏠 Back to Home</button>
     <div className="loginpage">
       <div className="login-box">
         <div className="login-parent">
@@ -64,17 +74,17 @@ export const PasswordReset = () => {
               />
               <label htmlFor="password">Confirm New Password</label>
             </div>
-            <button
-              type="submit"
-              className="loginbtn btn btn-primary mt-5"
-              onClick={handleReset}
-            >
-              Reset
-            </button>
+            <CustomButton
+            type="submit"
+            className="loginbtn btn btn-primary mt-5"
+            onClick={handleReset}
+            disabled={updating} loading={updating}
+            >Reset</CustomButton>
           </form>
           <ErrorMessage />
         </div>
       </div>
     </div>
+    </>
   );
 };

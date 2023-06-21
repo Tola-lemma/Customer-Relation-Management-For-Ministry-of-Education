@@ -3,13 +3,22 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../.././theme";
 import { mockDataTeam } from "../.././data/mockData";
 import { Header } from "../../components/Header";
-import {  useContext, useEffect, useReducer, useState} from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import Modal from "../../components/Modals/modal";
 import ModalButton from "../../components/Modals/modalButton";
 import axios from "axios";
- const reducer = (state, action) => {
+import {
+  Dialog,
+  TextField,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+
+const reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_ADMIN":
       return {
@@ -32,7 +41,7 @@ import axios from "axios";
 export const StaffMembers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { showWarning,showError} = useContext(ErrorContext);
+  const { showWarning, showError } = useContext(ErrorContext);
   const [userData, setUserData] = useState([]);
   const fetchData = async () => {
     const data = await mockDataTeam();
@@ -41,10 +50,10 @@ export const StaffMembers = () => {
   useEffect(() => {
     fetchData();
   }, []);
-//update purpose
+  //update purpose
   const [state, dispatch] = useReducer(reducer, {
     modalTitle: "",
-    selectedRow: null
+    selectedRow: null,
   });
   const editClick = (row) => {
     dispatch({
@@ -55,24 +64,50 @@ export const StaffMembers = () => {
       },
     });
   };
-  
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [inputMatch, setInputMatch] = useState(false);
+  const [confirmInput, setConfirmInput] = useState("");
   const handleDelete = async (row) => {
     const userId = row.userId;
     if (userId) {
+      setDeleteUserId(userId);
+      setIsDeleteModalOpen(true);
+    }
+  };
+  const handleRefresh = () => {
+        fetchData();
+  };
+  const confirmDelete = async () => {
+    if (confirmInput.toLowerCase() === "delete") {
       try {
-        const response = await axios.delete(`/admin/delete-account/${userId}`,
-          { headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },});
-        showWarning("Customers Account deleted successfully!"||response?.msg)
+        const response = await axios.delete(
+          `/admin/delete-account/${deleteUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        showWarning(
+          response?.msg || "Customer's account deleted successfully!"
+        );
         await fetchData();
       } catch (error) {
-        showError(error||"Error while deleting")
+        showError(error?.response?.data?.msg || "Error while deleting");
       }
+    } else {
+      showError("Invalid input. Deletion canceled.");
     }
-  }; 
-  
-//table
+    setIsDeleteModalOpen(false);
+  };
+
+  useEffect(() => {
+    setInputMatch(confirmInput.toLowerCase() === "delete");
+  }, [confirmInput]);
+
+  //table
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -97,32 +132,29 @@ export const StaffMembers = () => {
       flex: 1,
       renderCell: ({ row: { role } }) => {
         return (
-          <Box
-            width="100%"
-            m="0 auto"
-            display="flex"
-          >
-            <Typography color={colors.grey[100]} >
-              {role}
-            </Typography>
+          <Box width="100%" m="0 auto" display="flex">
+            <Typography color={colors.grey[100]}>{role}</Typography>
           </Box>
         );
       },
     },
     //update
     {
-      field:"action",
+      field: "action",
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => {
         const row = params.row;
         return (
           <Box width="100%" m="0 auto" display="flex">
-            <ModalButton editClick={() => editClick(row)} handleDelete={()=>handleDelete(row)} />
+            <ModalButton
+              editClick={() => editClick(row)}
+              handleDelete={() => handleDelete(row)}
+            />
           </Box>
         );
       },
-    }
+    },
   ];
 
   return (
@@ -159,12 +191,48 @@ export const StaffMembers = () => {
       >
         <DataGrid checkboxSelection rows={userData} columns={columns} />
       </Box>
-       
-{/* update staff modal */}
-<Modal
-  modalTitle={state.modalTitle}
-  selectedRow={state.selectedRow}
-/>
+
+      {/* confirmation windows */}
+      <Dialog
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
+        <DialogContent>
+          <Typography>
+            <strong> Are you sure you want to delete? </strong>
+          </Typography>
+          <TextField
+            style={{ marginTop: "1rem" }}
+            label="Enter 'DELETE' to confirm"
+            value={confirmInput}
+            onChange={(e) => setConfirmInput(e.target.value)}
+            fullWidth
+            autoFocus
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setIsDeleteModalOpen(false)}
+            style={{ backgroundColor: colors.grey[300] }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDelete}
+            autoFocus
+            disabled={!inputMatch}
+            style={{ backgroundColor: colors.grey[300] }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* update staff modal */}
+      <Modal modalTitle={state.modalTitle} selectedRow={state.selectedRow} onRefresh={handleRefresh}/>
 
       <ErrorMessage />
     </Box>

@@ -22,7 +22,6 @@ export const Form = () => {
     });
       showSuccess("Successfully "+ msg + "!");
     } catch (error) {
-        console.log(error?.response?.data?.msg);
         showError(error?.response?.data?.msg || "An error occurred. Please try again.");
   };
   }
