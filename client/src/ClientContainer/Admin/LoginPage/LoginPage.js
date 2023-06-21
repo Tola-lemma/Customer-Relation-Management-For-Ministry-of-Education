@@ -52,9 +52,9 @@ export const LoginPage = () => {
     try {
       setUpdating(true);
       const response = await axios.post("/auth/login", { email, password });
-      const { token,username, role} = response.data;
+      const { token,username, role,phoneNumber} = response.data;
       localStorage.setItem("token", token);
-      login(username, role);
+      login(username, role,email,phoneNumber);
     if (role in roleRoutes) {
       navigate(roleRoutes[role]);
       setIsAuthenticated(true);

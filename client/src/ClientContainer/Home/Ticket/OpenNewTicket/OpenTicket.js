@@ -31,8 +31,7 @@ const theme = createMuiTheme({
     },
   },
 });
-
-
+// import ReCAPTCHA from 'react-google-recaptcha';
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialValue = {
@@ -49,14 +48,23 @@ export const OpenTicket = () => {
 
   const recaptchaRef = useRef(null);
   const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
+  // const recaptchaRef = useRef(null);
+  // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
+  // const handleRecaptchaChange = (value) => {
+  //   if (value) {
+  //     setRecaptchaVerified(true);
+  //   } else {
+  //     setRecaptchaVerified(false);
+  //   }
+  // };
   let {name, email,phoneN,serviceType, issueDescription} = value
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (!isRecaptchaVerified) {
-      showError("reCAPTCHA verification faild, please try again!")
-      return;
-    }
-    const token = await recaptchaRef.current.getValue();
+    // if (!isRecaptchaVerified) {
+    //   showError("reCAPTCHA verification faild, please try again!")
+    //   return;
+    // }
+    // const token = await recaptchaRef.current.getValue();
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
@@ -65,7 +73,6 @@ export const OpenTicket = () => {
     formData.append( "issueDescription",issueDescription);
     // Get all the selected files
     const files = Array.from(fileInputRef.current.files);
-    // files.forEach((file) => formData.append("files", file));
     const maxSize = 5 * 1024 * 1024; // 5 MB
     const allowedType = "application/pdf";
 
@@ -99,11 +106,7 @@ export const OpenTicket = () => {
         const {
           data: { msg },
         } = await axios.post(
-          "/issue/ticket-issue",
-          {
-            ...formData,
-            token: token
-          }
+          "/issue/ticket-issue",formData
         );
         showSuccess(msg);
         
@@ -112,7 +115,8 @@ export const OpenTicket = () => {
       }
       finally {
         setUpdating(false); // Set updating back to false after the API call completes
-        setRecaptchaVerified(false);
+
+        // setRecaptchaVerified(false);
      } 
     }
     setValue(initialValue);
@@ -202,6 +206,11 @@ export const OpenTicket = () => {
           </Box>
           </ThemeProvider>
 
+          {/* <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+            onChange={handleRecaptchaChange}
+            /> */}
           <Stack direction='row' spacing={2} mt={2} mb={2} mr={4} size='large'>
             <CustomButton type='submit' className="btn btn-success" disabled={updating} loading={updating}> Create Ticket</CustomButton>
             <Button type='reset' variant='contained' color='success' size='large'>

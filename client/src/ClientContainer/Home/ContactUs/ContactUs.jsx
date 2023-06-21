@@ -1,8 +1,8 @@
-
 import { Footer } from '../../HeaderAndFooter/header/Footer/Footer';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/material';
 import React, { useState, useRef, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
 import axios from "axios";
 // import ReCAPTCHA from "react-google-recaptcha";
@@ -12,9 +12,17 @@ import CustomButton from "../../Admin/Pages/global/Button";
 
 export const ContactUs = () => {
   const { showError, showSuccess } = useContext(ErrorContext);
-  const recaptchaRef = useRef(null);
+  // const recaptchaRef = useRef(null);
   const [updating, setUpdating] = useState(false);
   const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
+  // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
+  // const handleRecaptchaChange = (value) => {
+  //   if (value) {
+  //     setRecaptchaVerified(true);
+  //   } else {
+  //     setRecaptchaVerified(false);
+  //   }
+  // };
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -28,20 +36,14 @@ export const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isRecaptchaVerified) {
-      showError("reCAPTCHA verification faild, please try again!");
-      return;
-    }
-    const token = await recaptchaRef.current.getValue();
-    console.log(token);
+    // if (!isRecaptchaVerified) {
+    //   showError("reCAPTCHA verification faild, please try again!");
+    //   return;
+    // }
+    // const token = await recaptchaRef.current.getValue();
     try {
-      console.log({...formData});
       setUpdating(true);
-      const response = await axios.post("/contact-us", {
-        ...formData,
-         token:token,
-      });
-      console.log(response);
+      const response = await axios.post("/contact-us", formData);
       const { msg } = response.data
       showSuccess("Thank you! " + msg);
       setFormData({
@@ -58,7 +60,7 @@ export const ContactUs = () => {
       showError(error?.response?.data?.msg || "An error occurred, please try again later.");
     } finally {
       setUpdating(false);
-      setRecaptchaVerified(false);
+      // setRecaptchaVerified(false);
     }
   };
 
@@ -187,6 +189,12 @@ export const ContactUs = () => {
               fullWidth
               style={{ marginBottom: "1rem" }}
             />
+            {/* <ReCAPTCHA
+              style={{ width: "16%", marginLeft: "40%",marginBottom:"3px" }}
+              ref={recaptchaRef}
+              sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+              onChange={handleRecaptchaChange}
+            /> */}
             <CustomButton
               type="submit"
               className="btn btn-primary rounded-pill"

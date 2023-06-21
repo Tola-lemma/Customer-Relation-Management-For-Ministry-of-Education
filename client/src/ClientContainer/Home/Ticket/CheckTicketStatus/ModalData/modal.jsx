@@ -8,7 +8,7 @@ const Modal = ({ requestedIssue }) => {
   return (
     <div
       className="modal fade"
-      id="exampleModal"
+      id="TicketStatusModal"
       tabIndex="-1"
       aria-hidden="true"
     >

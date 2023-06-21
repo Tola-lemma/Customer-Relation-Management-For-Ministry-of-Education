@@ -8,6 +8,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import axios from "axios";
 import download from "downloadjs";
+
 const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -17,20 +18,19 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
     phone,
     createdAt,
     issueDescription,
-    filename,
-    originalname,
+    files,
   } = selectedRow || {};
 
   const [showTextArea, setShowTextArea] = useState(false);
+  const [moreButton,setMoreButton] = useState(false);
   const handleReplyClick = () => {
     setShowTextArea(true);
   };
 
   const handleSend = () => {
-    // Logic to send the reply
-    // ...
     setShowTextArea(false);
   };
+
   const handleViewPDF = async (filename, originalname) => {
     try {
       const response = await axios.get(`/issue/stream/${filename}`, {
@@ -47,14 +47,13 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       newTab.document.write(
         `<iframe src="${fileURL}" width="100%" height="100%" style="border: none;"></iframe>`
       );
-      newTab.document.title = originalname; // Set the originalname as the title of the new tab
+      newTab.document.title = originalname;
     } catch (error) {
       alert(error?.response?.data?.msg || "Error while viewing PDF");
-      
     }
   };
 
-  const handleDownload = async (filename) => {
+  const handleDownload = async (filename, originalname) => {
     try {
       const response = await axios.get(`/issue/stream/${filename}`, {
         responseType: "blob",
@@ -67,7 +66,12 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       alert(error?.response?.data?.msg || "Error while downloading file");
     }
   };
-
+const openButton = ()=>{
+  setMoreButton(true);
+}
+const closeMoreButton =()=>{
+  setMoreButton(false);
+}
   return (
     <div
       className="modal fade"
@@ -90,7 +94,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
             <p>Name: {name}</p>
             <p>Email: {email}</p>
             <p>Phone: {phone}</p>
-            <p>Created At: {createdAt}</p>
+            <p>Issue Created on: {createdAt}</p>
             <div style={{ marginTop: "20px" }}>
               <p>
                 <strong>Issue Description:</strong>
@@ -100,20 +104,52 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
               </div>
             </div>
             <div className="mt-3" style={{ textAlign: "center" }}>
-              <button
-                style={{ width: "30%" }}
-                className="btn btn-warning rounded-pill"
-                onClick={() => handleDownload(filename)}
-              >
-                Download File
-              </button>
-              <button
-                style={{ width: "30%", marginLeft: "1rem" }}
-                className="btn btn-primary rounded-pill"
-                onClick={() => handleViewPDF(filename, originalname)}
-              >
-                View File
-              </button>
+               {!moreButton ?  (
+                <div>
+                    <button
+                      style={{ width: "30%" }}
+                      className="btn btn-warning rounded-pill"
+                      onClick={openButton}
+                    >
+                      Download File
+                    </button>
+                    <button
+                      style={{ width: "30%", marginLeft: "1rem" }}
+                      className="btn btn-primary rounded-pill"
+                      onClick={openButton}
+                    >
+                      View File
+                    </button>
+                    </div>
+
+               ):(
+                <>
+                {files && files.length > 0 ? (
+                files.map((file, index) => (
+                  <div key={index}>
+                    <p>{ }</p>
+                    <button
+                      style={{ width: "30%" }}
+                      className="btn btn-warning rounded-pill"
+                      onClick={() => handleDownload(file.filename, file.originalname)}
+                    >
+                      Download File {index + 1}
+                    </button>
+                    <button
+                      style={{ width: "30%", marginLeft: "1rem" }}
+                      className="btn btn-primary rounded-pill"
+                      onClick={() => handleViewPDF(file.filename, file.originalname)}
+                    >
+                      View File {index + 1}
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p style={{color:"red"}}>No files available</p>
+              )}
+              <button onClick={closeMoreButton} className="btn btn-info rounded-pill">Hide</button>
+              </>
+               )}
             </div>
             <div
               style={{
@@ -129,9 +165,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
                     rows={3}
                     placeholder={`Write your reply message to ${name} here...`}
                   />
-                  <select
-                    classNamescree="form-select"
-                  >
+                  <select className="form-select">
                     <option selected>Update the Status of the issue</option>
                     <option value="todo">Todo</option>
                     <option value="progress">Progress</option>

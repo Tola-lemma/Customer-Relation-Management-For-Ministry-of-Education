@@ -5,11 +5,12 @@ import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Admin/Pages/global/LoginContext";
+import ModalButton from "./UpdateStaff/modalButton";
+import Modal from "./UpdateStaff/modal";
 export const StaffTopbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -48,9 +49,8 @@ export const StaffTopbar = () => {
       <IconButton>
         <NotificationsOutlinedIcon />
       </IconButton>
-      <IconButton>
-        <SettingsOutlinedIcon />
-      </IconButton>
+      <ModalButton />
+      <Modal />
       <IconButton onClick={()=>hadleLogout()} >
         <LogoutIcon />
       </IconButton>

@@ -13,9 +13,9 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (username, role) => {
-    setUser({ username, role });
-    const userCookie = JSON.stringify({ username, role });
+  const login = (username, role,email,phoneNumber) => {
+    setUser({ username, role,email,phoneNumber});
+    const userCookie = JSON.stringify({ username, role,email,phoneNumber });
     Cookies.set('user', userCookie);
   };
 
