@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import ReportTemplate from './ReportTemplate';
 import axios from 'axios';
-// import { ErrorContext } from '../../ToastErrorPage/ErrorContext';
-const Reports = (props) => {
+import ScholarshipReport from './ScholarshipReport';
+
+const Scholarship = (props) => {
   const [reportData, setReportData] = useState([]);
-  // const { showError } = useContext(ErrorContext);
+
   useEffect(() => {
     const fetchReportData = async () => {
       try {
@@ -14,31 +14,34 @@ const Reports = (props) => {
           },
         });
         const { aggregateReport } = response.data;
-        setReportData(aggregateReport);
+        const transferReports = aggregateReport.filter(report => report.serviceType === "scholarshipRequest");
+        setReportData(transferReports);
       } catch (error) {
-        alert(error?.response?.data?.msg)
+        alert(error?.response?.data?.msg);
       }
     };
 
     fetchReportData();
   }, []);
+
   return (
     <div>
-      <div className={`modal ${props.modalOpen ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display:props.modalOpen ? 'block' : 'none' }}>
+      <div className={`modal ${props.openScholarshipModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: props.scholarshipModal ? 'block' : 'none' }}>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header bg-primary">
               <h5 className="modal-title ms-5">{props.title}</h5>
-              <button type="button" className="btn-close" aria-label="Close" onClick={props.closeModal}></button>
+              <button type="button" className="btn-close" aria-label="Close" onClick={props.closeScholarshipModal}></button>
             </div>
             <div className="modal-body">
             {reportData.length === 0 ? (
                 <p style={{color:"red",fontSize:"3rem"}}>Currently No Data</p>
               ) : (
-            reportData.map((report, index) => (
-                <ReportTemplate
+              reportData.map((report, index) => (
+                <ScholarshipReport
                   key={index}
-                  title={report.serviceType}
+                  // title={report.serviceType}
+                  title= "Scholarship Request"
                   issueType={report.serviceType}
                   details={report.mostCommonIssueDescriptions.join("\n")}
                   fromDate={props.fromDate}
@@ -50,7 +53,7 @@ const Reports = (props) => {
               )))}
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-danger rounded-pill" onClick={props.closeModal}>Close</button>
+              <button type="button" className="btn btn-danger rounded-pill" onClick={props.closeScholarshipModal}>Close</button>
             </div>
           </div>
         </div>
@@ -59,4 +62,4 @@ const Reports = (props) => {
   );
 };
 
-export default Reports;
+export default Scholarship;

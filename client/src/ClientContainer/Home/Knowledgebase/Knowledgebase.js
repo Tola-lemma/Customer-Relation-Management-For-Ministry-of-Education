@@ -2,7 +2,7 @@ import React from "react";
 import "./Knowledgebase.css";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
 import { HashLink as Link } from "react-router-hash-link";
-import { Footer } from "../../HeaderAndFooter/header/Footer/Footer";
+import { Footer } from "../../HeaderAndFooter/Footer/Footer";
 export const Knowledgebase = () => {
   return (
     <div>
