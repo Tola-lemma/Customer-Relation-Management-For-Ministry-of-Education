@@ -102,7 +102,7 @@ export const Calendar = () => {
               right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
             }}
             initialView="dayGridMonth"
-            // locale="am"
+            locale="am"
             editable={true}
             selectable={true}
             selectMirror={true}

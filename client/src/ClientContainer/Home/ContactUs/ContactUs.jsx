@@ -1,7 +1,6 @@
-import { Footer } from '../../HeaderAndFooter/header/Footer/Footer';
+import { Footer } from '../../HeaderAndFooter/Footer/Footer';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/material';
-import React, { useState, useRef, useContext } from "react";
 import React, { useState, useContext } from "react";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
 import axios from "axios";
@@ -14,7 +13,7 @@ export const ContactUs = () => {
   const { showError, showSuccess } = useContext(ErrorContext);
   // const recaptchaRef = useRef(null);
   const [updating, setUpdating] = useState(false);
-  const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
+  // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
   // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
   // const handleRecaptchaChange = (value) => {
   //   if (value) {

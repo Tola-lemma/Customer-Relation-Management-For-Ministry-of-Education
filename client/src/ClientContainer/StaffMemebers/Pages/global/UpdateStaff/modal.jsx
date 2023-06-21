@@ -21,7 +21,7 @@ const Modal = () => {
 
   const { name, phoneNumber, email } = values;
   useEffect(() => {
-    if (user.username && user.email) {
+    if (user.username && user.email && user.phoneNumber) {
       setValues({
         name: user.username,
         phoneNumber: user.phoneNumber,

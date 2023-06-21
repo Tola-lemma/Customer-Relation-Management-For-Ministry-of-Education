@@ -2,10 +2,45 @@ import React from 'react';
 import jsPDF from 'jspdf';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../theme';
-const ReportTemplate = ({ title, issueType, details, fromDate, toDate, issuesReceived, issuesHandled, issuesProcessing }) => {
+
+const ReportTemplate = ({
+  title,
+  issueType,
+  details,
+  fromDate,
+  toDate,
+  issuesReceived,
+  issuesHandled,
+  issuesProcessing,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   const downloadReport = () => {
+    const doc = createReportDocument(
+      title,
+      issueType,
+      details,
+      fromDate,
+      toDate,
+      issuesReceived,
+      issuesHandled,
+      issuesProcessing
+    );
+
+    doc.save(`${title} Report.pdf`);
+  };
+
+  const createReportDocument = (
+    title,
+    issueType,
+    details,
+    fromDate,
+    toDate,
+    issuesReceived,
+    issuesHandled,
+    issuesProcessing
+  ) => {
     const doc = new jsPDF('p', 'mm', 'a4');
 
     doc.setFont('times', 'roman');
@@ -34,27 +69,43 @@ const ReportTemplate = ({ title, issueType, details, fromDate, toDate, issuesRec
       doc.text(`Page ${i} of ${pageCount}`, 20, 280);
     }
 
-    doc.save('report.pdf');
+    return doc;
   };
 
   return (
-    <div className='bg-reports' style={{color:colors.primary[600]}}>
+    <div className='bg-reports' style={{ color: colors.primary[600] }}>
       <h2>{title}</h2>
-      <p><strong>Issue Type:</strong> {issueType}</p>
-      <p><strong>Date Range:</strong> {fromDate} to {toDate}</p>
-      <p><strong>Issues Received:</strong> {issuesReceived}</p>
-      <p><strong>Issues Handled:</strong> {issuesHandled}</p>
-      <p><strong>Issues Processing:</strong> {issuesProcessing}</p>
+      <p>
+        <strong>Issue Type:</strong> {issueType}
+      </p>
+      <p>
+        <strong>Date Range:</strong> {fromDate} to {toDate}
+      </p>
+      <p>
+        <strong>Issues Received:</strong> {issuesReceived}
+      </p>
+      <p>
+        <strong>Issues Handled:</strong> {issuesHandled}
+      </p>
+      <p>
+        <strong>Issues Processing:</strong> {issuesProcessing}
+      </p>
       <div>
-        <p><strong>Details:</strong></p>
-          {details.split('\n').map((item, index) => (
-            <p key={index}>{item}</p>
-          ))}
+        <p>
+          <strong>Details:</strong>
+        </p>
+        {details.split('\n').map((item, index) => (
+          <p key={index} style={{ fontSize: '0.95rem' }}>
+            {item}
+          </p>
+        ))}
       </div>
-      <hr className="shadow-lg" />
+      <hr className='shadow-lg' />
       <div style={{ textAlign: 'center' }}>
-      <button onClick={downloadReport} className='btn btn-primary rounded-pill'>Download Report (PDF)</button>
-    </div>
+        <button onClick={downloadReport} className='btn btn-primary rounded-pill'>
+          Download Report (PDF)
+        </button>
+      </div>
     </div>
   );
 };

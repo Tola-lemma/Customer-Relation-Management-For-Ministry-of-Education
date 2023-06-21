@@ -224,7 +224,7 @@ export const Dashboard = () => {
           </Box>
           </Box>
           </Box>
-          <Reports modalOpen={modalOpen} closeModal={closeModal} />
+          <Reports  title="All Reports" modalOpen={modalOpen} closeModal={closeModal} />
     </Box>
   )
 }

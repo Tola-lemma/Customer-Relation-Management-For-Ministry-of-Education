@@ -5,33 +5,16 @@ import './OpenTicket.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Stack, Typography } from '@mui/material';
-import { Footer } from '../../../HeaderAndFooter/header/Footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-// import UploadFile from './UploadFile';
-import { createMuiTheme, ThemeProvider } from '@mui/material';
 import axios from 'axios';
 import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';
 import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
-import PhoneInput from 'react-phone-input-2';
+import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css';
 import CustomButton from '../../../Admin/Pages/global/Button.jsx'
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&:before": {
-          borderBottom: "2px solid #ff0000", // Set your desired border color
-        },
-        "&:hover:not($disabled):before": {
-          borderBottom: "2px solid #00ff00", // Set your desired border color on hover
-        },
-      },
-    },
-  },
-});
-// import ReCAPTCHA from 'react-google-recaptcha';
+import { Footer } from '../../../HeaderAndFooter/Footer/Footer';
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialValue = {
@@ -46,25 +29,9 @@ export const OpenTicket = () => {
   const fileInputRef = useRef(null);
   const [updating, setUpdating] = useState(false);
 
-  const recaptchaRef = useRef(null);
-  const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
-  // const recaptchaRef = useRef(null);
-  // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
-  // const handleRecaptchaChange = (value) => {
-  //   if (value) {
-  //     setRecaptchaVerified(true);
-  //   } else {
-  //     setRecaptchaVerified(false);
-  //   }
-  // };
   let {name, email,phoneN,serviceType, issueDescription} = value
   const onSubmit = async (event) => {
     event.preventDefault();
-    // if (!isRecaptchaVerified) {
-    //   showError("reCAPTCHA verification faild, please try again!")
-    //   return;
-    // }
-    // const token = await recaptchaRef.current.getValue();
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
@@ -85,7 +52,6 @@ export const OpenTicket = () => {
         isValid = false;
         return;
       }
-
       // Check file type
       if (file.type !== allowedType) {
         showError(`File ${file.name} has an invalid file type. Allowed type: PDF.`);
@@ -114,9 +80,7 @@ export const OpenTicket = () => {
         showError(error?.response?.data?.msg || "An error occurred during the file upload.");
       }
       finally {
-        setUpdating(false); // Set updating back to false after the API call completes
-
-        // setRecaptchaVerified(false);
+        setUpdating(false); 
      } 
     }
     setValue(initialValue);
@@ -131,11 +95,6 @@ export const OpenTicket = () => {
       <div className=''> 
         <NavBar />
         <div className='container all-container'>
-          <Typography variant='h1'>Ask New Questions</Typography>
-          <Typography variant='h3'>Please fill out this form to submit your problem.</Typography>
-          <ThemeProvider theme={theme}>
-
-
           <Typography variant='h1'>Submit your Issue Here</Typography>
           <Typography variant='h3'>Please fill out this form to submit your Issue.</Typography>
           <Box sx={{ width: 600, maxWidth: '100%', marginTop: 2 }}>
@@ -204,13 +163,6 @@ export const OpenTicket = () => {
               onChange={(e) =>  setValue({ ...value, issueDescription: e.target.value })}
             />
           </Box>
-          </ThemeProvider>
-
-          {/* <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-            onChange={handleRecaptchaChange}
-            /> */}
           <Stack direction='row' spacing={2} mt={2} mb={2} mr={4} size='large'>
             <CustomButton type='submit' className="btn btn-success" disabled={updating} loading={updating}> Create Ticket</CustomButton>
             <Button type='reset' variant='contained' color='success' size='large'>
@@ -228,3 +180,4 @@ export const OpenTicket = () => {
 };
 
 export default OpenTicket;
+
