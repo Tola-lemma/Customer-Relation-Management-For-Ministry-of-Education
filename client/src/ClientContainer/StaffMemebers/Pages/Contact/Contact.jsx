@@ -4,57 +4,12 @@ import { tokens } from "../.././theme";
 import { mockDataContacts } from "../.././Data/mockData";
 import { Header } from "../../Components/Header";
 import './contact.css'
-import { useReducer } from "react";
-import ModalButton from "../../Components/Modals/ModalButton";
-import Modal from "../../Components/Modals/modal";
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "UPDATE_ADMIN":
-      return {
-        ...state,
-        modalTitle: "Update Admin",
-        FullName: action.payload.FullName,
-      };
-
-    case "UPDATE_STAFF":
-      return {
-        ...state,
-        modalTitle: "Views of Customer Detail",
-        FullName: action.payload.FullName,
-        Email: action.payload.Email,
-        ContactNumber: action.payload.ContactNumber,
-        Role: action.payload.Role,
-      };
-    default:
-      return;
-  }
-};
-
 export const StaffContact = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [state, dispatch] = useReducer(reducer, {
-    modalTitle: "",
-    FullName: "",
-    Email: "",
-    ContactNumber: "",
-    Role:""
-  });
-  const editClick = () => {
-    dispatch({
-      type: "UPDATE_STAFF",
-      payload: {
-        modalTitle: state.modalTitle,
-      },
-    });
-  };
-  
-  const handleUpdate = () => {
-    // showSuccess("updated successfully")
-  }
   const columns = [
-    { field: "id", headerName: "ID",flex:0.5},
-    {field: "registrarId", headerName: "Registrar ID",},
+    { field: "id", headerName: "ID",flex:0.1},
+    {field: "createdAt", headerName: "Issue Created on", flex:1},
     {
       field: "name",
       headerName: "Name",
@@ -71,27 +26,12 @@ export const StaffContact = () => {
       headerName: "Email",
       flex: 1,
     },
-    {
-      field:"action",
-      headerName: "Actions",
-      flex: 1,
-      renderCell: () => {
-        return (
-          <Box
-            width="100%"
-            m="0 auto"
-            display="flex"
-          >
-           {<ModalButton  editClick={editClick} />}
-          </Box>
-        );
-      },
-    }
   ];
+
 
   return (
     <Box m="20px">
-      <Header title="CUSTOMER ISSUE" subtitle="List of Customer Issue " />
+      <Header title="CONTACTS" subtitle="List of Staff Members contacts for future reference" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -125,18 +65,10 @@ export const StaffContact = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={userData}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
-        <Modal
-        modalTitle={state.modalTitle}
-        fullName={state.fullName}
-        contactNumber={state.contactNumber}
-        email={state.email}
-        role={state.role}
-        onUpdate={handleUpdate}
-      />
       </Box>
     </Box>
   );

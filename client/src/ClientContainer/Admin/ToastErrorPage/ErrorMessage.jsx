@@ -4,11 +4,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { ErrorContext } from "./ErrorContext";
 
 export const ErrorMessage = () => {
-  const { errorMessage,successMessage,warningMessage, clearError } = useContext(ErrorContext);
+  const { message, clearMessage } = useContext(ErrorContext);
 
   useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage, {
+    if (message) {
+      const { type, message: toastMessage } = message;
+
+      const toastOptions = {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 5000,
         hideProgressBar: false,
@@ -16,37 +18,25 @@ export const ErrorMessage = () => {
         pauseOnHover: true,
         draggable: true,
         draggablePercent: 60,
-        onClose: clearError,
+        onClose: clearMessage,
         theme: "colored",
-      });
+      };
+
+      switch (type) {
+        case "error":
+          toast.error(toastMessage, toastOptions);
+          break;
+        case "success":
+          toast.success(toastMessage, toastOptions);
+          break;
+        case "warning":
+          toast.warn(toastMessage, toastOptions);
+          break;
+        default:
+          break;
+      }
     }
-    if (successMessage) {
-      toast.success(successMessage, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        draggablePercent: 60,
-        onClose: clearError,
-        theme: "colored",
-      });
-    }
-    if (warningMessage) {
-      toast.warn(warningMessage, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        draggablePercent: 60,
-        onClose: clearError,
-        theme: "colored",
-      });
-    }
-  }, [errorMessage, successMessage,warningMessage, clearError]);
+  }, [message, clearMessage]);
 
   return <ToastContainer />;
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext,  useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -7,12 +7,12 @@ import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import SummarizeIcon from "@mui/icons-material/Summarize";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import adminProfilePicture from "../../../.././assets/images/admin.png";
+import { UserContext } from "./LoginContext";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -36,6 +36,7 @@ export const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const { user } = useContext(UserContext);
   return (
     <Box
     height="660px"
@@ -103,7 +104,7 @@ export const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Tola Lemma
+                  {user.role === 'admin' && user.username}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   MoE CRM Admin
@@ -142,14 +143,6 @@ export const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Staff's Summary"
-              to="/admin/staff_summary"
-              icon={<SummarizeIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
             <Typography
               variant="h6"
               color={colors.grey[300]}

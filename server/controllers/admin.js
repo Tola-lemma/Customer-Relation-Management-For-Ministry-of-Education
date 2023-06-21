@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotfoundError } from "../error/errors.js";
 import bcrypt from "bcrypt";
 import {requestServiceUtil} from '../utils/serviceTypeUtil.js';
+import { Roles } from "../models/roles.js";
 import {RequestService} from '../models/requestService.js'
 
 //only adim can see all registered users
@@ -11,7 +12,7 @@ export const getAllUsers = async (req, res) => {
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const users = await User.find({}).select("-password -resetPasswordToken -resetPasswordExpires").skip(skip).limit(limit);
+  const users = await User.find({role : {$ne : Roles.Admin}}).select("-password -resetPasswordToken -resetPasswordExpires").skip(skip).limit(limit);
 
   res.status(StatusCodes.OK).json({ success: true, users, count: users.length, msg: "list of users" });
 };

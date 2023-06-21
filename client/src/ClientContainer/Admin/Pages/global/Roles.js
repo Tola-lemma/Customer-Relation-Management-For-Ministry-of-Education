@@ -1,0 +1,1 @@
+export const Roles = {"transferCoordinator":"Transfer Coordinator","studyAbroadCoordinator":"Study Abroad Coordinator", "scholarshipCoordinator":"Scholarship Coordinator","complaintsCoordinator" : "Complaints Coordinator"}

@@ -12,18 +12,18 @@ import { IssueStatus } from "../models/issueStatus.js";
 import { Roles } from "../models/roles.js";
 
 export const upload = async (req, res) => {
-
   const requestIssue = await RequestIssue.findById(req.requestIssue.Id);
-  
+
   if (!requestIssue)
-  throw new NotfoundError(`No request issue with ${req.requestIssue.Id}.`);
-  
+    throw new NotfoundError(`No request issue with ${req.requestIssue.Id}.`);
+
   await sendMail(
     requestNotificationMailOptions(
       requestIssue.name,
       requestIssue.email,
-      requestIssue._id
-    ));
+      requestIssue.ticketNumber
+    )
+  );
 
   res.status(StatusCodes.CREATED).json({
     success: true,
@@ -32,16 +32,19 @@ export const upload = async (req, res) => {
 };
 
 export const trackIssue = async (req, res) => {
-  const { ticket } = req.query;
-  const requestedIssue = await RequestIssue.findById(ticket);
-  if (!requestedIssue)
-    throw new NotfoundError(
-      `No issue is request using with ticket : ${ticket}`
-    );
+  const { ticket, email } = req.body;
+  
+  if(!ticket || !email) throw new BadRequestError("email and ticket number are required.")
+  
+  const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  
+  if(!emailRegex.test(email)) throw new BadRequestError("invalid emial address.")
 
-  res
-    .status(StatusCodes.OK)
-    .json({ success: true, status: requestedIssue.status, requestedIssue });
+  const requestedIssue = await RequestIssue.findOne({ticketNumber : ticket, email}).select("name serviceType issueStatus");
+  if (!requestedIssue)
+    throw new NotfoundError("Issue not found.");
+
+  res.status(StatusCodes.OK).json({success: true, requestedIssue});
 };
 
 export const getIssues = async (req, res) => {
@@ -64,9 +67,9 @@ export const getIssues = async (req, res) => {
         as: "files",
       },
     },
-    {$skip : skip},
-    {$limit : limit}
-  ])
+    { $skip: skip },
+    { $limit: limit },
+  ]);
 
   res
     .status(StatusCodes.OK)
@@ -97,9 +100,7 @@ export const getRequestedIssue = async (req, res) => {
   if (!requestedIssue.length)
     throw new NotfoundError(`No requestIssue with id ${requestIssueId} found.`);
 
-  res
-    .status(StatusCodes.OK)
-    .json({ success: true, requestedIssue });
+  res.status(StatusCodes.OK).json({ success: true, requestedIssue });
 };
 
 export const getFile = async (req, res) => {
@@ -153,35 +154,39 @@ export const updateIssueStatus = async (req, res) => {
   if (!IssueStatus[status])
     throw new BadRequestError("Invalid value for issue status.");
 
-  const issueToUpdate = await RequestIssue.findOne({ _id: requestIssueId, serviceType: serviceType });
-    
-  if (!issueToUpdate) throw new NotfoundError(`No Issue with id : ${requestIssueId} found.`);
+  const issueToUpdate = await RequestIssue.findOne({
+    _id: requestIssueId,
+    serviceType: serviceType,
+  });
 
-  const currentIssueStatus = issueToUpdate.issueStatus
-  const newStatus = IssueStatus[status]
-  
-  if(currentIssueStatus === newStatus) throw new BadRequestError("Can't update the same status")
+  if (!issueToUpdate)
+    throw new NotfoundError(`No Issue with id : ${requestIssueId} found.`);
 
-  issueToUpdate.issueStatus = newStatus
-  await issueToUpdate.save()
- 
-  
+  const currentIssueStatus = issueToUpdate.issueStatus;
+  const newStatus = IssueStatus[status];
+
+  if (currentIssueStatus === newStatus)
+    throw new BadRequestError("Can't update the same status");
+
+  issueToUpdate.issueStatus = newStatus;
+  await issueToUpdate.save();
+
   if (issueToUpdate.issueStatus === IssueStatus.done) {
     await sendMail(
       requestDoneNotificationMailOptions(
         issueToUpdate.name,
         issueToUpdate.email,
         requestIssueId
-        )
-        );
-      }
-    };
+      )
+    );
+  }
 
-res.status(StatusCodes.OK).json({
-  success: true,
-  msg: "issue status updated successfully.",
-  issueToUpdate,
-});
+  res.status(StatusCodes.OK).json({
+    success: true,
+    msg: "issue status updated successfully.",
+    issueToUpdate,
+  });
+};
 
 export const deleteIssue = async (req, res) => {
   const { requestIssueId } = req.params;
@@ -238,18 +243,19 @@ export const deleteIssue = async (req, res) => {
 };
 
 export const generateReport = async (req, res) => {
-  const {startDate, endDate} = req.query
-  const serviceType = req.user.role === Roles.Admin ? {} : ServiceTypes[req.user.role];
+  const { startDate, endDate } = req.query;
+  const serviceType =
+    req.user.role === Roles.Admin ? {} : ServiceTypes[req.user.role];
 
-  const dateMatch = {}
-  if (startDate && endDate){
+  const dateMatch = {};
+  if (startDate && endDate) {
     dateMatch = {
       $match: {
         createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
       },
     };
   }
-  
+
   const aggregateReport = await RequestIssue.aggregate([
     dateMatch,
     { $match: { serviceType } },
@@ -275,7 +281,11 @@ export const generateReport = async (req, res) => {
         issueDescriptions: { $addToSet: "$issueDescription" },
         resolvedIssues: {
           $push: {
-            $cond: [{ $eq: ["$issueStatus", "done"] }, { $subtract: ["$updatedAt", "$createdAt"] }, null],
+            $cond: [
+              { $eq: ["$issueStatus", "done"] },
+              { $subtract: ["$updatedAt", "$createdAt"] },
+              null,
+            ],
           },
         },
       },
@@ -295,10 +305,14 @@ export const generateReport = async (req, res) => {
         averageFileLength: { $avg: "$totalFileLength" },
         minFileLength: { $min: "$totalFileLength" },
         maxFileLength: { $max: "$totalFileLength" },
-        resolvedIssues: { $push: "$resolvedIssues"  },
+        resolvedIssues: { $push: "$resolvedIssues" },
         averageIssueResolutionTime: {
           $avg: {
-            $cond: [{ $ne: ["$resolvedIssues", null] }, { $avg: "$resolvedIssues" }, null],
+            $cond: [
+              { $ne: ["$resolvedIssues", null] },
+              { $avg: "$resolvedIssues" },
+              null,
+            ],
           },
         },
         mostCommonIssueDescriptions: { $first: "$issueDescriptions" },
@@ -320,6 +334,6 @@ export const generateReport = async (req, res) => {
       },
     },
   ]);
-  
+
   res.status(StatusCodes.OK).json({ success: true, aggregateReport });
 };
