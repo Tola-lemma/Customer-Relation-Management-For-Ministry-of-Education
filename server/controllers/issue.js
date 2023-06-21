@@ -244,19 +244,19 @@ export const deleteIssue = async (req, res) => {
 
 export const generateReport = async (req, res) => {
   const { startDate, endDate } = req.query;
-  const serviceType =
-    req.user.role === Roles.Admin ? {} : ServiceTypes[req.user.role];
+  const serviceType = req.user.role === Roles.Admin ? {} : {serviceType : ServiceTypes[req.user.role]};
 
   const dateMatch = {};
   if (startDate && endDate) {
     dateMatch = {
-      $match: {
         createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
-      },
     };
   }
 
   const aggregateReport = await RequestIssue.aggregate([
+ feature/issue-management
+    { $match : dateMatch},
+    { $match: serviceType},
     {
       $lookup: {
         from: "files.files",
