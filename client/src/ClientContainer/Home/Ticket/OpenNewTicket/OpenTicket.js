@@ -5,7 +5,6 @@ import './OpenTicket.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Stack, Typography } from '@mui/material';
-import { Footer } from '../../../HeaderAndFooter/footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -15,6 +14,7 @@ import { ErrorMessage } from '../../../Admin/ToastErrorPage/ErrorMessage';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css';
 import CustomButton from '../../../Admin/Pages/global/Button.jsx'
+import { Footer } from '../../../HeaderAndFooter/Footer/Footer';
 export const OpenTicket = () => {
   const { showError,showSuccess } = useContext(ErrorContext);
   const initialValue = {

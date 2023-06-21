@@ -1,8 +1,8 @@
+import { Footer } from '../../HeaderAndFooter/Footer/Footer';
+import TextField from '@mui/material/TextField';
+import { Box } from '@mui/material';
 import React, { useState, useContext } from "react";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
-import { Footer } from "../../HeaderAndFooter/footer/Footer";
-import TextField from "@mui/material/TextField";
-import { Box } from "@mui/material";
 import axios from "axios";
 // import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorContext } from "../../Admin/ToastErrorPage/ErrorContext";
@@ -13,6 +13,7 @@ export const ContactUs = () => {
   const { showError, showSuccess } = useContext(ErrorContext);
   // const recaptchaRef = useRef(null);
   const [updating, setUpdating] = useState(false);
+  // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
   // const [isRecaptchaVerified, setRecaptchaVerified] = useState(false);
   // const handleRecaptchaChange = (value) => {
   //   if (value) {
