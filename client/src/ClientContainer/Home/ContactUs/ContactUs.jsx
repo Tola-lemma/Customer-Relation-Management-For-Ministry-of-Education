@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavBar } from '../../HeaderAndFooter/header/NavBar';
-import { Footer } from '../../HeaderAndFooter/footer/Footer';
+import { Footer } from '../../HeaderAndFooter/header/Footer/Footer';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/material';
 

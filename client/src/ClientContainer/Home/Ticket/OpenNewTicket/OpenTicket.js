@@ -9,8 +9,7 @@ import { Footer } from '../../../HeaderAndFooter/header/Footer/Footer';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-
-import UploadFile from './UploadFile';
+// import UploadFile from './UploadFile';
 import { createMuiTheme, ThemeProvider } from '@mui/material';
 import axios from 'axios';
 import { ErrorContext } from '../../../Admin/ToastErrorPage/ErrorContext';

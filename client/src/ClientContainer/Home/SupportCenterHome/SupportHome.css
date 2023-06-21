@@ -57,10 +57,11 @@
         display: block;
     }
     .search-box{
-        margin-left: end;
-        margin-top: 5rem;
-        display: inline;
+        display: flex;
+  justify-content: center;
+  align-items: center;
     }
+
     .landing-page{
         display: inline;
     }
@@ -71,4 +72,13 @@
  .sidebar-container .front-button >p .check {
     width: 100%;
 }
+@media (max-width: 531px) {
+    .search-box {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-left: 0;
+      display: flex;
+    }
+  }
 }
