@@ -6,7 +6,7 @@ const ModalButton = () => {
       <button
       type="submit"
       data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
+      data-bs-target="#TicketStatusModal"
       className="btn btn-primary rounded-pill emailAccesbtn"
     >
       Check Status

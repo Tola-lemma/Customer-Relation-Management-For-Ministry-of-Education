@@ -57,12 +57,12 @@ export const CheckTicket = () => {
               Ticket Number:{" "}
             </label>
             <input
-              type="text"
+              type="number"
               name="ticket"
               onChange={(e)=>setTicket(e.target.value)}
               className="form-control rounded-pill"
               id="checkticketInput"
-              placeholder="eg. 192a6buY5"
+              placeholder="eg. 27745601"
               required
               />
           </div>
