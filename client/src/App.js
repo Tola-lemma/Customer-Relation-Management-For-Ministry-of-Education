@@ -4,7 +4,6 @@ import { Knowledgebase } from "./ClientContainer/Home/Knowledgebase/Knowledgebas
 import { OpenTicket } from "./ClientContainer/Home/Ticket/OpenNewTicket/OpenTicket";
 import { CheckTicket } from "./ClientContainer/Home/Ticket/CheckTicketStatus/CheckTicket";
 import { LoginPage } from "./ClientContainer/Admin/LoginPage/LoginPage";
-import { AdminPage } from "./ClientContainer/Admin/Routes/AdminPage";
 import { StaffPage } from "./ClientContainer/StaffMemebers/Routes/StaffPage";
 import { PageNotFound } from "./ClientContainer/Admin/Pages/PageNotFound/PageNotFound";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -12,11 +11,18 @@ import { ColorModeContext, useMode } from "./ClientContainer/Admin/theme";
 import { EmailSubmission } from "./ClientContainer/Admin/LoginPage/Email";
 import { PasswordReset } from "./ClientContainer/Admin/LoginPage/PasswordReset";
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000/api/v1";
+import { ChangePassword } from "./ClientContainer/Admin/LoginPage/ChangePassword";
+import { UserProvider } from "./ClientContainer/Admin/Pages/global/LoginContext";
+import { ContactUs } from "./ClientContainer/Home/ContactUs/ContactUs";
+import { ErrorProvider } from "./ClientContainer/Admin/ToastErrorPage/ErrorContext";
+import { AdminPage } from "./ClientContainer/Admin/Pages/Routes/AdminPage";
+axios.defaults.baseURL = "http://localhost:3001/api/v1";
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (
     <ColorModeContext.Provider value={colorMode}>
+      <UserProvider>
+      <ErrorProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
@@ -27,11 +33,17 @@ export const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/emailsubmission" element={<EmailSubmission />} />
           <Route path="/passwordreset" element={<PasswordReset />} />
+          <Route path="/forget-password" element={<EmailSubmission />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/reset-password/:token/:userId" element={<PasswordReset />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />
+          <Route path="/contactUs" element={<ContactUs />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
+      </ErrorProvider>
+      </UserProvider>
     </ColorModeContext.Provider>
   );
 };

@@ -1,13 +1,37 @@
-import React from "react";
+import React, {useState,useContext} from "react";
 import { NavBar } from "../../../HeaderAndFooter/header/NavBar";
 import "./CheckTicket.css";
 import { Link } from "react-router-dom";
-import { Footer } from "../../../HeaderAndFooter/footer/Footer";
+
+import { Footer } from "../../../HeaderAndFooter/header/Footer/Footer";
+
+import axios from "axios";
+import { ErrorMessage } from "../../../Admin/ToastErrorPage/ErrorMessage";
+import { ErrorContext } from "../../../Admin/ToastErrorPage/ErrorContext";
+import ModalButton from "./ModalData/modalButton";
+import Modal from "./ModalData/modal";
 export const CheckTicket = () => {
+  const [email, setEmail] = useState("");
+  const [ticket, setTicket] = useState("");
+  const [requestedIssue, setRequestedIssue] = useState("");
+  const { showError} = useContext(ErrorContext);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`/issue/track-issue`, { ticket, email });
+      const { requestedIssue } = response.data;
+      setRequestedIssue(requestedIssue);
+    } catch (error) {
+      showError(error?.response?.data?.msg || "Unable to see the status please try again");
+    }
+  };
   return (
    <>
     <div>
       <NavBar />
+      
+         
       <div className="container">
         <div className="ticketStatus">
           <h1>Check Ticket Status</h1>
@@ -17,13 +41,15 @@ export const CheckTicket = () => {
           </p>
         </div>
         <div className="ticketstatusForm">
-          <form>
+          <form onSubmit={handleSubmit}>
           <div className="mb-3 CheckStatusform">
             <label htmlFor="checkticketInput" className="form-label">
               Email address:{" "}
             </label>
             <input
               type="email"
+              name="email"
+              onChange={(e)=>setEmail(e.target.value)}
               className="form-control rounded-pill"
               id="checkticketInput"
               placeholder="someone.example@example.com"
@@ -34,13 +60,15 @@ export const CheckTicket = () => {
             </label>
             <input
               type="number"
+              name="ticket"
+              onChange={(e)=>setTicket(e.target.value)}
               className="form-control rounded-pill"
               id="checkticketInput"
-              placeholder="eg. 19231920"
+              placeholder="eg. 27745601"
               required
-            />
+              />
           </div>
-          <button type="submit" className="btn btn-primary rounded-pill emailAccesbtn">Email Access Link</button>
+          <ModalButton />
           </form>
         </div>
         <p className="mt-4">
@@ -52,6 +80,11 @@ export const CheckTicket = () => {
         </p>
       </div>
     </div>
+        <Modal
+          requestedIssue={requestedIssue}
+        />
+
+    <ErrorMessage/>
    <Footer/>
    </>
    

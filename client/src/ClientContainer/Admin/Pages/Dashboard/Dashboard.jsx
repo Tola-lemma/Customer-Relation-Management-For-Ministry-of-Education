@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Header } from '../../components/Header'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import { tokens } from '../../theme';
@@ -8,10 +8,20 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../components/StatBox";
+import Reports from '../Reports/Reports';
 
 export const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <Box m="20px">
@@ -28,6 +38,7 @@ export const Dashboard = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
+            onClick={openModal}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
@@ -213,6 +224,7 @@ export const Dashboard = () => {
           </Box>
           </Box>
           </Box>
+          <Reports  title="All Reports" modalOpen={modalOpen} closeModal={closeModal} />
     </Box>
   )
 }

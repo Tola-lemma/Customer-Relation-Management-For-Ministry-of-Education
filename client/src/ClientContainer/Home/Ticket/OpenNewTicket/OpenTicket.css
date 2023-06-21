@@ -4,3 +4,12 @@
   align-items: center;
   justify-content: center;
 }
+.country-code{
+  margin-top: 2px;
+  border: none;
+}
+/* .input-phone-number:focus-visible{
+  outline: none !important;
+    border:none !important;
+    box-shadow: none !important;
+} */

@@ -3,35 +3,32 @@ import React, { createContext, useState } from "react";
 export const ErrorContext = createContext();
 
 export const ErrorProvider = ({ children }) => {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [warningMessage, setwarningMessage] = useState("");
+  const [message, setMessage] = useState(null);
 
-  const showError = (message) => {
-    setErrorMessage(message);
+  const showError = (errorMessage) => {
+    setMessage({ type: "error", message: errorMessage });
   };
 
-  const showSuccess = (message) => {
-    setSuccessMessage(message);
-  };
-  const showWarning = (message) => {
-    setwarningMessage(message);
+  const showSuccess = (successMessage) => {
+    setMessage({ type: "success", message: successMessage });
   };
 
-  const clearError = () => {
-    setErrorMessage("");
+  const showWarning = (warningMessage) => {
+    setMessage({ type: "warning", message: warningMessage });
+  };
+
+  const clearMessage = () => {
+    setMessage(null);
   };
 
   return (
     <ErrorContext.Provider
       value={{
-        errorMessage,
-        successMessage,
-        warningMessage,
+        message,
         showError,
         showSuccess,
         showWarning,
-        clearError,
+        clearMessage,
       }}
     >
       {children}

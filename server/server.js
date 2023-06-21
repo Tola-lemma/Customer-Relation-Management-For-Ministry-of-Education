@@ -14,7 +14,7 @@ import { requestIssueRouter } from "./routes/issue.js";
 import { contactRouter } from "./routes/contactUs.js";
 
 const server = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 server.use(cors())
 server.use(express.json());

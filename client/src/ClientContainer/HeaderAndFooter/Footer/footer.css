@@ -1,4 +1,5 @@
 
+
 footer{
     background: rgb(51, 56, 133);
     padding: 2px 0;
@@ -8,11 +9,9 @@ footer{
     list-style-type: none;
     margin-top: 15px;
 }
-/* .foot{
-    margin: 0 20px;
-} */
+
 .scl-mda{
-    margin-top: 1.45rem;
+    margin-top: 10.5rem;
 }
 .scl-mda>li i{
     margin-left: 1.5rem;
@@ -53,7 +52,7 @@ footer{
     margin-left: 4px;
 }
 
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
 
     footer{
         display: flex;
@@ -90,4 +89,47 @@ footer{
         
        
     }
-}
+} */
+@media screen and (max-width: 767px) {
+    /* CSS rules for screens with a maximum width of 767px */
+    footer{
+        display: flex;
+        height: 88%;
+        margin-left: 0px;
+    }
+    .scl-mda{
+        margin-top: 1rem;
+    }
+  }
+  
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    /* CSS rules for screens with a minimum width of 768px and maximum width of 991px */
+    footer{
+        display: flex;
+        height: 88%;
+        margin-left: 0px;
+    }
+    .scl-mda{
+        margin-top: 1rem;
+    }
+  }
+  
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    /* CSS rules for screens with a minimum width of 992px and maximum width of 1199px */
+    footer{
+        display: flex;
+        height: 45%;
+        margin-left: 0px;
+    }
+    
+  }
+  
+  @media screen and (min-width: 1200px) {
+    /* CSS rules for screens with a minimum width of 1200px */
+    footer{
+        display: flex;
+        height: 49%;
+        margin-left: 0px;
+    }
+  }
+  

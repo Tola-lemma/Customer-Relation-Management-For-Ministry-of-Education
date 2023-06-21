@@ -5,16 +5,23 @@ import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import Logout from "../../Components/Logout";
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../Admin/Pages/global/LoginContext";
+import ModalButton from "./UpdateStaff/modalButton";
+import Modal from "./UpdateStaff/modal";
 export const StaffTopbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-
+  const { logout } = useContext(UserContext);
+  const navigate = useNavigate( )
+  const hadleLogout= ()=>{
+     logout();
+    localStorage.setItem("token", "")
+       navigate("/login")
+  }
   
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -42,11 +49,10 @@ export const StaffTopbar = () => {
       <IconButton>
         <NotificationsOutlinedIcon />
       </IconButton>
-      <IconButton>
-        <SettingsOutlinedIcon />
-      </IconButton>
-      <IconButton >
-        <PersonOutlinedIcon onClick={()=>{<Logout/>}} />
+      <ModalButton />
+      <Modal />
+      <IconButton onClick={()=>hadleLogout()} >
+        <LogoutIcon />
       </IconButton>
     </Box>
   </Box>

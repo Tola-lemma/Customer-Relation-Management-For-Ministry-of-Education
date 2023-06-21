@@ -1,3 +1,6 @@
+
+import axios from 'axios'
+
 export const mockDataTeam = [
     {
       id: 1,
@@ -63,85 +66,40 @@ export const mockDataTeam = [
       role: "Student Transfer",
     },
   ];
-  
-  export const mockDataContacts = [
-    {
-      id: 1,
-      name: "Meles Zawude",
-      email: "meles.zawdie@gmail.com",
-      phone: "(251)24597367",
-      registrarId: 123512,
-    },
-    {
-      id: 2,
-      name: "Cersei Lannister",
-      email: "cerseilannister@gmail.com",
-      phone: "(421)314-2288",
-      registrarId: 123512,
-    },
-    {
-      id: 3,
-      name: "Jaime Lannister",
-      email: "jaimelannister@gmail.com",
-      phone: "(422)982-6739",
-      registrarId: 4132513,
-    },
-    {
-      id: 4,
-      name: "Anya Stark",
-      email: "anyastark@gmail.com",
-      phone: "(921)425-6742",
-      registrarId: 123512,
-    },
-    {
-      id: 5,
-      name: "Daenerys Targaryen",
-      email: "daenerystargaryen@gmail.com",
-      phone: "(421)445-1189",
-      registrarId: 123512,
-    },
-    {
-      id: 6,
-      name: "Ever Melisandre",
-      email: "evermelisandre@gmail.com",
-      phone: "(232)545-6483",
-      registrarId: 123512,
-    },
-    {
-      id: 7,
-      name: "Ferrara Clifford",
-      email: "ferraraclifford@gmail.com",
-      phone: "(543)124-0123",
-      registrarId: 123512,
-    },
-    {
-      id: 8,
-      name: "Rossini Frances",
-      email: "rossinifrances@gmail.com",
-      registrarId: 512315,
-    },
-    {
-      id: 9,
-      name: "Harvey Roxie",
-      email: "harveyroxie@gmail.com",
-      phone: "(444)555-6239",
-      registrarId: 928397,
-    },
-    {
-      id: 10,
-      name: "Enteri Redack",
-      email: "enteriredack@gmail.com",
-      phone: "(222)444-5555",
-      registrarId: 533215,
-    },
-    {
-      id: 11,
-      name: "Steve Goodman",
-      email: "stevegoodmane@gmail.com",
-      phone: "(444)555-6239",
-      registrarId: 92197,
-    },
-  ];
+  export const mockDataContacts = async () => {
+    try {
+      const response = await axios.get('/issue/requested-issues', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      let Id = 1;
+      const { requestedIssues } = response.data;
+      const contacts = requestedIssues.map(issue => {
+        const { name, email, phoneNumber, issueDescription, createdAt } = issue;
+        // const { filename, metadata } = issue.files[0];
+        // const originalname = metadata.originalname;
+        const files = issue.files.map(file => {
+          return { filename: file.filename, originalname: file.metadata.originalname }
+        });
+        return {
+          id: Id++,
+          name,
+          email,
+          phone: phoneNumber,
+          issueDescription,
+          createdAt: new Date(createdAt).toLocaleDateString('en-US'),
+          files,
+          // originalname // Add originalname property to the object
+        };
+      });
+      return contacts;
+    } catch (error) {
+      alert(error?.response?.data?.msg || "Error while fetching user data");
+      return [];
+    }
+  };
+
   
   export const mockDataStaffSummary = [
     {
@@ -260,4 +218,4 @@ export const mockDataTeam = [
       IssuesHandled: "133",
     },
   ];
-  
+ 
