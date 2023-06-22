@@ -5,10 +5,12 @@ import { ErrorContext } from "../ToastErrorPage/ErrorContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../Pages/global/Button";
+import { UserContext } from "../Pages/global/LoginContext";
 export const ChangePassword = () => {
   const navigate = useNavigate();
   const [updating, setUpdating] = useState(false);
   const { showError, showSuccess } = useContext(ErrorContext);
+  const {user} = useContext(UserContext);
   const [passwords, setPasswords] = useState({
     oldPassword: "",
     newPassword: "",
@@ -34,10 +36,11 @@ export const ChangePassword = () => {
     e.preventDefault();
     try {
       setUpdating(true);
+      const endpoint = user.role === "admin" ? "/admin/change-password" : "/auth/change-password";
       const {
         data: { msg, token },
       } = await axios.post(
-        "/auth/change-password",
+       endpoint,
         {
           oldPassword,
           newPassword,
@@ -50,7 +53,11 @@ export const ChangePassword = () => {
         }
       );
       showSuccess(msg);
-      navigate("/staff");
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/staff");
+      }
       localStorage.setItem("token", token);
     } catch (error) {
       showError(
@@ -63,12 +70,21 @@ export const ChangePassword = () => {
   };
   return (
     <>
-      <button
-        className="btn btn-primary rounded-pill ms-2 mt-3"
-        onClick={() => navigate("/staff")}
-      >
-        🏠 Back to your page
-      </button>
+      {user.role === "admin" ? (
+  <button
+    className="btn btn-primary rounded-pill ms-2 mt-3"
+    onClick={() => navigate("/admin")}
+  >
+    🏠 Back to admin page
+  </button>
+) : (
+  <button
+    className="btn btn-primary rounded-pill ms-2 mt-3"
+    onClick={() => navigate("/staff")}
+  >
+    🏠 Back to your page
+  </button>
+)}
       <div className="loginpage">
         <div className="login-box">
           <div className="login-parent">
