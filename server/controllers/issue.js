@@ -49,7 +49,7 @@ export const trackIssue = async (req, res) => {
 
 export const getIssues = async (req, res) => {
   const { role } = req.user;
-  const serviceType = role === Roles.Admin ? {} : ServiceTypes[role];
+  const serviceType = role === Roles.Admin ? {} : {serviceType : ServiceTypes[role]};
   //pagination
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -57,7 +57,7 @@ export const getIssues = async (req, res) => {
 
   //aggregate query to get the issue that matched with the given servie type
   const requestedIssues = await RequestIssue.aggregate([
-    { $match: { serviceType } },
+    { $match: serviceType },
     { $sort: { createdAt: -1 } },
     {
       $lookup: {
