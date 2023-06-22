@@ -13,6 +13,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import adminProfilePicture from "../../../.././assets/images/admin.png";
 import { UserContext } from "./LoginContext";
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -140,6 +141,13 @@ export const Sidebar = () => {
               title="Contacts Information"
               to="/admin/contacts"
               icon={<ContactsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Manage Issue"
+              to="/admin/manage-issue"
+              icon={<ManageHistoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />

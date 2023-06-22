@@ -38,5 +38,5 @@ export const ErrorMessage = () => {
     }
   }, [message, clearMessage]);
 
-  return <ToastContainer />;
+  return <ToastContainer limit={1}/>;
 };

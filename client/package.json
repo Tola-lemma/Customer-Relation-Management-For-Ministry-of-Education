@@ -19,11 +19,9 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
-
     "bootstrap": "^5.3.0",
-
+    "dotenv": "^16.3.1",
     "downloadjs": "^1.4.7",
-
     "formik": "^2.2.9",
     "fullcalendar": "^5.11.3",
     "js-cookie": "^3.0.5",

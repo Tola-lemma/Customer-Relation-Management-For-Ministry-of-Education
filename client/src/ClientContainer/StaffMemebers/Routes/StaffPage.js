@@ -9,15 +9,11 @@ import { StaffFAQ } from "../Pages/Faq/FAQ";
 import { StaffSidebar } from "../Pages/global/Sidebar";
 import { StaffPageNotFound } from "../Pages/PageNotFound/PageNotFound";
 
-// import Data from "../Data/Data";
-
-import { ErrorProvider } from "../../Admin/ToastErrorPage/ErrorContext";
 export const StaffPage = () => {
     const [theme, colorMode] = useMode("dark");
     return (
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-          <ErrorProvider>
           <CssBaseline />
           <div className="app">
             <StaffSidebar />
@@ -32,7 +28,6 @@ export const StaffPage = () => {
               </Routes>
             </main>
           </div>
-          </ErrorProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
     );

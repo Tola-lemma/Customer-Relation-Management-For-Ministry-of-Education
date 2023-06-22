@@ -6,7 +6,7 @@ const CustomButton = ({ onClick, disabled, loading, children,className,style  })
     <button className={`btn ${className} `} disabled={disabled || loading} onClick={onClick} style={style}>
       {loading ? (
         <>
-          <CircularProgress size={20} color="inherit" />
+          <CircularProgress size={25} color="inherit" />
           <span style={{ marginLeft: "8px" }}>Loading...</span>
         </>
       ) : (
