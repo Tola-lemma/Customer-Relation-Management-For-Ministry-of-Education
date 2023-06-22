@@ -23,7 +23,7 @@ export const StaffFAQ = () => {
         <AccordionDetails>
           <Typography>
            <p>
-          The file you can appload  may include:
+          The file you can upload  may include:
           <br />
 
 1. Transfer Application Form: This is a standard form provided by the institution or organization where the teacher is currently employed. The form typically includes personal details, current position, desired transfer location, reasons for the transfer, and any additional information required.

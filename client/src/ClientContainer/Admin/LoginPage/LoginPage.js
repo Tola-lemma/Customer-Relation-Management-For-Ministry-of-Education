@@ -27,25 +27,29 @@ export const LoginPage = () => {
   );
   useEffect(() => {
     const tokenInLs = localStorage.getItem("token");
+  
     if (tokenInLs && user.username && user.role) {
       setIsAuthenticated(true);
       navigate(roleRoutes[user.role]);
     } else {
-      axios
-        .get("/auth/check-auth", {
-          headers: {
-            authorization: `Bearer ${tokenInLs}`,
-          },
-        })
-        .then(() => {
+      const checkAuth = async () => {
+        try {
+         await axios.get("/auth/check-auth", {
+            headers: {
+              Authorization: `Bearer ${tokenInLs}`,
+            },
+          });
           setIsAuthenticated(true);
           navigate(roleRoutes[user.role]);
-        })
-        .catch(() => {
+        } catch (error) {
           setIsAuthenticated(false);
-        });
+        }
+      };
+  
+      checkAuth();
     }
   }, [navigate, roleRoutes, user.role, user.username]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
