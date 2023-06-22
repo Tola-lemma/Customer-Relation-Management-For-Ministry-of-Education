@@ -10,7 +10,7 @@ import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 export const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { showError,showSuccess } = useContext(ErrorContext);
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values,{resetForm}) => {
     try {
     const {data : {msg}} = await axios.post("/admin/register", { ...values}
     , {
@@ -21,6 +21,7 @@ export const Form = () => {
       }
     });
       showSuccess("Successfully "+ msg + "!");
+      resetForm(initialValues)
     } catch (error) {
         showError(error?.response?.data?.msg || "An error occurred. Please try again.");
   };
@@ -61,10 +62,10 @@ export const Form = () => {
                 label="Full Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.fullName}
+                value={values.name}
                 name="name"
-                error={!!touched.fullName && !!errors.fullName}
-                helperText={touched.fullName && errors.fullName}
+                error={!!touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -87,10 +88,10 @@ export const Form = () => {
                 label="Phone Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
+                value={values.phoneNumber}
                 name="phoneNumber"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
+                error={!!touched.phoneNumber && !!errors.phoneNumber}
+                helperText={touched.phoneNumber && errors.phoneNumber}
                 sx={{ gridColumn: "span 4" }}
               />
               <Select

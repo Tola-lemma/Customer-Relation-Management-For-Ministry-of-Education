@@ -13,7 +13,7 @@ const Modal = ({ modalTitle, selectedRow,onRefresh}) => {
     if (userId) {
       try {
         setUpdating(true);
-        const response = await axios.post(`/admin/update-role/${userId}`, { role:selectedRole },{
+        const response = await axios.put(`/admin/update-role/${userId}`, { role:selectedRole },{
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

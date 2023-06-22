@@ -39,7 +39,7 @@ export const ChangePassword = () => {
       const endpoint = user.role === "admin" ? "/admin/change-password" : "/auth/change-password";
       const {
         data: { msg, token },
-      } = await axios.post(
+      } = await axios.put(
        endpoint,
         {
           oldPassword,
