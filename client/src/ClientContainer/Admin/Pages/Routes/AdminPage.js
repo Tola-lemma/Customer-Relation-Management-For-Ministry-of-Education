@@ -1,7 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import { UserProvider } from "../global/LoginContext";
-import { ErrorProvider } from "../../ToastErrorPage/ErrorContext";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Sidebar } from "../global/Sidebar";
 import { StaffMembers } from "../team/StaffMembers";
@@ -17,7 +16,6 @@ export const AdminPage = () => {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <UserProvider >
-      <ErrorProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
@@ -36,7 +34,6 @@ export const AdminPage = () => {
           </main>
         </div>
       </ThemeProvider>
-      </ErrorProvider>
       </UserProvider>
     </ColorModeContext.Provider>
   );

@@ -33,7 +33,7 @@ const Modal = () => {
     e.preventDefault();
   try {
     setUpdating(true);
-    const response = await axios.post(
+    const response = await axios.put(
       "/admin/update-account",
       {
         ...values
