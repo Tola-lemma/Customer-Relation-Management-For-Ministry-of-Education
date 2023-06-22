@@ -6,7 +6,7 @@ import {loginLmiter, loginSpeedLimiter, resetPasswordLimiter, resetPasswordSpeed
 const router = express.Router();
 
 router.post("/login", loginLmiter, loginSpeedLimiter, login);
-router.post("/change-password", authMiddleware, changePassword);
+router.put("/change-password", authMiddleware, changePassword);
 router.post("/forget-password", forgetPassword)
 router.post("/reset-password/:token", resetPasswordLimiter, resetPasswordSpeedLimiter, resetPassword)
 router.put("/update-account", authMiddleware, updateAccount)
