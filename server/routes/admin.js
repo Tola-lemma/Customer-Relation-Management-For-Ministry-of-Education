@@ -20,5 +20,6 @@ router.get("/requested-issues",getIssues);
 router.get("/report", generateReport)
 router.put("/update-account", updateAccount)
 router.put("/change-password", changePassword)
+router.delete("/delete/:requestIssueId", deleteIssue)
 
 export { router as adminRoute };
