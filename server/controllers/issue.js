@@ -254,7 +254,6 @@ export const generateReport = async (req, res) => {
   }
 
   const aggregateReport = await RequestIssue.aggregate([
- feature/issue-management
     { $match : dateMatch},
     { $match: serviceType},
     {
