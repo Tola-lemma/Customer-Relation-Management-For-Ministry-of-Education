@@ -14,7 +14,7 @@ export const StaffFAQ = () => {
     <Box m="20px">
       <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
 
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Teacher transfer request
@@ -46,7 +46,7 @@ export const StaffFAQ = () => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Student transfer request
@@ -77,7 +77,7 @@ export const StaffFAQ = () => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Scholarship Question
@@ -120,7 +120,7 @@ To obtain detailed information about scholarships offered by the Ministry of Edu
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Request to return to work after studying abroad
@@ -164,7 +164,7 @@ Please note that the answers provided here are general in nature and may vary ba
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Various academic and administrative complaints

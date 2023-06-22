@@ -11,6 +11,7 @@ import { Form } from "../form/Form";
 import { Dashboard } from "../Dashboard/Dashboard";
 import { Topbar } from "../global/Topbar";
 import { ColorModeContext,useMode } from "../../theme";
+import { ManageIssue } from "../ManageIssue/ManageIssue";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode("dark");
   return (
@@ -29,6 +30,7 @@ export const AdminPage = () => {
               <Route path="/form" element={<Form />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/manage-issue" element={<ManageIssue />} />
               <Route path="/*" element={<PageNotFound />} />
             </Routes>
           </main>

@@ -19,7 +19,7 @@ export const mockDataTeam = async () => {
       role:  user.role,
     }));
   } catch (error) {
-    alert(error?.response?.data?.msg || "Error while viewing PDF");
+    alert(error?.response?.data?.msg || "Error while viewing users");
     return [];
   }
 };
@@ -46,72 +46,31 @@ export const mockDataContacts = async () => {
   }
 };
     
-    // export const mockDataStaffSummary = [
-    //   {
-    //     id: 1,
-    //     name: "Tola Lemma",
-    //     email: "tolalemma@gmail.com",
-    //     IssuesHandled: "21",
-    //     phone: "(251)245973674",
-    //     date: "03/12/2023-10/12/2023",
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "Cersei Lannister",
-    //     email: "cerseilannister@gmail.com",
-    //     IssuesHandled: "1",
-    //     phone: "(421)314-2288",
-    //     date: "06/15/2021-03/11/2023",
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "Jaime Lannister",
-    //     email: "jaimelannister@gmail.com",
-    //     IssuesHandled: "11",
-    //     phone: "(422)982-6739",
-    //     date: "05/02/2022-03/09/2023",
-    //   },
-    //   {
-    //     id: 4,
-    //     name: "Anya Stark",
-    //     email: "anyastark@gmail.com",
-    //     IssuesHandled: "80",
-    //     phone: "(921)425-6742",
-    //     date: "01/02/2023-03/12/2023",
-    //   },
-    //   {
-    //     id: 5,
-    //     name: "Daenerys Targaryen",
-    //     email: "daenerystargaryen@gmail.com",
-    //     IssuesHandled: "1",
-    //     phone: "(421)445-1189",
-    //     date: "01/12/2021-03/12/2023",
-    //   },
-    //   {
-    //     id: 6,
-    //     name: "Ever Melisandre",
-    //     email: "evermelisandre@gmail.com",
-    //     IssuesHandled: "63",
-    //     phone: "(232)545-6483",
-    //     date: "11/02/2022-03/01/2023",
-    //   },
-    //   {
-    //     id: 7,
-    //     name: "Ferrara Clifford",
-    //     email: "ferraraclifford@gmail.com",
-    //     IssuesHandled: "52",
-    //     phone: "(543)124-0123",
-    //     date: "02/11/2022-03/03/2023",
-    //   },
-    //   {
-    //     id: 8,
-    //     name: "Rossini Frances",
-    //     email: "rossinifrances@gmail.com",
-    //     IssuesHandled: "21",
-    //     phone: "(222)444-5555",
-    //     date: "05/02/2021-03/02/2023",
-    //   },
-    // ];
+    export const mockDataManageIssue = async ()=>{
+      try {
+        const response = await axios.get('/admin/requested-issues',
+        {
+          headers: {
+         'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        let ID = 1
+        const { requestedIssues } = response.data;
+        return requestedIssues.map(user => ({
+          id: ID++,
+          userId:user._id,
+          ticketNumber: user.ticketNumber,
+          name: user.name,
+          email: user.email,
+          phone: user.phoneNumber,
+          serviceType:  user.serviceType,
+          issueStatus:user.issueStatus
+        }));
+      } catch (error) {
+        alert(error?.response?.data?.msg || "Error while retrieving issue");
+        return [];
+      }
+    }
     
     // export const mockRecentRequest = [
     //   {

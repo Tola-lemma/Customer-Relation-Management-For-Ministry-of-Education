@@ -1,17 +1,20 @@
-import { Box, Button, TextField, Select, MenuItem} from "@mui/material";
+import { Box,TextField, Select, MenuItem} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Header } from "../../components/Header";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
+import CustomButton from "../global/Button";
 export const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { showError,showSuccess } = useContext(ErrorContext);
+  const [updating, setUpdating] = useState(false);
   const handleFormSubmit = async (values,{resetForm}) => {
     try {
+    setUpdating(true);
     const {data : {msg}} = await axios.post("/admin/register", { ...values}
     , {
       headers: {
@@ -24,6 +27,9 @@ export const Form = () => {
       resetForm(initialValues)
     } catch (error) {
         showError(error?.response?.data?.msg || "An error occurred. Please try again.");
+  }
+  finally {
+    setUpdating(false);
   };
   }
   return (
@@ -147,9 +153,9 @@ export const Form = () => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Create New staff member
-              </Button>
+              <CustomButton  type="submit" className="btn btn-info"
+              disabled={updating} loading={updating}
+              > Create New staff member </CustomButton>
             </Box>
           </form>
         )}
