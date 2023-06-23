@@ -151,6 +151,13 @@ export const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Manage Service"
+              to="/admin/add-service-description"
+              icon={<ManageHistoryIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Typography
               variant="h6"
               color={colors.grey[300]}

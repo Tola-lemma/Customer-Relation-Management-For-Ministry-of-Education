@@ -54,7 +54,7 @@ export const mockDataContacts = async () => {
          'Authorization':`Bearer ${localStorage.getItem('token')}`
           }
         });
-        let ID = 1
+        let ID = 0
         const { requestedIssues } = response.data;
         return requestedIssues.map(user => ({
           id: ID++,

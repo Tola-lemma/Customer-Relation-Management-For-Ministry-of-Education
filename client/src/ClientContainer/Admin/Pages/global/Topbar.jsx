@@ -1,4 +1,4 @@
-import { Box, IconButton, useTheme } from "@mui/material";
+import { Badge, Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
@@ -47,7 +47,9 @@ export const Topbar = () => {
         )}
       </IconButton>
       <IconButton>
-        <NotificationsOutlinedIcon />
+      <Badge badgeContent={4} color="warning">
+        <NotificationsOutlinedIcon  />
+      </Badge>
       </IconButton>
       <ModalButton />
       <Modal />
