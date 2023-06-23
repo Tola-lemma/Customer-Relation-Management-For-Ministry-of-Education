@@ -1,0 +1,16 @@
+.status-cell {
+      font-weight: bold;
+    }
+    
+    .todo {
+      background-color:#3498db
+    }
+    
+    .progress {
+      background-color: #f39c12;
+    }
+    
+    .done {
+      background-color: #2ecc71;
+    }
+    
