@@ -16,6 +16,7 @@ import {
   Button,
 } from "@mui/material";
 import ModalButton from "./modalButton";
+import './status.css'
 
 export const ManageIssue = () => {
   const theme = useTheme();
@@ -93,24 +94,37 @@ export const ManageIssue = () => {
       field: "serviceType",
       headerName: "Service Type",
       flex: 1,
-      // renderCell: ({ row: { role } }) => {
-      //   return (
-      //     <Box width="100%" m="0 auto" display="flex">
-      //       <Typography color={colors.grey[100]}>{role}</Typography>
-      //     </Box>
-      //   );
-      // },
+    //   renderCell: ({ row: { serviceType } }) => {
+    //     return (
+    //       <Box width="100%" m="0 auto" display="flex">
+    //         <Typography color={colors.grey[100]}>{serviceType}</Typography>
+    //       </Box>
+    //     );
+    //   },
     },
     {
       field: "issueStatus",
       headerName: "Issue Status",
       flex: 1,
+      cellClassName: (params) => {
+        const status = params.value.toLowerCase();
+        switch (status) {
+          case 'todo':
+            return 'status-cell todo';
+          case 'progress':
+            return 'status-cell progress';
+          case 'done':
+            return 'status-cell done';
+          default:
+            return '';
+        }
+      },
     },
     //update
     {
       field: "action",
       headerName: "Actions",
-      flex: 1,
+      flex: 0,
       renderCell: (params) => {
         const row = params.row;
         return (
