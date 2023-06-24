@@ -10,7 +10,7 @@ import { ServiceTypes } from "../models/serviceTypes.js";
 import mongoose from "mongoose";
 import { IssueStatus } from "../models/issueStatus.js";
 import { Roles } from "../models/roles.js";
-
+import {RequestService} from '../models/requestService.js'
 export const upload = async (req, res) => {
   const requestIssue = await RequestIssue.findById(req.requestIssue.Id);
 
@@ -334,3 +334,12 @@ export const generateReport = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ success: true, aggregateReport });
 };
+
+
+
+// get all service 
+
+export const getAllService = async(req,res) => {
+  const services = await RequestService.find({});
+  res.status(StatusCodes.OK).json({services});
+}

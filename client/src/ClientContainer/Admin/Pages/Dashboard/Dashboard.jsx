@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Header } from '../../components/Header'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import { tokens } from '../../theme';
@@ -13,6 +13,7 @@ import Transfer from '../Reports/transferReport/Transfer';
 import Scholarship from '../Reports/scholarShipReport/Scholarship';
 import Complaint from '../Reports/complaintReport/Complaint';
 import StudyAbroad from '../Reports/StudyAbroadReport/StudyAbroad';
+import axios from 'axios';
 
 export const Dashboard = () => {
   const theme = useTheme();
@@ -26,7 +27,6 @@ export const Dashboard = () => {
   const openModal = () => {
     setModalOpen(true);
   };
-
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -54,6 +54,49 @@ const openStudyAbroadModal =()=>{
 const closeStudyAbroadModal =()=>{
   setStudyAbroadModal(false)
 }
+const [count, setCount] = useState(0);
+const [users,setUsers] = useState(0);
+const [todo, setTodo] = useState(0);
+const [progress, setProgress] = useState(0);
+const [done, setDone] = useState(0);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const issuesPromise = axios.get('/admin/requested-issues', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      const usersPromise = axios.get('/admin/users', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      const [issuesResponse, users] = await Promise.all([issuesPromise, usersPromise]);
+
+      const { count } = issuesResponse.data;
+      const { count: userCount } = users.data;
+      //counting status
+      const {requestedIssues} = issuesResponse.data
+      const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
+      setTodo(todoIssues.length);
+      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'progress');
+      setProgress(progessIssues.length);
+      const doneIssues = requestedIssues.filter(issue => issue.issueStatus === 'done');
+      setDone(doneIssues.length);
+
+        // Count the issues with each status
+      setCount(count ||0);
+      setUsers(userCount ||0);
+    } catch (error) {
+      alert('Error fetching data:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
   return (
     <Box m="20px">
         {/* HEADER */}
@@ -92,10 +135,10 @@ const closeStudyAbroadModal =()=>{
           justifyContent="center"
         >
           <StatBox
-            title="361"
+            title={done}
             subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
+            progress={count !== 0 ? (((done / count) * 100) ) * 0.01 : "0.01"}
+            increase={count !== 0 ? ((done / count) * 100) + "%" : "N/A"}
             icon={
               <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -111,10 +154,10 @@ const closeStudyAbroadModal =()=>{
           justifyContent="center"
         >
           <StatBox
-            title="5"
+            title={users}
             subtitle="Number of staff assigned"
             progress="0.85"
-            increase="+90%"
+            increase="+70%"
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -130,8 +173,8 @@ const closeStudyAbroadModal =()=>{
           justifyContent="center"
         >
           <StatBox
-            title="441"
-            subtitle="New Customer"
+            title={count}
+            subtitle="New Customer per a week"
             progress="0.30"
             increase="+5%"
             icon={
@@ -149,10 +192,10 @@ const closeStudyAbroadModal =()=>{
           justifyContent="center"
         >
           <StatBox
-            title="441"
+            title={todo + progress}
             subtitle="Issues Received"
-            progress="0.80"
-            increase="+43%"
+            progress={count !== 0 ? (((todo + progress) / count) * 100)* 0.01 : "0.01"}
+            increase={count !== 0 ? ((todo + progress) / count) * 100 + "%" : "N/A"}
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

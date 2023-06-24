@@ -43,6 +43,7 @@ export const StaffMembers = () => {
   const colors = tokens(theme.palette.mode);
   const { showWarning, showError } = useContext(ErrorContext);
   const [userData, setUserData] = useState([]);
+  const [selectedRowName, setSelectedRowName] = useState("");
   const fetchData = async () => {
     const data = await mockDataTeam();
     setUserData(data);
@@ -74,6 +75,7 @@ export const StaffMembers = () => {
     if (userId) {
       setDeleteUserId(userId);
       setIsDeleteModalOpen(true);
+      setSelectedRowName(row.name);
     }
   };
   const handleRefresh = () => {
@@ -202,7 +204,7 @@ export const StaffMembers = () => {
         <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
         <DialogContent>
           <Typography>
-            <strong> Are you sure you want to delete? </strong>
+            <strong>  Are you sure you want to delete {selectedRowName}? Please enter "DELETE" to confirm: </strong>
           </Typography>
           <TextField
             style={{ marginTop: "1rem" }}
@@ -224,7 +226,7 @@ export const StaffMembers = () => {
             onClick={confirmDelete}
             autoFocus
             disabled={!inputMatch}
-            style={{ backgroundColor: colors.grey[300] }}
+            variant='contained' color='error'
           >
             Delete
           </Button>

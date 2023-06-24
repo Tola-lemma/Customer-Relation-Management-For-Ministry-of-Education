@@ -1,5 +1,5 @@
-import { Box, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+import { Badge, Box, IconButton, useTheme } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Admin/Pages/global/LoginContext";
 import ModalButton from "./UpdateStaff/modalButton";
 import Modal from "./UpdateStaff/modal";
+import axios from "axios";
 export const StaffTopbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -22,7 +23,26 @@ export const StaffTopbar = () => {
     localStorage.setItem("token", "")
        navigate("/login")
   }
-  
+  const [todoCount, setTodoCount] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/issue/requested-issues',
+        {
+          headers: {
+         'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const { requestedIssues } = response.data;
+        const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
+        setTodoCount(todoIssues.length);
+      } catch (error) {
+        alert('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
     {/* SEARCH BAR */}
@@ -47,7 +67,9 @@ export const StaffTopbar = () => {
         )}
       </IconButton>
       <IconButton>
+      <Badge badgeContent={todoCount} color="warning">
         <NotificationsOutlinedIcon />
+      </Badge>
       </IconButton>
       <ModalButton />
       <Modal />

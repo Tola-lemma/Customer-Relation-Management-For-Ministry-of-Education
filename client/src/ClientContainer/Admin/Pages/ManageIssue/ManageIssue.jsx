@@ -16,6 +16,7 @@ import {
   Button,
 } from "@mui/material";
 import ModalButton from "./modalButton";
+import './status.css'
 
 export const ManageIssue = () => {
   const theme = useTheme();
@@ -93,24 +94,37 @@ export const ManageIssue = () => {
       field: "serviceType",
       headerName: "Service Type",
       flex: 1,
-      // renderCell: ({ row: { role } }) => {
-      //   return (
-      //     <Box width="100%" m="0 auto" display="flex">
-      //       <Typography color={colors.grey[100]}>{role}</Typography>
-      //     </Box>
-      //   );
-      // },
+    //   renderCell: ({ row: { serviceType } }) => {
+    //     return (
+    //       <Box width="100%" m="0 auto" display="flex">
+    //         <Typography color={colors.grey[100]}>{serviceType}</Typography>
+    //       </Box>
+    //     );
+    //   },
     },
     {
       field: "issueStatus",
       headerName: "Issue Status",
       flex: 1,
+      cellClassName: (params) => {
+        const status = params.value.toLowerCase();
+        switch (status) {
+          case 'todo':
+            return 'status-cell todo';
+          case 'progress':
+            return 'status-cell progress';
+          case 'done':
+            return 'status-cell done';
+          default:
+            return '';
+        }
+      },
     },
     //update
     {
       field: "action",
       headerName: "Actions",
-      flex: 1,
+      flex: 0,
       renderCell: (params) => {
         const row = params.row;
         return (
@@ -169,7 +183,7 @@ export const ManageIssue = () => {
         <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
         <DialogContent>
           <Typography>
-            <strong> Are you sure you want to delete? </strong>
+            <strong>  Are you sure you want to delete the issue? Please enter "DELETE" to confirm: </strong>
           </Typography>
           <TextField
             style={{ marginTop: "1rem" }}
@@ -191,7 +205,7 @@ export const ManageIssue = () => {
             onClick={confirmDelete}
             autoFocus
             disabled={!inputMatch}
-            style={{ backgroundColor: colors.grey[300] }}
+            variant='contained' color='error'
           >
             Delete
           </Button>

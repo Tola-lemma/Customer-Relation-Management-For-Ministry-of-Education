@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import {requestServiceUtil} from '../utils/serviceTypeUtil.js';
 import { Roles } from "../models/roles.js";
 import {RequestService} from '../models/requestService.js'
+import { RequestIssue } from "../models/requestIssue.js";
 
 //only adim can see all registered users
 export const getAllUsers = async (req, res) => {
@@ -67,34 +68,33 @@ export const updateRole = async (req, res) => {
 // CRud for the request service 
 
 // the admin can add service 
-export const addService = async(req,res) => {
-  // add the basic service at one time 
-  // const services = await RequestService.insertMany(requestServiceUtil);
-  // res.status(StatusCodes.CREATED).json({ success: true, services});
+export const addService = async (req, res) => {
+    // add svice onec 
+    // const services = await RequestService.insertMany(requestServiceUtil)
+    // res.status(StatusCodes.CREATED).json({services})
+    const { requestType, description } = req.body;
+    // Find the service based on the requestType
+    const service = await RequestService.findOne({requestType });
+    if(!service) throw new NotfoundError(`service with request type ${requestType} not found`);
+    
+      //  append the new description to the existing service
+      service.description = { ...service.description, ...description };
+      await service.save();
+      res.status(StatusCodes.OK).json({ success: true, service });
+};
 
-  const newService = await RequestService.create({...req.body});
-  res.status(StatusCodes.CREATED).json({success: true, msg : "new Service is Added"})
-}
 
-export const getAllService = async(req,res) => {
-  const services = await RequestService.find({});
-  res.status(StatusCodes.OK).json({services});
-}
-
-export const getServiceById = async(req,res) => {
-  const service = await RequestService.findById(req.params.id);
-  if(!service) throw new NotfoundError(`No service with id : ${req.params.id} found`)
+export const getServiceByRequestType = async(req,res) => {
+  const {requestType} = req.params;
+  const service = await RequestService.find({requestType});
+  if(!service) throw new NotfoundError(`service with request type ${requestType} not found`);
   res.status(StatusCodes.OK).json({success: true, service});
 }
 
-export const updateServiceStatus = async(req,res) => {
-  const service = await RequestService.findByIdAndUpdate(req.params.id);
-  if(!service) throw new NotfoundError(`No service with id : ${req.params.id} is found`);
-  res.status(StatusCodes.OK).json({success:true, msg : "Successfully updated"});
-} 
 
-export const deleteService = async(req,res) => {
-  const service = await RequestService.findByIdAndDelete(req.params.id);
-  if(service) throw new NotfoundError(`unable to delete service with service id ${req.params.id}`);
+export const deleteServiceByRequestStatus = async(req,res) => {
+  const {requestType} = req.params;
+  const service = await RequestService.findOneAndRemove({requestType});
+  if(!service) throw new NotfoundError(`unable to delete service with service id ${id}`);
   res.status(StatusCodes.OK).json({success: true, msg : "Deleted Sucssfully"})
 }

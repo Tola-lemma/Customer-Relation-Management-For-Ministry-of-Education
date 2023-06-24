@@ -76,7 +76,7 @@ export const mockDataTeam = [
       let Id = 1;
       const { requestedIssues } = response.data;
       const contacts = requestedIssues.map(issue => {
-        const { name, email, phoneNumber, issueDescription, createdAt } = issue;
+        const { _id, name, email, phoneNumber, issueDescription, createdAt,issueStatus } = issue;
         // const { filename, metadata } = issue.files[0];
         // const originalname = metadata.originalname;
         const files = issue.files.map(file => {
@@ -84,7 +84,9 @@ export const mockDataTeam = [
         });
         return {
           id: Id++,
+          _id,
           name,
+          issueStatus,
           email,
           phone: phoneNumber,
           issueDescription,

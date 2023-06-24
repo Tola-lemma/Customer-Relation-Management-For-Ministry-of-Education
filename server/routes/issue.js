@@ -10,6 +10,7 @@ import {
   getRequestedIssue,
   deleteIssue,
   generateReport,
+  getAllService
 } from "../controllers/issue.js";
 import { storage } from "../utils/storage.js";
 import { fileFilter, limits } from "../utils/fileFilter.js";
@@ -105,5 +106,6 @@ router.get(
   ),
   generateReport
 );
+router.get("/service", getAllService)
 
 export { router as requestIssueRouter };

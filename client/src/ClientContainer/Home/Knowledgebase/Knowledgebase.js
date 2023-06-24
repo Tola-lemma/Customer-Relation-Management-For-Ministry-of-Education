@@ -1,9 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Knowledgebase.css";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
 import { HashLink as Link } from "react-router-hash-link";
 import { Footer } from "../../HeaderAndFooter/Footer/Footer";
+import axios from "axios";
 export const Knowledgebase = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get("/issue/service");
+        setServices(response.data.services);
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to fetch services");
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div>
       <NavBar />
@@ -184,7 +212,7 @@ export const Knowledgebase = () => {
 
                 <span className="kb_strong_paragraph">
                   <strong>
-                    <u>Regarding representation</u>
+                    <p style={{fontSize:"1rem"}}>Regarding representation</p>
                   </strong>
                 </span>
 
@@ -204,222 +232,63 @@ export const Knowledgebase = () => {
               </div>
 
               <hr className="shadow-lg" />
+
+
+{/* service from Backend */}
+
+{services.length === 0 ? (
+        <p>No services found</p>
+      ) : (
+        <ul>
+          {services.map((service) => (
+            <li key={service._id} style={{ listStyleType:"none" }}>
               <h4>
                 <i
                   className="fa-sharp fa-regular fa-folder-open"
-                  style={{ color: "#e0c600" }}
+                  style={{ color: "#e0c600"}}
                 ></i>
-                <Link to="#transfer" className="kb" smooth>
-                  {" "}
-                  Transfer of teachers and students
+                <Link
+                  to={`#${getTitle(service.requestType)}`}
+                  className="kb"
+                  id={getTitle(service.requestType)}
+                >
+                  {service.title}
                 </Link>
               </h4>
-              <div className="kb_paragraph" id="transfer">
-                <p>
-                  <li>
-                    <Link
-                      className="kb"
-                      data-bs-toggle="collapse"
-                      to="#teacher"
-                      aria-expanded="false"
-                      aria-controls="teacher"
-                    >
-                      Teacher transfer request
-                    </Link>
-                  </li>
-                </p>
-                <div className="collapse" id="teacher">
-                  <div className="card card-body kb_paragraph">
-                    <ol>
-                      <div
-                        className="rounded-pill"
-                        style={{ backgroundColor: "#D9D9D9" }}
-                      >
-                        <h4 style={{ marginLeft: "2rem" }}>
-                          Teacher transfer request
-                        </h4>
-                      </div>
-                      <hr className="shadow-lg" />
-                      <p>
-                        <li>
-                          A letter of approval for the institution where he/she
-                          is working
-                        </li>
-                      </p>
-                      <p>
-                        <li>
-                          A letter stating that the receiving institution is
-                          willing to accept
-                        </li>
-                      </p>
-                      <p>
-                        <li>
-                          A letter stating how much debt and service time he
-                          owes to the applicant institution and showing that he
-                          is willing to pay to the recipient.
-                        </li>
-                      </p>
-                      <p>
-                        <li>
-                          Evidence of medical board from government health
-                          institutions confirming that he cannot work in the
-                          environment
-                        </li>
-                      </p>
-                    </ol>
-                  </div>
+              {service.description && (
+                <div className="kb_paragraph" id={getTitle(service.requestType)}>
+                  <span className="kb_strong_paragraph">
+                   <h6><strong>{service.subTitle}</strong></h6>
+                  </span>
+                  {Array.isArray(service.description) ? (
+                    <ul>
+                      {service.description.map((item, index) => (
+                        <li key={index}  style={{ listStyleType:"none" }}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <ul>
+                      {Object.entries(service.description).map(
+                        ([key, value]) => (
+                          <p>
+                          <li key={key} style={{ listStyleType:"disc" }}>
+                           {value}
+                          </li>
+                          </p>
+                        )
+                      )}
+                    </ul>
+                  )}
                 </div>
-
-                <p>
-                  <li>
-                    <Link
-                      className="kb"
-                      data-bs-toggle="collapse"
-                      to="#student"
-                      aria-expanded="false"
-                      aria-controls="student"
-                    >
-                      Student transfer request
-                    </Link>
-                  </li>
-                </p>
-                <div className="collapse" id="student">
-                  <div className="card card-body kb_paragraph">
-                    <ol>
-                      <div
-                        className="rounded-pill"
-                        style={{ backgroundColor: "#D9D9D9" }}
-                      >
-                        <h4 style={{ marginLeft: "2rem", color: "black" }}>
-                          Student transfer request
-                        </h4>
-                      </div>
-                      <hr className="shadow-lg" />
-                      <p>
-                        <li>
-                          Providing medical board evidence from government
-                          health institutions that proves that he cannot study
-                          in the environment
-                        </li>
-                      </p>
-                      <p>
-                        <li>
-                          A letter showing that the receiving institution is
-                          authorized
-                        </li>
-                      </p>
-                      <p>
-                        <li>
-                          Confirm that the student's information is free from
-                          any academic and administrative errors for the Q
-                          institution and send it to the receiving institution.
-                        </li>
-                      </p>
-                    </ol>
-                  </div>
-                </div>
-              </div>
+              )}
               <hr className="shadow-lg" />
-              <h4>
-                <i
-                  className="fa-sharp fa-regular fa-folder-open"
-                  style={{ color: "#e0c600" }}
-                ></i>
-                <Link to="#scholarship" className="kb" id="scholarship">
-                  {" "}
-                  Scholarship Question{" "}
-                </Link>
-              </h4>
-              <div className="kb_paragraph">
-                <p>
-                  <li>Proof that the scholarship is a full scholarship </li>
-                </p>
-                <p>
-                  <li>Letter of admission</li>
-                </p>
-
-                <p>
-                  <li>
-                    Letter of support from the institution where he/she works{" "}
-                  </li>
-                </p>
-              </div>
-              <hr className="shadow-lg" />
-              <h4>
-                <i
-                  className="fa-sharp fa-regular fa-folder-open"
-                  style={{ color: "#e0c600" }}
-                ></i>
-                <Link to="#foreignstudents" className="kb" id="foreignstudents">
-                  {" "}
-                  For foreign students who are studying in different countries,
-                  they must agree to get a letter of support when they come to
-                  Ethiopia and return abroad
-                </Link>
-              </h4>
-              <div className="kb_paragraph">
-                <p>
-                  <li>
-                    A letter of support from the embassy of the country where
-                    you are studying
-                  </li>
-                </p>
-
-                <p>
-                  <li>Letter of support from the institution where you work</li>
-                </p>
-
-                <p>
-                  <li>Passport copy</li>
-                </p>
-              </div>
-              <hr className="shadow-lg" />
-              <h4>
-                <i
-                  className="fa-sharp fa-regular fa-folder-open"
-                  style={{ color: "#e0c600" }}
-                ></i>
-                <Link to="#complaints" className="kb">
-                  {" "}
-                  Various academic and administrative complaints{" "}
-                </Link>
-              </h4>
-              <div className="kb_paragraph" id="complaints">
-                <span className="kb_strong_paragraph">
-                  <strong>
-                    Regarding unresolved problems and complaints regarding good
-                    governance;{" "}
-                  </strong>
-                </span>
-
-                <p>
-                  <li>
-                    The issue was presented to the management/complaint hearing
-                    committee at all levels and the senior management of the
-                    institution.{" "}
-                  </li>
-                </p>
-
-                <p>
-                  <li>
-                    A decision presented to the management of the institution's
-                    board
-                  </li>
-                </p>
-                <p>
-                  <li>
-                    A document explaining the issue that the person claims
-                  </li>
-                </p>
-                <p>
-                  <li>
-                    Documentary evidence to provide suggestions for good
-                    management deficiencies in any service provision
-                  </li>
-                </p>
-              </div>
+            </li>
+          ))}
+        </ul>
+      )}
             </ul>
-          </div>
+          </div> 
+
           <div className="selectByTopic dropdown">
             <button
               className="btn dropdown-toggle"
@@ -462,4 +331,19 @@ export const Knowledgebase = () => {
       <Footer />
     </div>
   );
+};
+const getTitle = (requestType) => {
+  switch (requestType) {
+    case "transferRequest":
+      return "transfer";
+    case "studyAbroadRequest":
+      return "foreignstudents";
+    case "scholarshipRequest":
+      return "scholarship";
+    case "complaintRequest":
+      return "complaints";
+    default:
+      return "";
+  }
+  
 };

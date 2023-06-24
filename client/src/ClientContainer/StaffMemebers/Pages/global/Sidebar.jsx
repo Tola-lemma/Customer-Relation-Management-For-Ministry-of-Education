@@ -75,7 +75,7 @@ export const StaffSidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h4" color={colors.grey[100]}>
+                <Typography variant="h5" color={colors.grey[100]}>
                 {user.role !== 'admin' && Roles[user.role]}
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>

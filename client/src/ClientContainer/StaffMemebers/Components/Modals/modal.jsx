@@ -13,6 +13,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {
+    _id,
     name,
     email,
     phone,
@@ -23,12 +24,27 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
 
   const [showTextArea, setShowTextArea] = useState(false);
   const [moreButton,setMoreButton] = useState(false);
+  const [status,setStatus] = useState("")
   const handleReplyClick = () => {
     setShowTextArea(true);
+  
   };
 
-  const handleSend = () => {
-    setShowTextArea(false);
+  const handleSend = async(e) => {
+    // setShowTextArea(false);
+    const requestIssueId = _id
+    try {
+      const {data : {msg}} = await axios.put(`/issue/update/${requestIssueId}`, {
+        status
+      },  {
+        headers: {
+       'Authorization':`Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      alert(`success ${msg}`)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleViewPDF = async (filename, originalname) => {
@@ -165,9 +181,11 @@ const closeMoreButton =()=>{
                     rows={3}
                     placeholder={`Write your reply message to ${name} here...`}
                   />
-                  <select className="form-select">
+                  <select className="form-select"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                  >
                     <option selected>Update the Status of the issue</option>
-                    <option value="todo">Todo</option>
                     <option value="progress">Progress</option>
                     <option value="done">Done</option>
                   </select>
@@ -176,6 +194,7 @@ const closeMoreButton =()=>{
                     onClick={handleSend}
                     style={{
                       width: "30%",
+                      // marginTop  : "60%",
                       marginLeft: "auto",
                       marginRight: "auto",
                       display: "block",
