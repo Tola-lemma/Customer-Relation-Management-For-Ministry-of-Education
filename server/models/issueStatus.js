@@ -1,5 +1,5 @@
 export const IssueStatus = {
   todo: "todo",
-  inProgress: "inprogress",
+  inprogress: "inprogress",
   done: "done",
 };

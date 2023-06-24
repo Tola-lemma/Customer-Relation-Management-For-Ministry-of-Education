@@ -176,7 +176,7 @@ export const updateIssueStatus = async (req, res) => {
       requestDoneNotificationMailOptions(
         issueToUpdate.name,
         issueToUpdate.email,
-        requestIssueId
+        issueToUpdate.ticketNumber
       )
     );
   }
@@ -208,7 +208,7 @@ export const deleteIssue = async (req, res) => {
     .toArray();
 
   if (!filesToDelete.length)
-    throw new BadRequestError(
+    throw new NotfoundError(
       `No issue with request id ${requestIssueId} exists.`
     );
 
@@ -246,7 +246,7 @@ export const generateReport = async (req, res) => {
   const { startDate, endDate } = req.query;
   const serviceType = req.user.role === Roles.Admin ? {} : {serviceType : ServiceTypes[req.user.role]};
 
-  const dateMatch = {};
+  let dateMatch = {};
   if (startDate && endDate) {
     dateMatch = {
         createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
@@ -293,6 +293,7 @@ export const generateReport = async (req, res) => {
         count: { $sum: "$count" },
         totalFiles: { $sum: "$totalFiles" },
         totalFileLength: { $sum: "$totalFileLength" },
+        fromDate : { $min: "$createdAt" },
         issueStatus: {
           $push: {
             status: "$_id.issueStatus",
@@ -328,6 +329,7 @@ export const generateReport = async (req, res) => {
         maxFileLength: 1,
         averageIssueResolutionTime: 1,
         mostCommonIssueDescriptions: 1,
+        fromDate : 1
       },
     },
   ]);
