@@ -15,11 +15,7 @@ export const DeleteService = () => {
 
   const fetchRequestTypes = async () => {
     try {
-      const response = await axios.get('/admin/service', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await axios.get('/issue/service');
       setRequestTypes(response.data.services.map((service) => service.requestType));
       setLoading(false);
     } catch (error) {
@@ -120,11 +116,11 @@ export const DeleteService = () => {
             fullWidth
           />
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-            <Button variant='contained' color='error' onClick={handleModalConfirmation}>
-              Delete
-            </Button>
-            <Button variant='contained' onClick={handleCloseModal} sx={{ ml: 2 }}>
+            <Button variant='contained' onClick={handleCloseModal}>
               Cancel
+            </Button>
+            <Button variant='contained' color='error' onClick={handleModalConfirmation}  sx={{ ml: 2 }}>
+              Delete
             </Button>
           </Box>
         </Box>

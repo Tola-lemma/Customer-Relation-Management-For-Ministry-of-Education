@@ -176,11 +176,11 @@ export const ContactUs = () => {
               fullWidth
               style={{ marginBottom: "1rem" }}
             />
-            <ReCAPTCHA
+            {/* <ReCAPTCHA
               style={{ width: "16%", marginLeft: "40%",marginBottom:"3px" }}
               ref={recaptchaRef}
               sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-            />
+            /> */}
             <CustomButton
               type="submit"
               className="btn btn-primary rounded-pill"

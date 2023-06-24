@@ -7,7 +7,6 @@ import {
   updateRole,
   addService,
   getServiceByRequestType,
-  getAllService,
   deleteServiceByRequestStatus
 } from "../controllers/admin.js";
 import { deleteIssue, generateReport, getIssues } from "../controllers/issue.js";
@@ -28,6 +27,5 @@ router.delete("/delete/:requestIssueId", deleteIssue)
 
 router.post("/add-service", addService)
 router.get("/service/:requestType", getServiceByRequestType)
-router.get("/service", getAllService)
 router.delete("/service/:requestType", deleteServiceByRequestStatus)
 export { router as adminRoute };

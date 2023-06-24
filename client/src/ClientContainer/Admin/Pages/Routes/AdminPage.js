@@ -14,6 +14,7 @@ import { ColorModeContext,useMode } from "../../theme";
 import { ManageIssue } from "../ManageIssue/ManageIssue";
 import { ServiceDescription } from "../ServiceDescription/AddserviceDescption";
 import { DeleteService } from "../ServiceDescription/DeleteService";
+import { SeeService } from "../ServiceDescription/GetService";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode("dark");
   return (
@@ -35,6 +36,7 @@ export const AdminPage = () => {
               <Route path="/manage-issue" element={<ManageIssue />} />
               <Route path="/add-service-description" element={<ServiceDescription />} />
               <Route path="/delete-service" element={<DeleteService />} />
+              <Route path="/retrive-service" element={<SeeService />} />
               <Route path="/*" element={<PageNotFound />} />
             </Routes>
           </main>

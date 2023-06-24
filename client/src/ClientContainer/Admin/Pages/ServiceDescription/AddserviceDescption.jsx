@@ -134,8 +134,11 @@ export const ServiceDescription = () => {
         </form>
         </div>
       <ErrorMessage />
-      <div style={{marginTop:"3rem" }}>
-          <a href="/admin/delete-service" style={{textDecoration:"none",fontSize:"2rem",fontStyle:"italic"}}>Dou You want to Delete Sevice? Click here </a>
+      <div style={{marginTop:"1rem",backgroundColor:"wheat",width:"60%",textAlign:"center",display: 'block', margin: '0 auto' }}>
+          <a href="/admin/delete-service" style={{textDecoration:"none",fontSize:"2rem",fontStyle:"italic"}}>Do you want to Delete Sevice? Click here </a>
+      </div>
+      <div style={{backgroundColor:"wheat",width:"60%",textAlign:"center", display: 'block', margin: '0 auto',marginTop:"2rem" }}>
+          <a href="/admin/retrive-service" style={{textDecoration:"none",fontSize:"2rem",fontStyle:"italic"}}>Do you want to see Sevice? Click here </a>
       </div>
     </Box>
   );

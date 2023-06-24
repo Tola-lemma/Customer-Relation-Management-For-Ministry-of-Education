@@ -183,7 +183,7 @@ export const ManageIssue = () => {
         <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
         <DialogContent>
           <Typography>
-            <strong> Are you sure you want to delete? </strong>
+            <strong>  Are you sure you want to delete the issue? Please enter "DELETE" to confirm: </strong>
           </Typography>
           <TextField
             style={{ marginTop: "1rem" }}
@@ -205,7 +205,7 @@ export const ManageIssue = () => {
             onClick={confirmDelete}
             autoFocus
             disabled={!inputMatch}
-            style={{ backgroundColor: colors.grey[300] }}
+            variant='contained' color='error'
           >
             Delete
           </Button>

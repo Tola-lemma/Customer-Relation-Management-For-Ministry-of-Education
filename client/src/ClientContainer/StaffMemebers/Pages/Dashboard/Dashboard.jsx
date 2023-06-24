@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Header } from '../../Components/Header'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import { tokens } from '../../theme';
@@ -13,6 +13,7 @@ import Scholarship from '../../Reports/Scholarship/Scholarship';
 import Transfer from '../../Reports/TransferRequest/Transfer';
 import StudyAbroad from '../../Reports/StudyAbroad/StudyAbroad';
 import Complaint from '../../Reports/Complaints/Complaint';
+import axios from 'axios';
 
 export const StaffDashboard = () => {
   const theme = useTheme();
@@ -59,6 +60,42 @@ export const StaffDashboard = () => {
   const closeComplaintModal = () =>{
     setCompplaintModal(false)
   }
+
+// for the purpose of statBox
+const [count, setCount] = useState(0);
+const [todo, setTodo] = useState(0);
+const [progress, setProgress] = useState(0);
+const [done, setDone] = useState(0);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/issue/requested-issues', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+    
+      const { count } = response.data;
+      //counting status
+      const {requestedIssues} = response.data
+      const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
+      setTodo(todoIssues.length);
+      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'progress');
+      setProgress(progessIssues.length);
+      const doneIssues = requestedIssues.filter(issue => issue.issueStatus === 'done');
+      setDone(doneIssues.length);
+
+      //   // Count the issues with each status
+      setCount(count ||0);
+    } catch (error) {
+      alert('Error fetching data:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+
   return (
     <Box m="20px">
         {/* HEADER */}
@@ -97,10 +134,10 @@ export const StaffDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="361"
+            title={done}
             subtitle="Notify via Email"
-            progress="0.75"
-            increase="+14%"
+            progress={count !== 0 ? (((done / count) * 100) ) * 0.01 : "0.01"}
+            increase={count !== 0 ? ((done / count) * 100) + "%" : "N/A"}
             icon={
               <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -116,10 +153,10 @@ export const StaffDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="5"
+            title={progress+done}
             subtitle="Email Sent"
-            progress="0.85"
-            increase="+90%"
+            progress={count !== 0 ? (((done +progress / count) * 100)) *0.01 : "0.01"}
+            increase={count !== 0 ? ((done +progress / count) * 100) + "%" : "N/A"}
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -135,10 +172,10 @@ export const StaffDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="441"
+            title={todo}
             subtitle="Incoming Resquests"
-            progress="0.30"
-            increase="+5%"
+            progress={count !== 0 ? (((todo / count) * 100)) *0.01 : "0.01"}
+            increase={count !== 0 ? ((todo / count) * 100) + "%" : "N/A"}
             icon={
               <PersonAddIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -154,10 +191,10 @@ export const StaffDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="441"
+            title={progress}
             subtitle="Update Issue Status"
-            progress="0.80"
-            increase="+43%"
+            progress={count !== 0 ? (((progress / count) * 100)) *0.01 : "0.01"}
+            increase={count !== 0 ? ((progress / count) * 100) + "%" : "N/A"}
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

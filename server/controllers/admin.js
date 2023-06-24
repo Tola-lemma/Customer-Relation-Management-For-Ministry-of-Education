@@ -84,14 +84,9 @@ export const addService = async (req, res) => {
 };
 
 
-export const getAllService = async(req,res) => {
-  const services = await RequestService.find({});
-  res.status(StatusCodes.OK).json({services});
-}
-
 export const getServiceByRequestType = async(req,res) => {
   const {requestType} = req.params;
-  const service = await RequestService.findOne({requestType});
+  const service = await RequestService.find({requestType});
   if(!service) throw new NotfoundError(`service with request type ${requestType} not found`);
   res.status(StatusCodes.OK).json({success: true, service});
 }

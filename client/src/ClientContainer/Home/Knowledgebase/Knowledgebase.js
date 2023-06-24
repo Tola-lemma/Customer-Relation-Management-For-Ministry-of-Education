@@ -12,11 +12,7 @@ export const Knowledgebase = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get("/admin/service", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get("/issue/service");
         setServices(response.data.services);
         setLoading(false);
       } catch (error) {

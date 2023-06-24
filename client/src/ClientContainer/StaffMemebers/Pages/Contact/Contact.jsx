@@ -64,6 +64,24 @@ export const StaffContact = () => {
       flex: 1,
     },
     {
+      field: "issueStatus",
+      headerName: "Issue Status",
+      flex: 1,
+      cellClassName: (params) => {
+        const status = params.value.toLowerCase();
+        switch (status) {
+          case 'todo':
+            return 'status-cell todo';
+          case 'progress':
+            return 'status-cell progress';
+          case 'done':
+            return 'status-cell done';
+          default:
+            return '';
+        }
+      },
+    },
+    {
       field:"action",
       headerName: "Actions",
       flex: 1,

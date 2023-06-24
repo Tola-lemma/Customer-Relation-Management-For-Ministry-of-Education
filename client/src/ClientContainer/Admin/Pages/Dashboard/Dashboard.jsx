@@ -56,6 +56,9 @@ const closeStudyAbroadModal =()=>{
 }
 const [count, setCount] = useState(0);
 const [users,setUsers] = useState(0);
+const [todo, setTodo] = useState(0);
+const [progress, setProgress] = useState(0);
+const [done, setDone] = useState(0);
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -74,7 +77,16 @@ useEffect(() => {
 
       const { count } = issuesResponse.data;
       const { count: userCount } = users.data;
+      //counting status
+      const {requestedIssues} = issuesResponse.data
+      const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
+      setTodo(todoIssues.length);
+      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'progress');
+      setProgress(progessIssues.length);
+      const doneIssues = requestedIssues.filter(issue => issue.issueStatus === 'done');
+      setDone(doneIssues.length);
 
+        // Count the issues with each status
       setCount(count ||0);
       setUsers(userCount ||0);
     } catch (error) {
@@ -85,8 +97,6 @@ useEffect(() => {
   fetchData();
 }, []);
 
-
-  
   return (
     <Box m="20px">
         {/* HEADER */}
@@ -125,10 +135,10 @@ useEffect(() => {
           justifyContent="center"
         >
           <StatBox
-            title="361"
+            title={done}
             subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
+            progress={count !== 0 ? (((done / count) * 100) ) * 0.01 : "0.01"}
+            increase={count !== 0 ? ((done / count) * 100) + "%" : "N/A"}
             icon={
               <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -147,7 +157,7 @@ useEffect(() => {
             title={users}
             subtitle="Number of staff assigned"
             progress="0.85"
-            increase="+90%"
+            increase="+70%"
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -182,10 +192,10 @@ useEffect(() => {
           justifyContent="center"
         >
           <StatBox
-            title={count}
+            title={todo + progress}
             subtitle="Issues Received"
-            progress="0.80"
-            increase="+43%"
+            progress={count !== 0 ? (((todo + progress) / count) * 100)* 0.01 : "0.01"}
+            increase={count !== 0 ? ((todo + progress) / count) * 100 + "%" : "N/A"}
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
