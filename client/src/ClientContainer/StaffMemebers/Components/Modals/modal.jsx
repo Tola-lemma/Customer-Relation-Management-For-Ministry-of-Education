@@ -25,6 +25,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
   const [moreButton,setMoreButton] = useState(false);
   const { showError,showSuccess } = useContext(ErrorContext);
   const [status,setStatus] = useState("")
+  const [message ,setMessage] = useState("")
   const handleReplyClick = () => {
     setShowTextArea(true);
   
@@ -34,13 +35,14 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
     try {
       setUpdating(true);
       const {data : {msg}} = await axios.put(`/issue/update/${requestIssueId}`, {
-        status
+        status, message
       },  {
         headers: {
        'Authorization':`Bearer ${localStorage.getItem('token')}`
         }
       })
       showSuccess(`success ${msg}`)
+      window.location.reload();
     } catch (error) {
       showError(error?.response?.data?.msg)
     }finally {
@@ -188,6 +190,8 @@ const closeMoreButton =()=>{
                 <div style={{ flex: 1 }}>
                   <textarea
                     style={{ width: "100%", height: "auto", minHeight: "75px" }}
+                    value={message}
+                    onChange={(e)=> setMessage(e.target.value)}
                     rows={3}
                     placeholder={`Write your reply message to ${name} here...`}
                   />

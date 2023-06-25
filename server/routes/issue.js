@@ -16,13 +16,13 @@ import { storage } from "../utils/storage.js";
 import { fileFilter, limits } from "../utils/fileFilter.js";
 import { authMiddleware, isAuthorized } from "../middleware/auth.js";
 import { Roles } from "../models/roles.js";
-import { verifyRecaptcha } from "../middleware/verifyRecaptcha.js";
+// import { verifyRecaptcha } from "../middleware/verifyRecaptcha.js";
 
 const router = express.Router();
 
 const uploadM = multer({ storage, fileFilter, limits });
 
-router.post("/ticket-issue", verifyRecaptcha, uploadM.array("files", limits.files), upload);
+router.post("/ticket-issue", uploadM.array("files", limits.files), upload);
 router.post("/track-issue", trackIssue);
 router.get(
   "/requested-issues",

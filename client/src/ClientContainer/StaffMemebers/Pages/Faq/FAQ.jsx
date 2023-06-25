@@ -5,21 +5,30 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {useState} from 'react'
 import './FAQ.css'
 import { tokens } from "../../theme";
 export const StaffFAQ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [expandedQuestion, setExpandedQuestion] = useState(null);
+
+  const handleQuestionExpand = (question) => {
+    setExpandedQuestion(question === expandedQuestion ? null : question);
+  };
   return (
     <Box m="20px">
       <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
 
-      <Accordion >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion  expanded={expandedQuestion === 'teacher-transfer'} >
+        <AccordionSummary 
+         expandIcon={<ExpandMoreIcon />}
+         onClick={() => handleQuestionExpand('teacher-transfer')}
+        > 
           <Typography color={colors.greenAccent[500]} variant="h5">
           Teacher transfer request
           </Typography>
-        </AccordionSummary>
+        </AccordionSummary   >
         <AccordionDetails>
           <Typography>
            <p>
@@ -45,9 +54,10 @@ export const StaffFAQ = () => {
            </p>
           </Typography>
         </AccordionDetails>
-      </Accordion>
-      <Accordion >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      </Accordion >
+      <Accordion  expanded={expandedQuestion === 'student-transfer'} >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}
+          onClick={() => handleQuestionExpand('student-transfer')}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Student transfer request
           </Typography>
@@ -77,8 +87,9 @@ export const StaffFAQ = () => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion expanded={expandedQuestion === 'scholarship-question'} >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}
+          onClick={() => handleQuestionExpand('scholarship-question')} >
           <Typography color={colors.greenAccent[500]} variant="h5">
           Scholarship Question
           </Typography>
@@ -120,8 +131,9 @@ To obtain detailed information about scholarships offered by the Ministry of Edu
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion  expanded={expandedQuestion === 'return-to-work'} >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}
+          onClick={() => handleQuestionExpand('return-to-work')}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Request to return to work after studying abroad
           </Typography>
@@ -164,8 +176,9 @@ Please note that the answers provided here are general in nature and may vary ba
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion expanded={expandedQuestion === 'academic-admin-complaints'} >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}
+          onClick={() => handleQuestionExpand('academic-admin-complaints')}>
           <Typography color={colors.greenAccent[500]} variant="h5">
           Various academic and administrative complaints
           </Typography>
