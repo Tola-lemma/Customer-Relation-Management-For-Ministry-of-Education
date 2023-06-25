@@ -279,6 +279,101 @@ export const requestDoneNotificationMailOptions = (name, email, ticketNumber) =>
       }
   }
 
+  export const requestReplayNotificationMailOptions = (name, email, ticketNumber, message) => {
+    return {
+        from: process.env.SMTP_FROM,
+        to: email,
+        subject: "Issue Status Update - Your Issue is Done",
+        html: `
+        <html>
+        <head>
+        <meta charset="utf-8">
+        
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.2;
+            margin: 80px auto;
+            padding: 0;
+            color: #333;
+            background-color: #f6f6f6;
+          }
+      
+          .container {
+            max-width: 580px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+      
+          h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+          }
+      
+         
+          p {
+            margin-top: 0;
+            margin-bottom: 20px;
+          }
+      
+          p.btn {
+            text-align: center;
+          }
+      
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #1e90ff;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            transition: background-color 0.3s ease;
+          }
+      
+          .button:hover {
+            background-color: #0077ff;
+          }
+        </style>
+      </head>
+      <body>
+      
+      <div class="container">
+        <h2>Your Issue is Complete!</h2>
+  
+        <h4>Dear ${name}, </h4>
+  
+        <p>It's to give some information about your issue with ticket number <strong>${ticketNumber}</strong></p>
+      
+        <p>
+          ${message}
+        </p>
+      
+        <p>
+          If you have any further questions or need assistance, please don't hesitate to contact us.
+        </p>
+      
+        <p>
+          Best regards,<br>
+          Your CRM Support Team
+        </p>
+      </div>
+      
+      </body>
+      </html>
+        `
+        }
+    }
+
   export const contactUsMailOptions = (firstName, lastName, email, subject, message, phoneNumber, companyName = null, country = null) => {
     return {
         from: email,
