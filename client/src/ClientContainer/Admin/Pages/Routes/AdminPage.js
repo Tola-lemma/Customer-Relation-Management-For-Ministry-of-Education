@@ -15,10 +15,12 @@ import { ManageIssue } from "../ManageIssue/ManageIssue";
 import { ServiceDescription } from "../ServiceDescription/AddserviceDescption";
 import { DeleteService } from "../ServiceDescription/DeleteService";
 import { SeeService } from "../ServiceDescription/GetService";
+import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 export const AdminPage = () => {
   const [theme, colorMode] = useMode("dark");
   return (
     <ColorModeContext.Provider value={colorMode}>
+      <ErrorMessage/>
       <UserProvider >
       <ThemeProvider theme={theme}>
         <CssBaseline />

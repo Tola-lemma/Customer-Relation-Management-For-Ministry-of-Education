@@ -5,7 +5,6 @@ import { mockDataTeam } from "../.././data/mockData";
 import { Header } from "../../components/Header";
 import { useContext, useEffect, useReducer, useState } from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
-import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import Modal from "../../components/Modals/modal";
 import ModalButton from "../../components/Modals/modalButton";
 import axios from "axios";
@@ -236,7 +235,6 @@ export const StaffMembers = () => {
       {/* update staff modal */}
       <Modal modalTitle={state.modalTitle} selectedRow={state.selectedRow} onRefresh={handleRefresh}/>
 
-      <ErrorMessage />
     </Box>
   );
 };

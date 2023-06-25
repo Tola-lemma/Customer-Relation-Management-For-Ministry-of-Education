@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Box, Typography, TextField } from '@mui/material';
 import { ErrorContext } from '../../ToastErrorPage/ErrorContext';
-import { ErrorMessage } from '../../ToastErrorPage/ErrorMessage';
 import { Header } from '../../components/Header';
 
 export const DeleteService = () => {
@@ -97,7 +96,6 @@ export const DeleteService = () => {
         Delete Service
       </button>
       </div>
-      <ErrorMessage />
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, minWidth: 400 }}>
           <Typography variant='h6' component='div' gutterBottom>

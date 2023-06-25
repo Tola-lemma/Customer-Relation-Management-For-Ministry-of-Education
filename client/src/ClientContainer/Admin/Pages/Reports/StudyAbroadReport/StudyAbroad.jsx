@@ -1,14 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import StudyAbroadReport from './StudyAbroadReport';
-
+import { useTheme } from '@emotion/react';
+import { tokens } from '../../../theme';
+import { ErrorContext } from '../../../ToastErrorPage/ErrorContext';
 const StudyAbroad = (props) => {
   const [reportData, setReportData] = useState([]);
-
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const { showError} = useContext(ErrorContext);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const formatDate = (dateString) => {
+    const options = { month: '2-digit', day: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
   useEffect(() => {
     const fetchReportData = async () => {
       try {
-        const response = await axios.get("/admin/report", {
+        const response = await axios.get(`/admin/report?startDate=${startDate}&endDate=${endDate}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -17,12 +27,12 @@ const StudyAbroad = (props) => {
         const transferReports = aggregateReport.filter(report => report.serviceType === "studyAbroadRequest");
         setReportData(transferReports);
       } catch (error) {
-        alert(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg);
       }
     };
 
     fetchReportData();
-  }, []);
+  }, [startDate, endDate,showError]);
 
   return (
     <div>
@@ -33,6 +43,26 @@ const StudyAbroad = (props) => {
               <h5 className="modal-title ms-5">{props.title}</h5>
               <button type="button" className="btn-close" aria-label="Close" onClick={props.closeStudyAbroadModal}></button>
             </div>
+            <div>
+      <table style={{ color: colors.primary[600] }}>
+        <thead>
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}  />
+            </td>
+            <td>
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
             <div className="modal-body">
             {reportData.length === 0 ? (
                 <p style={{color:"red",fontSize:"3rem"}}>Currently No Data</p>
@@ -44,8 +74,12 @@ const StudyAbroad = (props) => {
                   title= "Request to return to work after studying abroad"
                   issueType={report.serviceType}
                   details={report.mostCommonIssueDescriptions.join("\n")}
-                  fromDate={props.fromDate}
-                  toDate={props.toDate}
+                  fromDate={formatDate(report.fromDate)}
+                  toDate={new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  })}
                   issuesReceived={report.count}
                   issuesHandled={report.count - report.issueStatus[0].count}
                   issuesProcessing={report.issueStatus[0].count}

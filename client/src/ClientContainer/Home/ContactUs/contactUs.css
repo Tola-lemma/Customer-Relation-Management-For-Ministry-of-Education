@@ -1,0 +1,36 @@
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+      .contact-us-btn {
+        width: 80% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+       
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .contact-us-btn {
+        width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+       
+      }
+    }
+    
+    @media screen and (max-width: 640px) and (orientation: landscape) {
+      .contact-us-btn {
+        width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+       
+      }
+    }
+    
+    @media screen and (max-width: 640px) {
+      .contact-us-btn {
+        width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+      }
+    }
+    

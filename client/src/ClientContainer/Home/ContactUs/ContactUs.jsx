@@ -8,7 +8,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorContext } from "../../Admin/ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../Admin/ToastErrorPage/ErrorMessage";
 import CustomButton from "../../Admin/Pages/global/Button";
-
+import './contactUs.css'
 export const ContactUs = () => {
   const { showError, showSuccess } = useContext(ErrorContext);
   const recaptchaRef = useRef(null);
@@ -183,7 +183,7 @@ export const ContactUs = () => {
             /> */}
             <CustomButton
               type="submit"
-              className="btn btn-primary rounded-pill"
+              className="btn btn-primary rounded-pill contact-us-btn"
               style={{ width: "16%", marginLeft: "40%" }}
               disabled={updating}
               loading={updating}

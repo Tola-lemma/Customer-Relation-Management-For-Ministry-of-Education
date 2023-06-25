@@ -1,10 +1,9 @@
-import { Badge, Box, IconButton, useTheme } from "@mui/material";
+import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
@@ -12,6 +11,8 @@ import { UserContext } from "../../../Admin/Pages/global/LoginContext";
 import ModalButton from "./UpdateStaff/modalButton";
 import Modal from "./UpdateStaff/modal";
 import axios from "axios";
+import ModalButtonNotification from "./Notification/modalButton";
+import ModalNotification from "./Notification/modal";
 export const StaffTopbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -24,6 +25,8 @@ export const StaffTopbar = () => {
        navigate("/login")
   }
   const [todoCount, setTodoCount] = useState(0);
+  const [todoIssues, setTodoIssues] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,6 +38,7 @@ export const StaffTopbar = () => {
         });
         const { requestedIssues } = response.data;
         const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
+        setTodoIssues(todoIssues);
         setTodoCount(todoIssues.length);
       } catch (error) {
         alert('Error fetching data:', error);
@@ -66,11 +70,8 @@ export const StaffTopbar = () => {
           <LightModeOutlinedIcon />
         )}
       </IconButton>
-      <IconButton>
-      <Badge badgeContent={todoCount} color="warning">
-        <NotificationsOutlinedIcon />
-      </Badge>
-      </IconButton>
+      <ModalButtonNotification todoCount={todoCount}/>
+      <ModalNotification todoIssues={todoIssues} />
       <ModalButton />
       <Modal />
       <IconButton onClick={()=>hadleLogout()} >

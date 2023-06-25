@@ -94,6 +94,8 @@ export const OpenTicket = () => {
      <form onSubmit={onSubmit} onReset={handleReset}>
       <div className=''> 
         <NavBar />
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+      <Box sx={{ boxShadow: 3, p: 4, width: "70%" }}>
         <div className='container all-container'>
           <Typography variant='h1'>Submit your Issue Here</Typography>
           <Typography variant='h3'>Please fill out this form to submit your Issue.</Typography>
@@ -170,6 +172,8 @@ export const OpenTicket = () => {
             </Button>
           </Stack>
         </div>
+    </Box>
+    </Box>
       </div>
     </form> 
      <ErrorMessage />

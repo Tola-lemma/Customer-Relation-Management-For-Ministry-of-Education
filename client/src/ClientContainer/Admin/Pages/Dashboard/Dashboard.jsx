@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Header } from '../../components/Header'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import { tokens } from '../../theme';
@@ -14,6 +14,7 @@ import Scholarship from '../Reports/scholarShipReport/Scholarship';
 import Complaint from '../Reports/complaintReport/Complaint';
 import StudyAbroad from '../Reports/StudyAbroadReport/StudyAbroad';
 import axios from 'axios';
+import { ErrorContext } from '../../ToastErrorPage/ErrorContext';
 
 export const Dashboard = () => {
   const theme = useTheme();
@@ -59,6 +60,7 @@ const [users,setUsers] = useState(0);
 const [todo, setTodo] = useState(0);
 const [progress, setProgress] = useState(0);
 const [done, setDone] = useState(0);
+const { showError } = useContext(ErrorContext);
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -81,7 +83,7 @@ useEffect(() => {
       const {requestedIssues} = issuesResponse.data
       const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
       setTodo(todoIssues.length);
-      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'progress');
+      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'inprogress');
       setProgress(progessIssues.length);
       const doneIssues = requestedIssues.filter(issue => issue.issueStatus === 'done');
       setDone(doneIssues.length);
@@ -90,19 +92,18 @@ useEffect(() => {
       setCount(count ||0);
       setUsers(userCount ||0);
     } catch (error) {
-      alert('Error fetching data:', error);
+      showError(error?.response?.data?.msg);
     }
   };
 
   fetchData();
-}, []);
+}, [showError]);
 
   return (
     <Box m="20px">
         {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
         <Box>
           <Button
             sx={{
@@ -138,7 +139,7 @@ useEffect(() => {
             title={done}
             subtitle="Emails Sent"
             progress={count !== 0 ? (((done / count) * 100) ) * 0.01 : "0.01"}
-            increase={count !== 0 ? ((done / count) * 100) + "%" : "N/A"}
+            increase={count !== 0 ? ((done / count) * 100).toFixed(2) + "%" : "N/A"}
             icon={
               <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -195,7 +196,7 @@ useEffect(() => {
             title={todo + progress}
             subtitle="Issues Received"
             progress={count !== 0 ? (((todo + progress) / count) * 100)* 0.01 : "0.01"}
-            increase={count !== 0 ? ((todo + progress) / count) * 100 + "%" : "N/A"}
+            increase={count !== 0 ? (((todo + progress) / count) * 100).toFixed(2) + "%" : "N/A"}
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

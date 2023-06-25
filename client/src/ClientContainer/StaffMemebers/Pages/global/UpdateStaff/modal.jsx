@@ -3,7 +3,6 @@ import { UserContext } from "../../../../Admin/Pages/global/LoginContext";
 import axios from "axios";
 import { ErrorContext } from "../../../../Admin/ToastErrorPage/ErrorContext";
 import CustomButton from "../../../../Admin/Pages/global/Button";
-import { ErrorMessage } from "../../../../Admin/ToastErrorPage/ErrorMessage";
 // import { useTheme } from "@mui/material";
 // import { tokens } from "../../../../Admin/theme";
 
@@ -132,7 +131,6 @@ const Modal = () => {
           </div>
         </div>
       </div>
-      <ErrorMessage />
     </div>
   );
 };

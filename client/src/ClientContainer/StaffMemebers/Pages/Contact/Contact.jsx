@@ -72,7 +72,7 @@ export const StaffContact = () => {
         switch (status) {
           case 'todo':
             return 'status-cell todo';
-          case 'progress':
+          case 'inprogress':
             return 'status-cell progress';
           case 'done':
             return 'status-cell done';

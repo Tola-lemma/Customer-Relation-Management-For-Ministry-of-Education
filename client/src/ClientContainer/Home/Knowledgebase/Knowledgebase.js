@@ -39,6 +39,43 @@ export const Knowledgebase = () => {
         <div className="knowledgebase-parent">
           <div>
             <div className="allFAQ mb-3">
+          <div className="selectByTopic dropdown">
+            <button
+              className="btn dropdown-toggle kb_drp"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              --Browse by Topic--
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <Link className="dropdown-item" to="#transfer">
+                  Student transfer request
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="#transfer">
+                  Teacher transfer request
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="#foreignstudents">
+                  Request to return to work after studying abroad
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="#scholarship">
+                  Scholarship question
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="#complaints">
+                  Various academic and administrative complaints
+                </Link>
+              </li>
+            </ul>
+          </div>
               Click on the category to browse FAQs.
             </div>
             <ul>
@@ -289,43 +326,6 @@ export const Knowledgebase = () => {
             </ul>
           </div> 
 
-          <div className="selectByTopic dropdown">
-            <button
-              className="btn dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              --Browse by Topic--
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <Link className="dropdown-item" to="#transfer">
-                  Student transfer request
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item" to="#transfer">
-                  Teacher transfer request
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item" to="#foreignstudents">
-                  Request to return to work after studying abroad
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item" to="#scholarship">
-                  Scholarship question
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item" to="#complaints">
-                  Various academic and administrative complaints
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
       <Footer />
