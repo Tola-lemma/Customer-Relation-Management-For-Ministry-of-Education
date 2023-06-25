@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./SearchTopic.css";
 import { HashLink as Link } from 'react-router-hash-link';
+import {BASE_URL} from "../../App.js"
 export const SearchTopic = ({ placeholder, data }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchWord, setSearchWord] = useState("");
+  
   const handleFilter = (e) => {
     const searchWord = e.target.value;
     setSearchWord(searchWord);
@@ -24,7 +26,7 @@ export const SearchTopic = ({ placeholder, data }) => {
     });
     setFilteredData(searchWord === "" ? [] : newFilter);
     if (filteredData.length > 0) {
-      const link = filteredData[0].link;
+      const link = `${BASE_URL}${filteredData[0].link}`;
       window.location.href = link;
     }
   };

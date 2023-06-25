@@ -1,17 +1,17 @@
 import { Footer } from '../../HeaderAndFooter/Footer/Footer';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/material';
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext } from "react";
 import { NavBar } from "../../HeaderAndFooter/header/NavBar";
 import axios from "axios";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorContext } from "../../Admin/ToastErrorPage/ErrorContext";
 import { ErrorMessage } from "../../Admin/ToastErrorPage/ErrorMessage";
 import CustomButton from "../../Admin/Pages/global/Button";
 import './contactUs.css'
 export const ContactUs = () => {
   const { showError, showSuccess } = useContext(ErrorContext);
-  const recaptchaRef = useRef(null);
+  // const recaptchaRef = useRef(null);
   const [updating, setUpdating] = useState(false);
  
   const [formData, setFormData] = useState({
@@ -24,27 +24,30 @@ export const ContactUs = () => {
     subject: "",
     message: "",
   });
-
+  const handleReset = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      companyName: "",
+      email: "",
+      country: "",
+      phoneNumber: "",
+      subject: "",
+      message: "",
+    });
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await recaptchaRef.current.getValue();
-    console.log(token);
+    // const token = await recaptchaRef.current.getValue();
+    // console.log(token);
     try {
       setUpdating(true);
-      const response = await axios.post("/contact-us", {...formData,token: token});
+      const response = await axios.post("/contact-us", formData);
       const { msg } = response.data
       showSuccess("Thank you! " + msg);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        companyName: "",
-        email: "",
-        country: "",
-        phoneNumber: "",
-        subject: "",
-        message: "",
-      });
+      handleReset()
     } catch (error) {
+      handleReset()
       showError(error?.response?.data?.msg || "An error occurred, please try again later.");
     } finally {
       setUpdating(false);

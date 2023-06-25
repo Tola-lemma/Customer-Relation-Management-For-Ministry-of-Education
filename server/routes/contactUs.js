@@ -1,8 +1,8 @@
 import express from "express";
 import { contactUs } from "../controllers/contactUs.js";
-import { verifyRecaptcha } from "../middleware/verifyRecaptcha.js";
+// import { verifyRecaptcha } from "../middleware/verifyRecaptcha.js";
 
 const router = express.Router();
-router.post("/", verifyRecaptcha, contactUs)
+router.post("/", contactUs)
 
 export {router as contactRouter}
