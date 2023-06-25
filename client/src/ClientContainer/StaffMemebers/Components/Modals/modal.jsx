@@ -1,6 +1,6 @@
 
 
-import React from "react";
+import React, { useContext } from "react";
 
 
 import { useState } from "react";
@@ -8,10 +8,13 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import axios from "axios";
 import download from "downloadjs";
+import { ErrorContext } from "../../../Admin/ToastErrorPage/ErrorContext";
+import CustomButton from "../../../Admin/Pages/global/Button";
 
 const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [updating, setUpdating] = useState(false);
   const {
     _id,
     name,
@@ -24,6 +27,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
 
   const [showTextArea, setShowTextArea] = useState(false);
   const [moreButton,setMoreButton] = useState(false);
+  const { showError,showSuccess } = useContext(ErrorContext);
   const [status,setStatus] = useState("")
   const handleReplyClick = () => {
     setShowTextArea(true);
@@ -34,6 +38,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
     // setShowTextArea(false);
     const requestIssueId = _id
     try {
+      setUpdating(true);
       const {data : {msg}} = await axios.put(`/issue/update/${requestIssueId}`, {
         status
       },  {
@@ -41,14 +46,17 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
        'Authorization':`Bearer ${localStorage.getItem('token')}`
         }
       })
-      alert(`success ${msg}`)
+      showSuccess(`success ${msg}`)
     } catch (error) {
-      console.log(error);
+      alert(error?.response?.data?.msg)
+    }finally {
+      setUpdating(false);
     }
   };
 
   const handleViewPDF = async (filename, originalname) => {
     try {
+      setUpdating(true);
       const response = await axios.get(`/issue/stream/${filename}`, {
         responseType: "blob",
         headers: {
@@ -65,12 +73,15 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       );
       newTab.document.title = originalname;
     } catch (error) {
-      alert(error?.response?.data?.msg || "Error while viewing PDF");
+      showError(error?.response?.data?.msg || "Error while viewing PDF");
+    }finally {
+      setUpdating(false);
     }
   };
 
   const handleDownload = async (filename, originalname) => {
     try {
+      setUpdating(true);
       const response = await axios.get(`/issue/stream/${filename}`, {
         responseType: "blob",
         headers: {
@@ -79,7 +90,10 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       });
       download(response.data, originalname);
     } catch (error) {
-      alert(error?.response?.data?.msg || "Error while downloading file");
+      showError(error?.response?.data?.msg || "Error while downloading file");
+    }
+    finally {
+      setUpdating(false);
     }
   };
 const openButton = ()=>{
@@ -144,20 +158,22 @@ const closeMoreButton =()=>{
                 files.map((file, index) => (
                   <div key={index}>
                     <p>{ }</p>
-                    <button
-                      style={{ width: "30%" }}
-                      className="btn btn-warning rounded-pill"
-                      onClick={() => handleDownload(file.filename, file.originalname)}
+                    <CustomButton
+                     style={{ width: "30%" }}
+                     className="btn btn-warning rounded-pill"
+                     onClick={() => handleDownload(file.filename, file.originalname)}
+                     disabled={updating} loading={updating}
                     >
-                      Download File {index + 1}
-                    </button>
-                    <button
-                      style={{ width: "30%", marginLeft: "1rem" }}
-                      className="btn btn-primary rounded-pill"
-                      onClick={() => handleViewPDF(file.filename, file.originalname)}
+                    Download File {index + 1}
+                    </CustomButton>
+                    <CustomButton
+                     style={{ width: "30%", marginLeft: "1rem" }}
+                     className="btn btn-primary rounded-pill"
+                     onClick={() => handleViewPDF(file.filename, file.originalname)}
+                     disabled={updating} loading={updating}
                     >
                       View File {index + 1}
-                    </button>
+                    </CustomButton>
                   </div>
                 ))
               ) : (
@@ -186,22 +202,20 @@ const closeMoreButton =()=>{
                     onChange={(e) => setStatus(e.target.value)}
                   >
                     <option selected>Update the Status of the issue</option>
-                    <option value="progress">Progress</option>
+                    <option value="inprogress">inprogress</option>
                     <option value="done">Done</option>
                   </select>
-                  <button
-                    className="btn btn-success rounded-pill mt-3"
-                    onClick={handleSend}
-                    style={{
-                      width: "30%",
-                      // marginTop  : "60%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      display: "block",
-                    }}
-                  >
-                    Send
-                  </button>
+                  <CustomButton
+                  className="btn btn-success rounded-pill mt-3"
+                  onClick={handleSend}
+                  style={{
+                    width: "30%",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    display: "block"}}
+                    disabled={updating} loading={updating}>
+                    send
+                  </CustomButton>
                 </div>
               ) : (
                 <div style={{ width: "100%", textAlign: "center" }}>

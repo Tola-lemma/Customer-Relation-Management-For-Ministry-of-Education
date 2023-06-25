@@ -81,4 +81,20 @@
       display: flex;
     }
   }
+
+@media (min-width: 992px) and (max-width: 1110px){
+    .front-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+      }
+      .front-button .open,
+      .front-button .check {
+        display: inline-block;
+      }
+      .check{
+        margin-left: 1.2rem;
+      }
+  }
 }

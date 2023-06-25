@@ -81,7 +81,7 @@ useEffect(() => {
       const {requestedIssues} = issuesResponse.data
       const todoIssues = requestedIssues.filter(issue => issue.issueStatus === 'todo');
       setTodo(todoIssues.length);
-      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'progress');
+      const progessIssues = requestedIssues.filter(issue => issue.issueStatus === 'inprogress');
       setProgress(progessIssues.length);
       const doneIssues = requestedIssues.filter(issue => issue.issueStatus === 'done');
       setDone(doneIssues.length);
@@ -138,7 +138,7 @@ useEffect(() => {
             title={done}
             subtitle="Emails Sent"
             progress={count !== 0 ? (((done / count) * 100) ) * 0.01 : "0.01"}
-            increase={count !== 0 ? ((done / count) * 100) + "%" : "N/A"}
+            increase={count !== 0 ? ((done / count) * 100).toFixed(2) + "%" : "N/A"}
             icon={
               <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -195,7 +195,7 @@ useEffect(() => {
             title={todo + progress}
             subtitle="Issues Received"
             progress={count !== 0 ? (((todo + progress) / count) * 100)* 0.01 : "0.01"}
-            increase={count !== 0 ? ((todo + progress) / count) * 100 + "%" : "N/A"}
+            increase={count !== 0 ? (((todo + progress) / count) * 100).toFixed(2) + "%" : "N/A"}
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
