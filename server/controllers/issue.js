@@ -5,6 +5,7 @@ import { sendMail } from "../utils/sendmail.js";
 import {
   requestDoneNotificationMailOptions,
   requestNotificationMailOptions,
+  requestReplayNotificationMailOptions,
 } from "../utils/mailOptions.js";
 import { ServiceTypes } from "../models/serviceTypes.js";
 import mongoose from "mongoose";
@@ -142,7 +143,7 @@ export const streamFile = async (req, res) => {
 };
 
 export const updateIssueStatus = async (req, res) => {
-  const { status } = req.body;
+  const { status, message } = req.body;
   const { requestIssueId } = req.params;
   const serviceType = ServiceTypes[req.user.role];
 
@@ -181,6 +182,15 @@ export const updateIssueStatus = async (req, res) => {
     );
   }
 
+  else if(message && issueToUpdate.issueStatus === IssueStatus.inprogress && issueToUpdate.issueStatus !== IssueStatus.done){
+    await sendMail(
+      requestReplayNotificationMailOptions(
+        issueToUpdate.name,
+        issueToUpdate.email,
+        issueToUpdate.ticketNumber,
+        message)
+    )
+  }
   res.status(StatusCodes.OK).json({
     success: true,
     msg: "issue status updated successfully.",
