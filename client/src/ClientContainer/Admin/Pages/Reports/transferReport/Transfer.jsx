@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import TransferReport from './TransferReport';
 import { tokens } from '../../../theme';
 import { useTheme } from '@emotion/react';
+import { ErrorContext } from '../../../ToastErrorPage/ErrorContext';
 const Transfer = (props) => {
   const [reportData, setReportData] = useState([]);
    const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const { showError} = useContext(ErrorContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const formatDate = (dateString) => {
@@ -25,12 +27,12 @@ const Transfer = (props) => {
         const transferReports = aggregateReport.filter(report => report.serviceType === "transferRequest");
         setReportData(transferReports);
       } catch (error) {
-        alert(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg);
       }
     };
 
     fetchReportData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate,showError]);
 
   return (
     <div>

@@ -5,7 +5,6 @@ import { mockDataManageIssue } from "../.././data/mockData";
 import { Header } from "../../components/Header";
 import { useContext, useEffect, useState } from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
-import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import axios from "axios";
 import {
   Dialog,
@@ -211,7 +210,6 @@ export const ManageIssue = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <ErrorMessage />
     </Box>
   );
 };

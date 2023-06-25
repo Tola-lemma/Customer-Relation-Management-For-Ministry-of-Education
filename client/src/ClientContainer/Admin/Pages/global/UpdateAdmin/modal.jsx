@@ -3,7 +3,6 @@ import { UserContext } from "../../../../Admin/Pages/global/LoginContext";
 import axios from "axios";
 import { ErrorContext } from "../../../../Admin/ToastErrorPage/ErrorContext";
 import CustomButton from "../../../../Admin/Pages/global/Button";
-import { ErrorMessage } from "../../../../Admin/ToastErrorPage/ErrorMessage";
 
 const Modal = () => {
   const [updating, setUpdating] = useState(false);
@@ -128,7 +127,6 @@ const Modal = () => {
           </div>
         </div>
       </div>
-      <ErrorMessage />
     </div>
   );
 };

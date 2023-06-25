@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { Header } from "../../components/Header";
 import { useContext, useState } from "react";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
-import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import axios from "axios";
 
 export const SeeService = () => {
@@ -98,7 +97,6 @@ export const SeeService = () => {
         )}
       </div>
 
-      <ErrorMessage />
     </Box>
   );
 };

@@ -19,7 +19,7 @@ export const mockDataTeam = async () => {
       role:  user.role,
     }));
   } catch (error) {
-    alert(error?.response?.data?.msg || "Error while viewing users");
+    alert(error?.response?.data?.msg + "Error while viewing users");
     return [];
   }
 };
@@ -41,7 +41,7 @@ export const mockDataContacts = async () => {
       registrarId: user._id,
     }));
   } catch (error) {
-    alert(error?.response?.data?.msg || "An error occurred while fetching user data");
+    alert(error?.response?.data?.msg + "An error occurred while fetching user data");
     return [];
   }
 };
@@ -67,59 +67,8 @@ export const mockDataContacts = async () => {
           issueStatus:user.issueStatus
         }));
       } catch (error) {
-        alert(error?.response?.data?.msg || "Error while retrieving issue");
+        alert(error?.response?.data?.msg + "Error while retrieving issue");
         return [];
       }
     }
-    
-    // export const mockRecentRequest = [
-    //   {
-    //     txId: "01e4dsa",
-    //     Sholarship: "johndoe",
-    //     date: "2021-09-01",
-    //     IssuesHandled: "43",
-    //   },
-    //   {
-    //     txId: "0315dsaa",
-    //     Sholarship: "jackdower",
-    //     date: "2022-04-01",
-    //     IssuesHandled: "133",
-    //   },
-    //   {
-    //     txId: "01e4dsa",
-    //     Sholarship: "aberdohnny",
-    //     date: "2021-09-01",
-    //     IssuesHandled: "43",
-    //   },
-    //   {
-    //     txId: "51034szv",
-    //     Sholarship: "goodmanave",
-    //     date: "2022-11-05",
-    //     IssuesHandled: "200",
-    //   },
-    //   {
-    //     txId: "0a123sb",
-    //     Sholarship: "stevebower",
-    //     date: "2022-11-02",
-    //     IssuesHandled: "13",
-    //   },
-    //   {
-    //     txId: "01e4dsa",
-    //     Sholarship: "aberdohnny",
-    //     date: "2021-09-01",
-    //     IssuesHandled: "43",
-    //   },
-    //   {
-    //     txId: "120s51a",
-    //     Sholarship: "wootzifer",
-    //     date: "2019-04-15",
-    //     IssuesHandled: "24",
-    //   },
-    //   {
-    //     txId: "0315dsaa",
-    //     Sholarship: "jackdower",
-    //     date: "2022-04-01",
-    //     IssuesHandled: "133",
-    //   },
-    // ];
     

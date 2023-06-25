@@ -1,8 +1,4 @@
-
-
-import React, { useContext } from "react";
-
-
+import React, {  useContext } from "react";
 import { useState } from "react";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
@@ -33,9 +29,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
     setShowTextArea(true);
   
   };
-
   const handleSend = async(e) => {
-    // setShowTextArea(false);
     const requestIssueId = _id
     try {
       setUpdating(true);
@@ -48,7 +42,7 @@ const Modal = ({ modalTitle, selectedRow, onUpdate }) => {
       })
       showSuccess(`success ${msg}`)
     } catch (error) {
-      alert(error?.response?.data?.msg)
+      showError(error?.response?.data?.msg)
     }finally {
       setUpdating(false);
     }

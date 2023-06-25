@@ -1,7 +1,4 @@
-
-
 import { useTheme } from "@emotion/react";
-import { ErrorMessage } from "../../../../Admin/ToastErrorPage/ErrorMessage";
 import { tokens } from "../../../../Admin/theme";
 import { UserContext } from "../../../../Admin/Pages/global/LoginContext";
 import { useContext } from "react";
@@ -70,7 +67,6 @@ const ModalNotification = ({ todoIssues }) => {
           </div>
         </div>
       </div>
-      <ErrorMessage />
     </div>
   );
 };

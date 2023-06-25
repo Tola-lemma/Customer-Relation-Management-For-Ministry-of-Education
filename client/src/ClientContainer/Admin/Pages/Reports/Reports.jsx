@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ReportTemplate from './ReportTemplate';
 import axios from 'axios';
 import { tokens } from '../../theme';
 import { useTheme } from '@emotion/react';
+import { ErrorContext } from '../../ToastErrorPage/ErrorContext';
 const Reports = (props) => {
   const [reportData, setReportData] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const { showError} = useContext(ErrorContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const formatDate = (dateString) => {
@@ -24,12 +26,12 @@ const Reports = (props) => {
         const { aggregateReport } = response.data;
         setReportData(aggregateReport);
       } catch (error) {
-        alert(error?.response?.data?.msg)
+        showError(error?.response?.data?.msg)
       }
     };
 
     fetchReportData();
-  }, [startDate,endDate]);
+  }, [startDate,endDate,showError]);
   return (
     <div>
       <div className={`modal ${props.modalOpen ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display:props.modalOpen ? 'block' : 'none' }}>

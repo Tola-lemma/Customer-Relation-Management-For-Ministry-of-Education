@@ -13,10 +13,12 @@ import Modal from "./UpdateAdmin/modal";
 import axios from "axios";
 import ModalNotification from "../../../StaffMemebers/Pages/global/Notification/modal";
 import ModalButtonNotification from "../../../StaffMemebers/Pages/global/Notification/modalButton";
+import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 export const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const { showError} = useContext(ErrorContext);
   const navigate = useNavigate();
   const { logout } = useContext(UserContext);
   const hadleLogout= ()=>{
@@ -40,12 +42,12 @@ export const Topbar = () => {
         setTodoIssues(todoIssues);
         setTodoCount(todoIssues.length);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        showError(error?.response?.data?.msg);
       }
     };
 
     fetchData();
-  }, []);
+  }, [showError]);
   
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -60,7 +62,6 @@ export const Topbar = () => {
         <SearchIcon />
       </IconButton>
     </Box>
-
     {/* ICONS */}
     <Box display="flex">
       <IconButton onClick={colorMode.toggleColorMode}>

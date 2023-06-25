@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import ComplaintReport from './ComplaintReport';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
+import { ErrorContext } from '../../../ToastErrorPage/ErrorContext';
 const Complaint = (props) => {
   const [reportData, setReportData] = useState([]);
+  const { showError } = useContext(ErrorContext);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const theme = useTheme();
@@ -25,12 +27,12 @@ const Complaint = (props) => {
         const transferReports = aggregateReport.filter(report => report.serviceType === "complaintRequest");
         setReportData(transferReports);
       } catch (error) {
-        alert(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg);
       }
     };
 
     fetchReportData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate,showError]);
 
   return (
     <div>

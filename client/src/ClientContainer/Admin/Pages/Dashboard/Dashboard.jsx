@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Header } from '../../components/Header'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import { tokens } from '../../theme';
@@ -14,6 +14,7 @@ import Scholarship from '../Reports/scholarShipReport/Scholarship';
 import Complaint from '../Reports/complaintReport/Complaint';
 import StudyAbroad from '../Reports/StudyAbroadReport/StudyAbroad';
 import axios from 'axios';
+import { ErrorContext } from '../../ToastErrorPage/ErrorContext';
 
 export const Dashboard = () => {
   const theme = useTheme();
@@ -59,6 +60,7 @@ const [users,setUsers] = useState(0);
 const [todo, setTodo] = useState(0);
 const [progress, setProgress] = useState(0);
 const [done, setDone] = useState(0);
+const { showError } = useContext(ErrorContext);
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -90,19 +92,18 @@ useEffect(() => {
       setCount(count ||0);
       setUsers(userCount ||0);
     } catch (error) {
-      alert('Error fetching data:', error);
+      showError(error?.response?.data?.msg);
     }
   };
 
   fetchData();
-}, []);
+}, [showError]);
 
   return (
     <Box m="20px">
         {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
         <Box>
           <Button
             sx={{

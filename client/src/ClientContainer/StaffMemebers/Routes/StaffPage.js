@@ -7,13 +7,15 @@ import { StaffContact } from "../Pages/Contact/Contact";
 import { StaffCalendar } from "../Pages/Calendar/Calendar";
 import { StaffFAQ } from "../Pages/Faq/FAQ";
 import { StaffSidebar } from "../Pages/global/Sidebar";
-import { StaffPageNotFound } from "../Pages/PageNotFound/PageNotFound";
+import { ErrorMessage } from "../../Admin/ToastErrorPage/ErrorMessage";
+import { PageNotFound } from "../../Admin/Pages/PageNotFound/PageNotFound";
 
 export const StaffPage = () => {
     const [theme, colorMode] = useMode("dark");
     return (
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
+          <ErrorMessage />
           <CssBaseline />
           <div className="app">
             <StaffSidebar />
@@ -24,7 +26,7 @@ export const StaffPage = () => {
                 <Route path="/contact" element={<StaffContact />} />
                 <Route path="/faq" element={<StaffFAQ />} />
                 <Route path="/calendar" element={<StaffCalendar />} />
-                <Route path="/*" element={<StaffPageNotFound />} />
+                <Route path="/*" element={<PageNotFound />} />
               </Routes>
             </main>
           </div>

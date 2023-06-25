@@ -6,7 +6,6 @@ import { Header } from "../../components/Header";
 import { ErrorContext } from "../../ToastErrorPage/ErrorContext";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { ErrorMessage } from "../../ToastErrorPage/ErrorMessage";
 import CustomButton from "../global/Button";
 export const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -160,7 +159,6 @@ export const Form = () => {
           </form>
         )}
       </Formik>
-      <ErrorMessage />
     </Box>
   );
 };

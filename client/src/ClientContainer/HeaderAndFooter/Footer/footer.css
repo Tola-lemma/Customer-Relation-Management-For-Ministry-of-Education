@@ -11,7 +11,7 @@ footer{
 }
 
 .scl-mda{
-    margin-top: 10.5rem;
+    margin-top: 10rem;
 }
 .scl-mda>li i{
     margin-left: 1.5rem;
@@ -52,44 +52,6 @@ footer{
     margin-left: 4px;
 }
 
-/* @media (max-width: 576px) {
-
-    footer{
-        display: flex;
-        height: 100%;
-        margin-left: 0px;
-    }
-  }
-  
-  
-  @media(max-width:767px){
-       
-    
-    footer{
-        display: flex;
-        height: 100%;
-        
-    }
-  }
-  
-
-@media(max-width:567px){
-     
-    footer{
-        display: inline-flex;
-        width: 100%;
-        height: 100%;
-    }
-}
-@media(min-width:568px){
-     
-    footer{
-        display: inline-flex;
-        width: 100%;
-        
-       
-    }
-} */
 @media screen and (max-width: 767px) {
     /* CSS rules for screens with a maximum width of 767px */
     footer{
@@ -99,6 +61,13 @@ footer{
     }
     .scl-mda{
         margin-top: 1rem;
+    }
+    .foot.mx-5{
+     margin-left: 0px !important;
+    }
+    .youtubeLinkedInTwiter .foot.mx-5 li ,.youtubeLinkedInTwiter{
+        margin-left: 0px !important;
+        margin-top: 0rem !important;
     }
   }
   
@@ -111,6 +80,12 @@ footer{
     }
     .scl-mda{
         margin-top: 1rem;
+    } .foot.mx-5{
+        margin-left: 0px !important;
+       }
+       .youtubeLinkedInTwiter .foot.mx-5 li,.youtubeLinkedInTwiter{
+        margin-left: 0px !important;
+        margin-top: 0rem !important;
     }
   }
   
@@ -120,6 +95,12 @@ footer{
         display: flex;
         height: 45%;
         margin-left: 0px;
+    } .foot.mx-5{
+        margin-left: 0px !important;
+       }
+       .youtubeLinkedInTwiter .foot.mx-5 li,.youtubeLinkedInTwiter{
+        margin-left: 0px !important;
+        margin-top: 0rem !important;
     }
     
   }
@@ -130,6 +111,13 @@ footer{
         display: flex;
         height: 49%;
         margin-left: 0px;
+    } .foot.mx-5{
+        margin-left: 0px !important;
+       }
+       .youtubeLinkedInTwiter .foot.mx-5 li ,.youtubeLinkedInTwiter{
+        margin-left: 0px !important;
+        margin-top: 0rem !important;
     }
+       
   }
   

@@ -15,7 +15,7 @@ export const  Footer=()=>{
             <li><i className="fa-brands fa-facebook"></i> <a href="https://www.facebook.com/fdremoe/" className="">  Facebook</a></li> 
           </ul>
         </div>
-        <div className='col-lg-4 order-center foot'>
+        <div className='col-lg-4 order-center youtubeLinkedInTwiter foot'>
         <ul className="d-flex foot mx-5 scl-mda ">
              <li ><a href='https://twitter.com/fdremoe' target='_blank' rel='noreferrer'><i className="fa-brands fa-twitter " ></i> </a></li>
              <li><a href='https://www.youtube.com/channel/UChrmtas-4cE6LdG1fGl91Cw' target='_blank' rel="noreferrer"><i className="fa-brands fa-youtube"></i></a></li>

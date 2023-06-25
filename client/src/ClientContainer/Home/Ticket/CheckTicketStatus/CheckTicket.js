@@ -3,7 +3,6 @@ import { NavBar } from "../../../HeaderAndFooter/header/NavBar";
 import "./CheckTicket.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { ErrorMessage } from "../../../Admin/ToastErrorPage/ErrorMessage";
 import { ErrorContext } from "../../../Admin/ToastErrorPage/ErrorContext";
 import ModalButton from "./ModalData/modalButton";
 import Modal from "./ModalData/modal";
@@ -81,8 +80,6 @@ export const CheckTicket = () => {
         <Modal
           requestedIssue={requestedIssue}
         />
-
-    <ErrorMessage/>
    <Footer/>
    </>
    

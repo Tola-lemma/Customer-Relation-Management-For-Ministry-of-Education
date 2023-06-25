@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import StudyAbroadReport from './StudyAbroadReport';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
+import { ErrorContext } from '../../../ToastErrorPage/ErrorContext';
 const StudyAbroad = (props) => {
   const [reportData, setReportData] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const { showError} = useContext(ErrorContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const formatDate = (dateString) => {
@@ -25,12 +27,12 @@ const StudyAbroad = (props) => {
         const transferReports = aggregateReport.filter(report => report.serviceType === "studyAbroadRequest");
         setReportData(transferReports);
       } catch (error) {
-        alert(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg);
       }
     };
 
     fetchReportData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate,showError]);
 
   return (
     <div>

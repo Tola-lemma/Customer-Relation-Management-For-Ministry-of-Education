@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import ScholarshipReport from './ScholarshipReport';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
+import { ErrorContext } from '../../../ToastErrorPage/ErrorContext';
 
 const formatDate = (dateString) => {
   const options = { month: '2-digit', day: '2-digit', year: 'numeric' };
@@ -11,6 +12,7 @@ const formatDate = (dateString) => {
 const Scholarship = (props) => {
   const [reportData, setReportData] = useState([]);
   const [startDate, setStartDate] = useState('');
+  const { showError} = useContext(ErrorContext);
   const [endDate, setEndDate] = useState('');
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -27,12 +29,12 @@ const Scholarship = (props) => {
         setReportData(transferReports);
         
       } catch (error) {
-        alert(error?.response?.data?.msg);
+        showError(error?.response?.data?.msg);
       }
     };
 
     fetchReportData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate,showError]);
   return (
     <div>
       <div className={`modal ${props.openScholarshipModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: props.scholarshipModal ? 'block' : 'none' }}>
