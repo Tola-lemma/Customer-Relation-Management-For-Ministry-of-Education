@@ -190,7 +190,6 @@ export const updateIssueStatus = async (req, res) => {
 
 export const deleteIssue = async (req, res) => {
   const { requestIssueId } = req.params;
-  const serviceType = ServiceTypes[req.user.role];
 
   if (!requestIssueId)
     throw new BadRequestError(
@@ -228,10 +227,7 @@ export const deleteIssue = async (req, res) => {
       "Error while deleteing the files and it's chunks"
     );
 
-  const requestedIssue = await RequestIssue.findOneAndDelete({
-    _id: requestIssueId,
-    serviceType: serviceType,
-  });
+  const requestedIssue = await RequestIssue.findOneAndDelete({_id: requestIssueId});
 
   if (!requestedIssue)
     throw new NotfoundError(`No requestIssue found with id ${requestIssueId}.`);
