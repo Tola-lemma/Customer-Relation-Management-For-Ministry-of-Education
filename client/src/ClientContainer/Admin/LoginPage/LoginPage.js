@@ -34,7 +34,7 @@ export const LoginPage = () => {
     } else {
       const checkAuth = async () => {
         try {
-         await axios.get("/auth/check-auth", {
+          await axios.get("/auth/check-auth", {
             headers: {
               Authorization: `Bearer ${tokenInLs}`,
             },
@@ -50,6 +50,7 @@ export const LoginPage = () => {
     }
   }, [navigate, roleRoutes, user.role, user.username]);
   
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,8 +61,8 @@ export const LoginPage = () => {
       localStorage.setItem("token", token);
       login(username, role,email,phoneNumber);
     if (role in roleRoutes) {
-      navigate(roleRoutes[role]);
       setIsAuthenticated(true);
+      navigate(roleRoutes[role]);
     }
     } catch (error) {
         showError(error?.response?.data?.msg||"An error occurred. Please try again.");
