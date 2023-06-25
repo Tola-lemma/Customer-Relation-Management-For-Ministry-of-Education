@@ -83,17 +83,17 @@ router.get(
   getRequestedIssue
 );
 
-router.delete(
-  "/delete/:requestIssueId",
-  authMiddleware,
-  isAuthorized(
-    Roles.ComplaintsCoordinator,
-    Roles.ScholarshipCoordinator,
-    Roles.StudyAbroadCoordinator,
-    Roles.TransferCoordinator
-  ),
-  deleteIssue
-);
+// router.delete(
+//   "/delete-issue/:requestIssueId",
+//   authMiddleware,
+//   isAuthorized(
+//     Roles.ComplaintsCoordinator,
+//     Roles.ScholarshipCoordinator,
+//     Roles.StudyAbroadCoordinator,
+//     Roles.TransferCoordinator,
+//   ),
+//   deleteIssue
+// );
 
 router.get(
   "/report",
