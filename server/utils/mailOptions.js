@@ -283,7 +283,7 @@ export const requestDoneNotificationMailOptions = (name, email, ticketNumber) =>
     return {
         from: process.env.SMTP_FROM,
         to: email,
-        subject: "Issue Status Update - Your Issue is Done",
+        subject: "Issue Status Update",
         html: `
         <html>
         <head>
@@ -348,7 +348,7 @@ export const requestDoneNotificationMailOptions = (name, email, ticketNumber) =>
       <body>
       
       <div class="container">
-        <h2>Your Issue is Complete!</h2>
+        <h2>Your Issue is in progress!</h2>
   
         <h4>Dear ${name}, </h4>
   
