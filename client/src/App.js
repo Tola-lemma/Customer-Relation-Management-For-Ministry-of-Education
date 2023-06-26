@@ -39,11 +39,11 @@ export const App = () => {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/reset-password/:token/:userId" element={<PasswordReset />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="*" element={<PageNotFound />} />
           <Route element={<ProtectedRoute/>}>
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/staff/*" element={<StaffPage />} />
           </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ThemeProvider>
       </ErrorProvider>
