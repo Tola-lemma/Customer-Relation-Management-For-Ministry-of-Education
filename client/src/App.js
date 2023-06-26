@@ -17,8 +17,8 @@ import { ContactUs } from "./ClientContainer/Home/ContactUs/ContactUs";
 import { ErrorProvider } from "./ClientContainer/Admin/ToastErrorPage/ErrorContext";
 import { AdminPage } from "./ClientContainer/Admin/Pages/Routes/AdminPage";
 import { ProtectedRoute } from "./ClientContainer/StaffMemebers/ProtectedRoute";
-axios.defaults.baseURL = "http://localhost:3001/api/v1";
-export const BASE_URL = 'http://localhost:3000';
+axios.defaults.baseURL = "https://moe-crm.onrender.com/api/v1";
+export const BASE_URL = 'https://moe-crm-4y3a.onrender.com/';
 export const App = () => {
   const [theme, colorMode] = useMode("light");
   return (

@@ -70,7 +70,7 @@ export const resetPasswordMailOptions= (name, email, requestLink) => {
                 <p>Hello ${name},</p>
                 <p>We have received a request to reset your password. Please click the button below to proceed:</p>
                 <p class="btn"><a href="${requestLink}" class="button" target="_blank" rel="noopener noreferrer">Reset your Password</a></p>
-                <p>If you don’t use this link within 1 hour, it will expire. To get a new password reset link, visit :&nbsp; <a href="some-link">http://localhost:3000/forget-password </a></p>
+                <p>If you don’t use this link within 1 hour, it will expire. To get a new password reset link, visit :&nbsp; <a href="https://moe-crm-4y3a.onrender.com/forget-password">https://moe-crm-4y3a.onrender.com/forget-password </a></p>
                 <p>If you did not request a password reset, please ignore this email.</p>
                 <p>Thank you,</p>
                 <p>The Contact Team</p>
@@ -165,7 +165,7 @@ export const requestNotificationMailOptions = (name, email, ticketNumber) => {
           </p>
         
           <p class="btn">
-            <a class="button" href="http://localhost:3000/checkticketstatus">Track Issue</a>
+            <a class="button" href="https://moe-crm-4y3a.onrender.com/checkticketstatus">Track Issue</a>
           </p>
         
           <p>

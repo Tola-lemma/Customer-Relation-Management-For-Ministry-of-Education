@@ -82,7 +82,7 @@ export const forgetPassword = async (req, res) => {
   });
 
   // Send an email to the user with a link to the reset password page
-  const requestLink = `http://localhost:3000/reset-password/${token}/${user._id}`;
+  const requestLink = `https://moe-crm-4y3a.onrender.com/reset-password/${token}/${user._id}`;
 
   const result = await sendMail(
     resetPasswordMailOptions(user.name, user.email, requestLink)
