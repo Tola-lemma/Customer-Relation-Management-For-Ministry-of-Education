@@ -38,7 +38,7 @@ export const App = () => {
           <Route path="/forget-password" element={<EmailSubmission />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/reset-password/:token/:userId" element={<PasswordReset />} />
-          <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/contact-us" element={<ContactUs />} />
           <Route path="*" element={<PageNotFound />} />
           <Route element={<ProtectedRoute/>}>
           <Route path="/admin/*" element={<AdminPage />} />
